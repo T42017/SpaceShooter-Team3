@@ -10,14 +10,15 @@ namespace CursorAiming
     /// </summary>
     public class SpaceHeadGame : Game
     {
+        private Texture2D playerTexture;
+        Player player; 
         private Vector2 distance;
         private readonly GraphicsDeviceManager graphics;
 
-        private Texture2D image;
 
         private float rotation;
         private SpriteBatch spriteBatch;
-        private Vector2 spritePosition = new Vector2(500, 500);
+        //private Vector2 spritePosition = new Vector2(500, 500);
 
 
         public SpaceHeadGame()
@@ -37,7 +38,8 @@ namespace CursorAiming
             // TODO: Add your initialization logic here
 
             base.Initialize();
-
+            player = new Player(300, playerTexture);
+            player.Position = new Vector2(500, 500);
             graphics.PreferredBackBufferWidth = 1000;
             graphics.PreferredBackBufferHeight = 1000;
             graphics.ApplyChanges();
@@ -54,7 +56,7 @@ namespace CursorAiming
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            image = Content.Load<Texture2D>("spaceAstronauts_009");
+            playerTexture = Content.Load<Texture2D>("spaceAstronauts_009");
 
             // TODO: use this.Content to load your game content here
         }
@@ -81,13 +83,32 @@ namespace CursorAiming
 
             var mouse = Mouse.GetState();
 
-            distance.X = mouse.X - spritePosition.X;
-            distance.Y = mouse.Y - spritePosition.Y;
+            distance.X = mouse.X - player.Position.X;
+            distance.Y = mouse.Y - player.Position.Y;
 
             rotation = (float) Math.Atan2(distance.Y, distance.X);
 
+            player.Direction = new Vector2(0,0);
+            if (Keyboard.GetState().IsKeyDown(Keys.A))
+            {
+                player.Direction.X += -1;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D))
+            {
+                player.Direction.X += 1;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.W))
+            {
+                player.Direction.Y += -1;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.S))
+            {
+                player.Direction.Y += 1;
+            }
+            if(player.Direction.X != 0 && player.Direction.Y != 0)player.Direction.Normalize();
 
-            // TODO: Add your update logic here
+            player.Velocity = player.Direction * (player.MoveSpeed * gameTime.ElapsedGameTime.Milliseconds/1000);
+            player.Position += player.Velocity;
 
             base.Update(gameTime);
         }
@@ -102,9 +123,9 @@ namespace CursorAiming
 
             spriteBatch.Begin();
 
-            spriteBatch.Draw(image,
-                new Rectangle((int) spritePosition.X, (int) spritePosition.Y, image.Width, image.Height), null,
-                Color.White, rotation, new Vector2(image.Width / 2, image.Height / 2), SpriteEffects.None, 0);
+            spriteBatch.Draw(playerTexture,
+                new Rectangle((int) player.Position.X, (int) player.Position.Y, playerTexture.Width, playerTexture.Height), null,
+                Color.White, rotation, new Vector2(playerTexture.Width / 2, playerTexture.Height / 2), SpriteEffects.None, 0);
 
             spriteBatch.End();
 
