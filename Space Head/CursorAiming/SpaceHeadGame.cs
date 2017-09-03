@@ -2,6 +2,10 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace CursorAiming
 {
@@ -11,8 +15,8 @@ namespace CursorAiming
     public class SpaceHeadGame : Game
     {
         private Texture2D playerTexture;
-        Player player; 
-        private Vector2 distance;
+        Player player;
+        private Vector2 distanceBetweenPlaterAndMouse;
         private readonly GraphicsDeviceManager graphics;
 
 
@@ -40,6 +44,7 @@ namespace CursorAiming
             base.Initialize();
             player = new Player(300, playerTexture);
             player.Position = new Vector2(500, 500);
+
             graphics.PreferredBackBufferWidth = 1000;
             graphics.PreferredBackBufferHeight = 1000;
             graphics.ApplyChanges();
@@ -80,36 +85,48 @@ namespace CursorAiming
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            player.IsShooting = false;
             var mouse = Mouse.GetState();
 
-            distance.X = mouse.X - player.Position.X;
-            distance.Y = mouse.Y - player.Position.Y;
+            distanceBetweenPlaterAndMouse.X = mouse.X - player.Position.X;
+            distanceBetweenPlaterAndMouse.Y = mouse.Y - player.Position.Y;
 
-            rotation = (float) Math.Atan2(distance.Y, distance.X);
+            
+            rotation = (float) Math.Atan2(distanceBetweenPlaterAndMouse.Y, distanceBetweenPlaterAndMouse.X);
+            distanceBetweenPlaterAndMouse.Normalize();
+            player.AimDirection = distanceBetweenPlaterAndMouse;
 
-            player.Direction = new Vector2(0,0);
+            player.MoveDirection = new Vector2(0,0);
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
-                player.Direction.X += -1;
+                player.MoveDirection.X += -1;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                player.Direction.X += 1;
+                player.MoveDirection.X += 1;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
-                player.Direction.Y += -1;
+                player.MoveDirection.Y += -1;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
-                player.Direction.Y += 1;
+                player.MoveDirection.Y += 1;
             }
-            if(player.Direction.X != 0 && player.Direction.Y != 0)player.Direction.Normalize();
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                player.IsShooting = true;
+            if (player.IsShooting && !player.HasShot) player.Shoot();
 
-            player.Velocity = player.Direction * (player.MoveSpeed * gameTime.ElapsedGameTime.Milliseconds/1000);
+            if(player.MoveDirection.X != 0 && player.MoveDirection.Y != 0)player.MoveDirection.Normalize();
+
+            player.Velocity = player.MoveDirection * (player.MoveSpeed * gameTime.ElapsedGameTime.Milliseconds/1000);
             player.Position += player.Velocity;
+            foreach (Bullet bullet in player.BulletsInAir)
+            {
+                bullet.Position += (bullet.Direction * bullet.Speed * (gameTime.ElapsedGameTime.Milliseconds)/1000);
+            }
 
+            player.HasShot = player.IsShooting;
             base.Update(gameTime);
         }
 
@@ -124,8 +141,14 @@ namespace CursorAiming
             spriteBatch.Begin();
 
             spriteBatch.Draw(playerTexture,
-                new Rectangle((int) player.Position.X, (int) player.Position.Y, playerTexture.Width, playerTexture.Height), null,
-                Color.White, rotation, new Vector2(playerTexture.Width / 2, playerTexture.Height / 2), SpriteEffects.None, 0);
+                new Rectangle((int) player.Position.X, (int) player.Position.Y, playerTexture.Width, playerTexture.Height),
+                null, Color.White, rotation, new Vector2(playerTexture.Width / 2, playerTexture.Height / 2), SpriteEffects.None, 0);
+
+            foreach (Bullet bullet in player.BulletsInAir)
+            {
+                spriteBatch.Draw(bullet.Texture, bullet.Position, Color.White);
+            }
+
 
             spriteBatch.End();
 

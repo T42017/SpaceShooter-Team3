@@ -14,13 +14,21 @@ namespace CursorAiming
         public int MoveSpeed;
         public Texture2D Texture;
         static int Health = 3;
-
-        public Vector2 Position, Direction, Velocity;
+        public bool IsShooting, HasShot;
+        public Vector2 Position, MoveDirection, Velocity, AimDirection;
+        Bullet bullet;
+        public List<Bullet> BulletsInAir = new List<Bullet>();
         
         public Player(int _moveSpeed, Texture2D _texture)
         {
             MoveSpeed = _moveSpeed;
-            Texture = _texture;
+            Texture = _texture;           
+        }
+
+        public void Shoot()
+        {
+            bullet = new Bullet(300, 1, Texture, Position, AimDirection);
+            BulletsInAir.Add(bullet);
         }
     }
 }
