@@ -4,20 +4,18 @@ using Microsoft.Xna.Framework.Input;
 
 namespace CursorAiming
 {
-    
     public class SpaceHeadGame : Game
     {
-        private readonly GraphicsDeviceManager graphics;
+        private readonly GraphicsDeviceManager _graphics;
 
-        private UnitWithGun enemy;        
-        private UnitWithGun player;
-
-        private SpriteBatch spriteBatch;
+        private UnitWithGun _enemy;
+        private UnitWithGun _player;
+        private SpriteBatch _spriteBatch;
 
 
         public SpaceHeadGame()
         {
-            graphics = new GraphicsDeviceManager(this);
+            _graphics = new GraphicsDeviceManager(this);
 
             Content.RootDirectory = "Content";
         }
@@ -25,20 +23,25 @@ namespace CursorAiming
         protected override void Initialize()
         {
             base.Initialize();
-            player = new Player(400, 1000, 1, this) {Position = new Vector2(500, 500)};
-            enemy = new BasicEnemyWithGun(this) {Position = new Vector2(500, 500)};
-            Components.Add(player);
+            _player = new Player(200, 500, 1, this) {Position = new Vector2(501, 500)};
+            _enemy = new BasicEnemyWithGun(this) {Position = new Vector2(500, 500)};
+            Components.Add(_player);
+            Components.Add(_enemy);
 
-            graphics.PreferredBackBufferWidth = 1000;
-            graphics.PreferredBackBufferHeight = 1000;
-            graphics.ApplyChanges();
+            #region windowSettings
+
+            _graphics.PreferredBackBufferWidth = 1000;
+            _graphics.PreferredBackBufferHeight = 1000;
+            _graphics.ApplyChanges();
 
             IsMouseVisible = true;
+
+            #endregion
         }
 
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
         protected override void UnloadContent()
@@ -53,51 +56,29 @@ namespace CursorAiming
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            player.UpdateMovement(gameTime);
+            _enemy.CalculateRotation(_player.Position);
 
-            player.IsShooting = false;
-
-            var mouse = Mouse.GetState();
-
-            player.CalculateRotation(new Vector2(mouse.X, mouse.Y));
-
-
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-                player.IsShooting = true;
-
-            if (player.IsShooting && !player.HasShot) player.Shoot(player.BulletSpeed, player.BulletDamage);
-
-            foreach (var bullet in player.BulletsInAir)
-                bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds / 1000;
-            foreach (var bullet in enemy.BulletsInAir)
-                bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds / 1000;
-
-            enemy.CalculateRotation(player.Position);
-
-            if (enemy.DeltaDistance.Length() < 700) enemy.Shoot(700, 1);
-
-            player.HasShot = player.IsShooting;
-            base.Update(gameTime);
+            
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();
+            _spriteBatch.Begin();
 
             base.Update(gameTime);
 
-            player.UpdateGraphics(spriteBatch);
-            foreach (var bullet in player.BulletsInAir)
-                bullet.UpdateGraphics(spriteBatch);
+            _player.UpdateGraphics(_spriteBatch);
+            foreach (var bullet in _player.BulletsInAir)
+                bullet.UpdateGraphics(_spriteBatch);
 
-            player.UpdateGraphics(spriteBatch);
-            enemy.UpdateGraphics(spriteBatch);
+            _player.UpdateGraphics(_spriteBatch);
+            _enemy.UpdateGraphics(_spriteBatch);
 
-            foreach (var bullet in enemy.BulletsInAir)
-                bullet.UpdateGraphics(spriteBatch);
-            spriteBatch.End();
+            foreach (var bullet in _enemy.BulletsInAir)
+                bullet.UpdateGraphics(_spriteBatch);
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }

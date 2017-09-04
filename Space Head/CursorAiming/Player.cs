@@ -6,20 +6,45 @@ namespace CursorAiming
 {
     internal class Player : UnitWithGun
     {
-        public Player(int _moveSpeed, int _bulletSpeed, int _bulletDamage, Game game) : base(game)
+        public Player(int moveSpeed, int bulletSpeed, int bulletDamage, Game game) : base(game)
         {
-            MoveSpeed = _moveSpeed;
-            BulletSpeed = _bulletSpeed;
+            MoveSpeed = moveSpeed;
+            BulletSpeed = bulletSpeed;
+            BulletDamage = bulletDamage;
             Texture = Game.Content.Load<Texture2D>("spaceAstronauts_009");
             BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
         }
 
         protected override void LoadContent()
         {
+            base.LoadContent();
             Texture = Game.Content.Load<Texture2D>("spaceAstronauts_009");
             BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
 
-            base.LoadContent();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            UpdateMovement(gameTime);
+
+            IsShooting = false;
+
+            var mouse = Mouse.GetState();
+
+            CalculateRotation(new Vector2(mouse.X, mouse.Y));
+
+
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                IsShooting = true;
+
+            if (IsShooting && !HasShot) Shoot(BulletSpeed, BulletDamage);
+
+            foreach (var bullet in BulletsInAir)
+                bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds / 1000;
+
+
+            HasShot = IsShooting;
+            base.Update(gameTime);
         }
 
 
@@ -42,7 +67,7 @@ namespace CursorAiming
             if (Keyboard.GetState().IsKeyDown(Keys.S))
                 MoveDirection.Y += 1;
 
-            if (MoveDirection.X != 0 && MoveDirection.Y != 0) MoveDirection.Normalize();
+            if ((int) MoveDirection.X != 0 && (int) MoveDirection.Y != 0) MoveDirection.Normalize();
 
             Velocity = MoveDirection * (MoveSpeed * gameTime.ElapsedGameTime.Milliseconds / 1000);
             Position += Velocity;

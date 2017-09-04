@@ -7,7 +7,7 @@ namespace CursorAiming
 {
     internal class UnitWithGun : DrawableGameComponent
     {
-        public Bullet bullet;
+        public Bullet Bullet;
         public List<Bullet> BulletsInAir = new List<Bullet>();
         public int Health;
         public bool IsShooting, HasShot;
@@ -20,18 +20,18 @@ namespace CursorAiming
         {
         }
 
-        public void Shoot(int _bulletSpeed, int _bulletDamage)
+        public void Shoot(int bulletSpeed, int bulletDamage)
         {
-            bullet = new Bullet(_bulletSpeed, _bulletDamage, BulletTexture, Position , AimDirection, Rotation);
-            BulletsInAir.Add(bullet);
+            Bullet = new Bullet(bulletSpeed, bulletDamage, BulletTexture, Position , AimDirection, Rotation);
+            BulletsInAir.Add(Bullet);
         }
 
         public Vector2 DeltaDistance;
 
-        public void CalculateRotation(Vector2 _objectToPointAt)
+        public void CalculateRotation(Vector2 objectToPointAt)
         {
             
-            DeltaDistance = _objectToPointAt - Position;
+            DeltaDistance = objectToPointAt - Position;
             Rotation = (float)Math.Atan2(DeltaDistance.Y, DeltaDistance.X);
             Vector2 tempDeltaDistance = DeltaDistance;
             tempDeltaDistance.Normalize();
