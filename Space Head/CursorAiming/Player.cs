@@ -10,8 +10,8 @@ namespace CursorAiming
         {
             MoveSpeed = _moveSpeed;
             BulletSpeed = _bulletSpeed;
-            Texture = Game.Content.Load<Texture2D>("spaceAstronauts_009");
-            BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
+            //Texture = Game.Content.Load<Texture2D>("spaceAstronauts_009");
+            //BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
         }
 
         protected override void LoadContent()

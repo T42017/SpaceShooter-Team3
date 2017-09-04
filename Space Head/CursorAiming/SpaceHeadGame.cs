@@ -4,17 +4,12 @@ using Microsoft.Xna.Framework.Input;
 
 namespace CursorAiming
 {
-    /// <summary>
-    ///     This is the main type for your game.
-    /// </summary>
+    
     public class SpaceHeadGame : Game
     {
         private readonly GraphicsDeviceManager graphics;
 
-        private UnitWithGun enemy;
-
-        //private Texture2D playerTexture;
-        //private Texture2D bulletTexture;
+        private UnitWithGun enemy;        
         private UnitWithGun player;
 
         private SpriteBatch spriteBatch;
