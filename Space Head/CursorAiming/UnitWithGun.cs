@@ -16,8 +16,24 @@ namespace CursorAiming
         public float Rotation;
         public Texture2D Texture, BulletTexture, GunTexture;
 
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+        }
+
+        protected override void LoadContent()
+        {
+            
+        }    
+
         public UnitWithGun(Game game) : base(game)
         {
+ 
         }
 
         public void UpdateGraphics(SpriteBatch spriteBatch)

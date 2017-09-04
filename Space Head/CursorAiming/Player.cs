@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -11,9 +6,24 @@ namespace CursorAiming
 {
     internal class Player : UnitWithGun
     {
-       
-        
 
+
+        public override void Draw(GameTime gameTime)
+        {       
+
+            base.Draw(gameTime);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+
+            base.Update(gameTime);
+        }
+
+        protected override void LoadContent()
+        {
+
+        }
 
         public Player(int _moveSpeed, Texture2D _texture, Game game) : base(game)
         {

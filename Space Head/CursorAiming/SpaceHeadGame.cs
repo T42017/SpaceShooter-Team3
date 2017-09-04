@@ -3,12 +3,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Media;
 
 namespace CursorAiming
 {
@@ -17,32 +14,19 @@ namespace CursorAiming
     /// </summary>
     public class SpaceHeadGame : Game
     {
-        #region Texture2D variables
-
         private Texture2D playerTexture;
         private Texture2D bulletTexture;
         UnitWithGun player;
-        private Texture2D start;
-        private Texture2D exit;
-
-        #endregion
-
         private readonly GraphicsDeviceManager graphics;
-        private SoundEffect _shotSound;
-        private Song backgroundMusic;
-
-        bool pushedStartGameButton = false;
 
 
         private float rotation;
         private SpriteBatch spriteBatch;
-        private GameState _state = GameState.MainMenu;
 
 
         public SpaceHeadGame()
         {
             graphics = new GraphicsDeviceManager(this);
-            
             Content.RootDirectory = "Content";
         }
 
@@ -77,16 +61,8 @@ namespace CursorAiming
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            start = Content.Load<Texture2D>("start");
-            exit = Content.Load<Texture2D>("exit");
-
             playerTexture = Content.Load<Texture2D>("spaceAstronauts_009");
             bulletTexture = Content.Load<Texture2D>("laserBlue01");
-            //_shotSound = Content.Load<SoundEffect>("Laser_Gun");
-            //backgroundMusic = Content.Load<Song>("POL-flight-master-short");
-            MediaPlayer.Play(backgroundMusic);
-            MediaPlayer.IsRepeating = true;
-
 
             // TODO: use this.Content to load your game content here
         }
@@ -107,22 +83,6 @@ namespace CursorAiming
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
-            switch (_state)
-            {
-                case GameState.MainMenu:
-                    UpdateMainMenu();
-                    break;
-
-                case GameState.GameIsRunning:
-                    UpdateGameIsRunning(gameTime);
-                    break;
-
-                case GameState.GameOver:
-                    break;
-            }
-
-
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
@@ -133,13 +93,8 @@ namespace CursorAiming
 
             var mouse = Mouse.GetState();
             player.CalculateRotation(new Vector2(mouse.X, mouse.Y));           
-            if(Keyboard.GetState().IsKeyDown(Keys.Space))
-            {
-                Player.Health = 0;
-            }
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                 player.IsShooting = true;
-                _shotSound.Play();
             if (player.IsShooting && !player.HasShot) player.Shoot();
             
             foreach (Bullet bullet in player.BulletsInAir)
@@ -153,8 +108,6 @@ namespace CursorAiming
             base.Update(gameTime);
         }
 
-        
-
         /// <summary>
         ///     This is called when the game should draw itself.
         /// </summary>
@@ -165,24 +118,8 @@ namespace CursorAiming
 
             spriteBatch.Begin();
 
-            base.Update(gameTime);
-            switch (_state)
-            {
-                case GameState.MainMenu:
-                    break;
-
-                case GameState.GameIsRunning:
-                    break;
-
-                case GameState.GameOver:
-                    spriteBatch.Draw(playerTexture,
-                new Rectangle(5, 5, playerTexture.Width, playerTexture.Height),
-                null, Color.White, rotation, new Vector2(playerTexture.Width / 2, playerTexture.Height / 2), SpriteEffects.None, 0);
-                    break;
-            }
 
 
-            player.UpdateGraphics(spriteBatch);
             foreach (Bullet bullet in player.BulletsInAir)
             {
                 bullet.UpdateBulletGraphics(spriteBatch);
@@ -193,29 +130,5 @@ namespace CursorAiming
 
             base.Draw(gameTime);
         }
-
-        enum GameState
-        {
-            MainMenu,
-            GameIsRunning,
-            EndOfGame,
-            GameOver,
-        }
-
-        private void UpdateMainMenu()
-        {
-            throw new NotImplementedException();
-        }
-
-        void UpdateGameIsRunning(GameTime deltaTime)
-        {
-            // Respond to user input for menu selections, etc
-            
-            if (Player.Health <= 0)
-                _state = GameState.GameOver;
-        }
-
-
-
     }
 }
