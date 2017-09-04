@@ -11,6 +11,14 @@ namespace CursorAiming
 
         private UnitWithGun enemy;        
         private UnitWithGun player;
+        static public GameState _state = GameState.MainMenu;
+
+        private Texture2D start;
+        private Texture2D exit;
+
+        private Vector2 _startButtonPos = new Vector2(10, 10);
+
+        private States state;
 
         private SpriteBatch spriteBatch;
 
@@ -28,6 +36,8 @@ namespace CursorAiming
             player = new Player(400, 1000, 1, this) {Position = new Vector2(500, 500)};
             enemy = new BasicEnemyWithGun(this) {Position = new Vector2(500, 500)};
             Components.Add(player);
+            
+            state = new States(this);
 
             graphics.PreferredBackBufferWidth = 1000;
             graphics.PreferredBackBufferHeight = 1000;
@@ -39,6 +49,9 @@ namespace CursorAiming
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            start = Content.Load<Texture2D>("start");
+            exit = Content.Load<Texture2D>("exit");
         }
 
         protected override void UnloadContent()
@@ -52,6 +65,32 @@ namespace CursorAiming
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
+            state.CheckPlayerInput(_state);
+
+            switch (_state)
+            {
+
+                case GameState.MainMenu:
+                    
+                    break;
+
+                case GameState.GameIsRunning:
+
+                    break;
+
+                case GameState.GameIsPaused:
+
+                    break;
+
+                case GameState.GameOver:
+
+                    break;
+
+                case GameState.Exit:
+                    Exit();
+                    break;
+            }
 
             player.UpdateMovement(gameTime);
 
@@ -82,9 +121,18 @@ namespace CursorAiming
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
+
+
 
             spriteBatch.Begin();
+
+            switch (_state)
+            {
+                case GameState.MainMenu:
+                    spriteBatch.Draw(start, _startButtonPos, Color.White);
+                    break;
+            }
 
             base.Update(gameTime);
 
