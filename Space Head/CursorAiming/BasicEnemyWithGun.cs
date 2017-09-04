@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace CursorAiming
 {
@@ -7,8 +9,7 @@ namespace CursorAiming
     {
         public BasicEnemyWithGun(Game game) : base(game)
         {
-            Texture = Game.Content.Load<Texture2D>("spaceAstronauts_009");
-            BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
+            
         }
 
         public override void Draw(GameTime gameTime)
@@ -18,7 +19,7 @@ namespace CursorAiming
 
         public override void Update(GameTime gameTime)
         {
-            if (DeltaDistance.Length() < 700) Shoot(500, 1);
+            if (DeltaDistance.Length() < 700) Shoot(500, 1, _shotSound);
 
             foreach (var bullet in BulletsInAir)
                 bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds / 1000;
@@ -27,6 +28,10 @@ namespace CursorAiming
 
         protected override void LoadContent()
         {
+            Texture = Game.Content.Load<Texture2D>("spaceAstronauts_009");
+            BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
+            _shotSound = Game.Content.Load<SoundEffect>("Laser_Gun");
+
             base.LoadContent();
         }
 

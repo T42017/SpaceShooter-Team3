@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace CursorAiming
 {
@@ -10,7 +12,10 @@ namespace CursorAiming
 
         private UnitWithGun _enemy;
         private UnitWithGun _player;
+
         private SpriteBatch _spriteBatch;
+
+        private Song _backgroundMusic;
 
 
         public SpaceHeadGame()
@@ -22,7 +27,7 @@ namespace CursorAiming
 
         protected override void Initialize()
         {
-            _player = new Player(200, 500, 1, this) {Position = new Vector2(501, 500)};
+            _player = new Player(200, 500, 1, this) {Position = new Vector2(510, 500)};
             _enemy = new BasicEnemyWithGun(this) {Position = new Vector2(500, 500)};
             Components.Add(_player);
             Components.Add(_enemy);
@@ -44,7 +49,11 @@ namespace CursorAiming
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            
+            _backgroundMusic = Content.Load<Song>("POL-flight-master-short");
+            MediaPlayer.Play(_backgroundMusic);
+            MediaPlayer.Volume = 0.1f;
+            MediaPlayer.IsRepeating = true;
             base.LoadContent();
         }
 

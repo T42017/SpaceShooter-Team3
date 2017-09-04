@@ -1,11 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace CursorAiming
 {
     internal class Player : UnitWithGun
     {
+
         public Player(int moveSpeed, int bulletSpeed, int bulletDamage, Game game) : base(game)
         {
             MoveSpeed = moveSpeed;
@@ -17,6 +20,7 @@ namespace CursorAiming
         {
             Texture = Game.Content.Load<Texture2D>("spaceAstronauts_009");
             BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
+            _shotSound = Game.Content.Load<SoundEffect>("Laser_Gun");
 
             base.LoadContent();
         }
@@ -35,7 +39,11 @@ namespace CursorAiming
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                 IsShooting = true;
 
-            if (IsShooting && !HasShot) Shoot(BulletSpeed, BulletDamage);
+            if (IsShooting && !HasShot)
+            {
+                Shoot(BulletSpeed, BulletDamage, _shotSound);
+
+            }
 
             foreach (var bullet in BulletsInAir)
                 bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds / 1000;
