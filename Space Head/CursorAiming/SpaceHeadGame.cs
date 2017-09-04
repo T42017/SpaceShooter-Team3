@@ -18,11 +18,11 @@ namespace CursorAiming
     {
         private Texture2D playerTexture;
         private Texture2D bulletTexture;
+        private Texture2D _backgroundTexture;
         UnitWithGun player;
         private readonly GraphicsDeviceManager graphics;
         private Song _backgroundMusic;
         private SoundEffect _shotSound;
-
         private float rotation;
         private SpriteBatch spriteBatch;
 
@@ -30,6 +30,7 @@ namespace CursorAiming
         public SpaceHeadGame()
         {
             graphics = new GraphicsDeviceManager(this);
+
             Content.RootDirectory = "Content";
         }
 
@@ -47,11 +48,9 @@ namespace CursorAiming
             player = new Player(300, playerTexture, this);
             player.BulletTexture = bulletTexture;
             player.Position = new Vector2(500, 500);
-
-            graphics.PreferredBackBufferWidth = 1000;
-            graphics.PreferredBackBufferHeight = 1000;
+            graphics.PreferredBackBufferWidth = Globals.ScreenWidth;
+            graphics.PreferredBackBufferHeight = Globals.ScreenHeight;
             graphics.ApplyChanges();
-
             IsMouseVisible = true;
         }
 
@@ -63,13 +62,14 @@ namespace CursorAiming
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            _backgroundTexture = Content.Load<Texture2D>("Background1");
             playerTexture = Content.Load<Texture2D>("spaceAstronauts_009");
             bulletTexture = Content.Load<Texture2D>("laserBlue01");
             _shotSound = Content.Load<SoundEffect>("Laser_Gun_Sound");
             _backgroundMusic = Content.Load<Song>("POL-flight-master-short");
             MediaPlayer.Play(_backgroundMusic);
             MediaPlayer.Volume = 0.1f;
+            MediaPlayer.IsRepeating = true;
 
             // TODO: use this.Content to load your game content here
         }
@@ -130,13 +130,18 @@ namespace CursorAiming
 
             spriteBatch.Begin();
 
-
+            //for (int x = 0; x < Globals.ScreenWidth; x += _backgroundTexture.Width)
+            //{
+            //    for (int y = 0; y < Globals.ScreenHeight; y += _backgroundTexture.Height)
+            //    {
+                    spriteBatch.Draw(_backgroundTexture, GraphicsDevice.Viewport.Bounds, Color.White);
+            //    }
+            //}
 
             foreach (Bullet bullet in player.BulletsInAir)
             {
                 bullet.UpdateBulletGraphics(spriteBatch);
             }
-
 
             spriteBatch.End();
 
