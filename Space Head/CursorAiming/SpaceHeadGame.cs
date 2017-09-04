@@ -22,11 +22,11 @@ namespace CursorAiming
 
         protected override void Initialize()
         {
-            base.Initialize();
             _player = new Player(200, 500, 1, this) {Position = new Vector2(501, 500)};
             _enemy = new BasicEnemyWithGun(this) {Position = new Vector2(500, 500)};
             Components.Add(_player);
             Components.Add(_enemy);
+
 
             #region windowSettings
 
@@ -37,11 +37,15 @@ namespace CursorAiming
             IsMouseVisible = true;
 
             #endregion
+
+            base.Initialize();
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            base.LoadContent();
         }
 
         protected override void UnloadContent()
@@ -57,8 +61,6 @@ namespace CursorAiming
                 Exit();
 
             _enemy.CalculateRotation(_player.Position);
-
-            
         }
 
         protected override void Draw(GameTime gameTime)

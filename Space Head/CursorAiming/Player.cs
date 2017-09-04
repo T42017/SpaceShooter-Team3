@@ -11,25 +11,23 @@ namespace CursorAiming
             MoveSpeed = moveSpeed;
             BulletSpeed = bulletSpeed;
             BulletDamage = bulletDamage;
-            Texture = Game.Content.Load<Texture2D>("spaceAstronauts_009");
-            BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
         }
 
         protected override void LoadContent()
         {
-            base.LoadContent();
             Texture = Game.Content.Load<Texture2D>("spaceAstronauts_009");
             BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
 
+            base.LoadContent();
         }
 
         public override void Update(GameTime gameTime)
         {
-            UpdateMovement(gameTime);
+            var mouse = Mouse.GetState();
 
             IsShooting = false;
+            UpdateMovement(gameTime);
 
-            var mouse = Mouse.GetState();
 
             CalculateRotation(new Vector2(mouse.X, mouse.Y));
 
