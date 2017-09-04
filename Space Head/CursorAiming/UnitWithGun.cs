@@ -11,7 +11,7 @@ namespace CursorAiming
         public List<Bullet> BulletsInAir = new List<Bullet>();
         public int Health;
         public bool IsShooting, HasShot;
-        public int MoveSpeed;
+        public int MoveSpeed, BulletSpeed, BulletDamage;
         public Vector2 Position, MoveDirection, Velocity, AimDirection;
         public float Rotation;
         public Texture2D Texture, BulletTexture, GunTexture;
@@ -20,26 +20,27 @@ namespace CursorAiming
         {
         }
 
-        public void UpdateGraphics(SpriteBatch spriteBatch)
+        public void Shoot(int _bulletSpeed, int _bulletDamage)
         {
-            spriteBatch.Draw(Texture,
-                new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height),
-                null, Color.White, Rotation, new Vector2(Texture.Width / 2, Texture.Height / 2), SpriteEffects.None, 0);
-        }
-
-        public void Shoot()
-        {
-            bullet = new Bullet(700, 1, BulletTexture, Position , AimDirection, Rotation);
+            bullet = new Bullet(_bulletSpeed, _bulletDamage, BulletTexture, Position , AimDirection, Rotation);
             BulletsInAir.Add(bullet);
         }
 
+        public Vector2 DeltaDistance;
+
         public void CalculateRotation(Vector2 _objectToPointAt)
         {
-            Vector2 deltaDistance;
-            deltaDistance = _objectToPointAt - Position;
-            Rotation = (float)Math.Atan2(deltaDistance.Y, deltaDistance.X);
-            deltaDistance.Normalize();
-            AimDirection = deltaDistance;
+            
+            DeltaDistance = _objectToPointAt - Position;
+            Rotation = (float)Math.Atan2(DeltaDistance.Y, DeltaDistance.X);
+            Vector2 tempDeltaDistance = DeltaDistance;
+            tempDeltaDistance.Normalize();
+            AimDirection = tempDeltaDistance;
+        }
+
+        public virtual void UpdateGraphics(SpriteBatch spriteBatch)
+        {
+            
         }
 
         public virtual void UpdateMovement(GameTime gameTime)

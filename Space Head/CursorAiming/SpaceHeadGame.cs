@@ -17,11 +17,11 @@ namespace CursorAiming
     /// </summary>
     public class SpaceHeadGame : Game
     {
-        #region Texture2D variables
-
-        private Texture2D playerTexture;
-        private Texture2D bulletTexture;
+        //private Texture2D playerTexture;
+        //private Texture2D bulletTexture;
         UnitWithGun player;
+
+        private UnitWithGun enemy;
         private Texture2D start;
         private Texture2D exit;
 
@@ -46,20 +46,13 @@ namespace CursorAiming
             Content.RootDirectory = "Content";
         }
 
-        /// <summary>
-        ///     Allows the game to perform any initialization it needs to before starting to run.
-        ///     This is where it can query for any required services and load any non-graphic
-        ///     related content.  Calling base.Initialize will enumerate through any components
-        ///     and initialize them as well.
-        /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
 
             base.Initialize();
-            player = new Player(300, playerTexture, this);
-            player.BulletTexture = bulletTexture;
-            player.Position = new Vector2(500, 500);
+            player = new Player(400, 1000, 1, this) {Position = new Vector2(500, 500)};
+            enemy = new BasicEnemyWithGun(this) {Position = new Vector2(500, 500)};
+            Components.Add(player);
 
             graphics.PreferredBackBufferWidth = 1000;
             graphics.PreferredBackBufferHeight = 1000;
@@ -68,43 +61,27 @@ namespace CursorAiming
             IsMouseVisible = true;
         }
 
-        /// <summary>
-        ///     LoadContent will be called once per game and is the place to load
-        ///     all of your content.
-        /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            start = Content.Load<Texture2D>("start");
-            exit = Content.Load<Texture2D>("exit");
+            //playerTexture = Content.Load<Texture2D>("spaceAstronauts_009");
+            //bulletTexture = Content.Load<Texture2D>("laserBlue01");
+            //playerTexture = Content.Load<Texture2D>("spaceAstronauts_009");
+            //bulletTexture = Content.Load<Texture2D>("laserBlue01");
 
-            playerTexture = Content.Load<Texture2D>("spaceAstronauts_009");
-            bulletTexture = Content.Load<Texture2D>("laserBlue01");
             //_shotSound = Content.Load<SoundEffect>("Laser_Gun");
             //backgroundMusic = Content.Load<Song>("POL-flight-master-short");
             MediaPlayer.Play(backgroundMusic);
             MediaPlayer.IsRepeating = true;
 
 
-            // TODO: use this.Content to load your game content here
         }
 
-        /// <summary>
-        ///     UnloadContent will be called once per game and is the place to unload
-        ///     game-specific content.
-        /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
         }
 
-        /// <summary>
-        ///     Allows the game to run logic such as updating the world,
-        ///     checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
@@ -132,33 +109,35 @@ namespace CursorAiming
             player.IsShooting = false;
 
             var mouse = Mouse.GetState();
-            player.CalculateRotation(new Vector2(mouse.X, mouse.Y));           
-            if(Keyboard.GetState().IsKeyDown(Keys.Space))
+
+            player.CalculateRotation(new Vector2(mouse.X, mouse.Y));       
+            
             {
                 Player.Health = 0;
             }
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                 player.IsShooting = true;
                 _shotSound.Play();
-            if (player.IsShooting && !player.HasShot) player.Shoot();
+            if (player.IsShooting && !player.HasShot) player.Shoot(player.BulletSpeed, player.BulletDamage);
+            if (player.IsShooting && !player.HasShot) player.Shoot(player.BulletSpeed, player.BulletDamage);
             
             foreach (Bullet bullet in player.BulletsInAir)
             {
                 bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds/1000;
-            }  
-            
+            }
+            foreach (Bullet bullet in enemy.BulletsInAir)
+            {
+                bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds / 1000;
+            }
+
             player.HasShot = player.IsShooting;
 
+            enemy.CalculateRotation(player.Position);
+            if(enemy.DeltaDistance.Length() < 700) enemy.Shoot(700, 1);
 
             base.Update(gameTime);
         }
 
-        
-
-        /// <summary>
-        ///     This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -180,17 +159,23 @@ namespace CursorAiming
                 null, Color.White, rotation, new Vector2(playerTexture.Width / 2, playerTexture.Height / 2), SpriteEffects.None, 0);
                     break;
             }
-
+            
 
             player.UpdateGraphics(spriteBatch);
             foreach (Bullet bullet in player.BulletsInAir)
             {
-                bullet.UpdateBulletGraphics(spriteBatch);
+                bullet.UpdateGraphics(spriteBatch);
             }
 
+            player.UpdateGraphics(spriteBatch);
+            enemy.UpdateGraphics(spriteBatch);
 
+            foreach (Bullet bullet in enemy.BulletsInAir)
+            {
+                bullet.UpdateGraphics(spriteBatch);
+            }
             spriteBatch.End();
-
+            
             base.Draw(gameTime);
         }
 

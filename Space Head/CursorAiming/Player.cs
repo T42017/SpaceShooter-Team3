@@ -13,15 +13,61 @@ namespace CursorAiming
     {
        
         
+            Texture = this.Game.Content.Load<Texture2D>("spaceAstronauts_009"); 
+            BulletTexture = this.Game.Content.Load<Texture2D>("laserBlue01");
 
-
-        public Player(int _moveSpeed, Texture2D _texture, Game game) : base(game)
+        public Player(int _moveSpeed, int _bulletSpeed, int _bulletDamage, Game game) : base(game)
         {
             MoveSpeed = _moveSpeed;
-            Texture = _texture;
+            BulletSpeed = _bulletSpeed;
+            Texture = this.Game.Content.Load<Texture2D>("spaceAstronauts_009"); 
+            BulletTexture = this.Game.Content.Load<Texture2D>("laserBlue01");
+            BulletDamage = _bulletDamage;
+            Texture = this.Game.Content.Load<Texture2D>("spaceAstronauts_009");
+            BulletTexture = this.Game.Content.Load<Texture2D>("laserBlue01");
         }
 
+        public override void UpdateGraphics(SpriteBatch spriteBatch)
+        public Player(int _moveSpeed, int _bulletSpeed, int _bulletDamage, Game game) : base(game)
+        {
+            spriteBatch.Draw(Texture,
+            BulletSpeed = _bulletSpeed;
+            BulletDamage = _bulletDamage;
+                new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height),
+                null, Color.White, Rotation, new Vector2(Texture.Width / 2, Texture.Height / 2), SpriteEffects.None, 0);
+            Texture = this.Game.Content.Load<Texture2D>("spaceAstronauts_009");
+            BulletTexture = this.Game.Content.Load<Texture2D>("laserBlue01");
+        }
 
+        public Player(int _moveSpeed, int _bulletSpeed, int _bulletDamage, Game game) : base(game)
+        {
+            spriteBatch.Draw(Texture,
+            BulletSpeed = _bulletSpeed;
+            BulletDamage = _bulletDamage;
+            Texture = this.Game.Content.Load<Texture2D>("spaceAstronauts_009");
+            BulletTexture = this.Game.Content.Load<Texture2D>("laserBlue01");
+        }
+        public override void UpdateGraphics(SpriteBatch spriteBatch)
+        public Player(int _moveSpeed, int _bulletSpeed, int _bulletDamage, Game game) : base(game)
+        {
+            spriteBatch.Draw(Texture,
+            BulletSpeed = _bulletSpeed;
+            BulletDamage = _bulletDamage;
+            Texture = this.Game.Content.Load<Texture2D>("spaceAstronauts_009");
+            BulletTexture = this.Game.Content.Load<Texture2D>("laserBlue01");
+        }
+        public override void UpdateGraphics(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(Texture,
+                new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height),
+                null, Color.White, Rotation, new Vector2(Texture.Width / 2, Texture.Height / 2), SpriteEffects.None, 0);
+        }
+        public override void UpdateGraphics(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(Texture,
+                new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height),
+                null, Color.White, Rotation, new Vector2(Texture.Width / 2, Texture.Height / 2), SpriteEffects.None, 0);
+        }
         public override void UpdateMovement(GameTime gameTime)
         {
             MoveDirection = new Vector2(0, 0);

@@ -24,7 +24,7 @@ namespace CursorAiming
             Rotation = _rotation;
         }
 
-        public void UpdateBulletGraphics(SpriteBatch spriteBatch)
+        public void UpdateGraphics(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Texture,
                 new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height),
