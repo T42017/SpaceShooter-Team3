@@ -34,7 +34,6 @@ namespace CursorAiming
 
         private float rotation;
         private SpriteBatch spriteBatch;
-        private GameState _state = GameState.MainMenu;
 
 
         public SpaceHeadGame()
@@ -63,13 +62,7 @@ namespace CursorAiming
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            //playerTexture = Content.Load<Texture2D>("spaceAstronauts_009");
-            //bulletTexture = Content.Load<Texture2D>("laserBlue01");
-            //playerTexture = Content.Load<Texture2D>("spaceAstronauts_009");
-            //bulletTexture = Content.Load<Texture2D>("laserBlue01");
-
-            //_shotSound = Content.Load<SoundEffect>("Laser_Gun");
-            //backgroundMusic = Content.Load<Song>("POL-flight-master-short");
+            
             MediaPlayer.Play(backgroundMusic);
             MediaPlayer.IsRepeating = true;
 
@@ -83,19 +76,7 @@ namespace CursorAiming
         protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            switch (_state)
-            {
-                case GameState.MainMenu:
-                    //UpdateMainMenu();
-                    break;
-
-                case GameState.GameIsRunning:
-                    UpdateGameIsRunning(gameTime);
-                    break;
-
-                case GameState.GameOver:
-                    break;
-            }
+            
 
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
@@ -141,20 +122,7 @@ namespace CursorAiming
             spriteBatch.Begin();
 
             base.Update(gameTime);
-            switch (_state)
-            {
-                case GameState.MainMenu:
-                    break;
-
-                case GameState.GameIsRunning:
-                    break;
-
-                //case GameState.GameOver:
-                //    spriteBatch.Draw(playerTexture,
-                //new Rectangle(5, 5, playerTexture.Width, playerTexture.Height),
-                //null, Color.White, rotation, new Vector2(playerTexture.Width / 2, playerTexture.Height / 2), SpriteEffects.None, 0);
-                    break;
-            }
+            
             
 
             player.UpdateGraphics(spriteBatch);
@@ -174,26 +142,6 @@ namespace CursorAiming
             
             base.Draw(gameTime);
         }
-
-        enum GameState
-        {
-            MainMenu,
-            GameIsRunning,
-            EndOfGame,
-            GameOver,
-        }
-
-        
-
-        void UpdateGameIsRunning(GameTime deltaTime)
-        {
-            // Respond to user input for menu selections, etc
-            
-            if (player.Health <= 0)
-                _state = GameState.GameOver;
-        }
-
-
-
+ 
     }
 }
