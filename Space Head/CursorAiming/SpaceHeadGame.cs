@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace CursorAiming
 {
@@ -19,7 +21,7 @@ namespace CursorAiming
         UnitWithGun player;
         private readonly GraphicsDeviceManager graphics;
         private Song _backgroundMusic;
-
+        private SoundEffect _shotSound;
 
         private float rotation;
         private SpriteBatch spriteBatch;
