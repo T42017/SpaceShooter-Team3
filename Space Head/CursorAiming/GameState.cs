@@ -27,7 +27,7 @@ namespace CursorAiming
         private Vector2 _startButtonPos = new Vector2(10, 10);
         private Vector2 _exitButtonPos = new Vector2(10, 50);
 
-        MouseState _mouseState = new MouseState();
+        private MouseState _mouseState;
         
         private MouseState _previousMouseState;
 
@@ -36,30 +36,43 @@ namespace CursorAiming
 
         public States(Game game) : base(game)
         {
+            _mouseState = new MouseState();
+            _mouseState = Mouse.GetState();
+
+            _previousMouseState = new MouseState();
+            _previousMouseState = Mouse.GetState();
+
             _mouseX = _mouseState.X;
             _mouseY = _mouseState.Y;
-        }
-
-        protected override void LoadContent()
-        {
-            base.LoadContent();
-
-
 
             start = Game.Content.Load<Texture2D>("start");
             exit = Game.Content.Load<Texture2D>("exit");
         }
 
+        protected override void LoadContent()
+        {
+            
+
+            base.LoadContent();
+        }
+
         public void CheckPlayerInput(GameState gameState)
         {
+            _mouseState = Mouse.GetState();
+            _previousMouseState = Mouse.GetState();
+
+            _mouseX = _mouseState.X;
+            _mouseY = _mouseState.Y;
+
             if (gameState == GameState.MainMenu)
             {
                 if (_mouseState.LeftButton == ButtonState.Pressed && _previousMouseState.LeftButton == ButtonState.Pressed)
                 {
+                    Game.Exit();
                     if (new Rectangle((int)_startButtonPos.X, (int)_startButtonPos.Y, start.Width, start.Height).Contains(
                             _mouseX, _mouseY))
                     {
-                        SpaceHeadGame._state = GameState.Exit;
+                        Game.Exit();
                     }
                 }
             }

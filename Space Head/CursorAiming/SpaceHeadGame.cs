@@ -12,11 +12,7 @@ namespace CursorAiming
         private UnitWithGun enemy;        
         private UnitWithGun player;
         static public GameState _state = GameState.MainMenu;
-
-        private Texture2D start;
-        private Texture2D exit;
-
-        private Vector2 _startButtonPos = new Vector2(10, 10);
+        
 
         private States state;
 
@@ -32,7 +28,7 @@ namespace CursorAiming
 
         protected override void Initialize()
         {
-            base.Initialize();
+            
             player = new Player(400, 1000, 1, this) {Position = new Vector2(500, 500)};
             enemy = new BasicEnemyWithGun(this) {Position = new Vector2(500, 500)};
             Components.Add(player);
@@ -44,14 +40,17 @@ namespace CursorAiming
             graphics.ApplyChanges();
 
             IsMouseVisible = true;
+
+            base.Initialize();
         }
 
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            start = Content.Load<Texture2D>("start");
-            exit = Content.Load<Texture2D>("exit");
+            
+
+            base.LoadContent();
         }
 
         protected override void UnloadContent()
@@ -72,7 +71,7 @@ namespace CursorAiming
             {
 
                 case GameState.MainMenu:
-                    
+                    state.CheckPlayerInput(_state);
                     break;
 
                 case GameState.GameIsRunning:
@@ -92,30 +91,30 @@ namespace CursorAiming
                     break;
             }
 
-            player.UpdateMovement(gameTime);
+            //player.UpdateMovement(gameTime);
 
-            player.IsShooting = false;
+            //player.IsShooting = false;
 
-            var mouse = Mouse.GetState();
+            //var mouse = Mouse.GetState();
 
-            player.CalculateRotation(new Vector2(mouse.X, mouse.Y));
+            //player.CalculateRotation(new Vector2(mouse.X, mouse.Y));
 
 
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-                player.IsShooting = true;
+            //if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            //    player.IsShooting = true;
 
-            if (player.IsShooting && !player.HasShot) player.Shoot(player.BulletSpeed, player.BulletDamage);
+            //if (player.IsShooting && !player.HasShot) player.Shoot(player.BulletSpeed, player.BulletDamage);
 
-            foreach (var bullet in player.BulletsInAir)
-                bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds / 1000;
-            foreach (var bullet in enemy.BulletsInAir)
-                bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds / 1000;
+            //foreach (var bullet in player.BulletsInAir)
+            //    bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds / 1000;
+            //foreach (var bullet in enemy.BulletsInAir)
+            //    bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds / 1000;
 
-            enemy.CalculateRotation(player.Position);
+            //enemy.CalculateRotation(player.Position);
 
-            if (enemy.DeltaDistance.Length() < 700) enemy.Shoot(700, 1);
+            //if (enemy.DeltaDistance.Length() < 700) enemy.Shoot(700, 1);
 
-            player.HasShot = player.IsShooting;
+            //player.HasShot = player.IsShooting;
             base.Update(gameTime);
         }
 
@@ -130,7 +129,6 @@ namespace CursorAiming
             switch (_state)
             {
                 case GameState.MainMenu:
-                    spriteBatch.Draw(start, _startButtonPos, Color.White);
                     break;
             }
 
