@@ -1,34 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace CursorAiming
 {
-    class Player
+    internal class Player : UnitWithGun
     {
-        public int MoveSpeed;
-        public Texture2D Texture;
-        static int Health = 3;
-        public bool IsShooting, HasShot;
-        public Vector2 Position, MoveDirection, Velocity, AimDirection;
-        Bullet bullet;
-        public List<Bullet> BulletsInAir = new List<Bullet>();
+       
         
-        public Player(int _moveSpeed, Texture2D _texture)
+
+
+        public Player(int _moveSpeed, Texture2D _texture, Game game) : base(game)
         {
             MoveSpeed = _moveSpeed;
-            Texture = _texture;           
+            Texture = _texture;
         }
 
-        public void Shoot()
+
+        public override void UpdateMovement(GameTime gameTime)
         {
-            bullet = new Bullet(300, 1, Texture, Position, AimDirection);
-            BulletsInAir.Add(bullet);
+            MoveDirection = new Vector2(0, 0);
+            if (Keyboard.GetState().IsKeyDown(Keys.A))
+            {
+                MoveDirection.X += -1;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D))
+            {
+                MoveDirection.X += 1;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.W))
+            {
+                MoveDirection.Y += -1;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.S))
+            {
+                MoveDirection.Y += 1;
+            }
+ 
+            if (MoveDirection.X != 0 && MoveDirection.Y != 0) MoveDirection.Normalize();
+
+            Velocity = MoveDirection * (MoveSpeed * gameTime.ElapsedGameTime.Milliseconds / 1000);
+            Position += Velocity;
         }
+        
     }
 }
