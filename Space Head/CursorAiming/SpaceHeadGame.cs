@@ -21,7 +21,7 @@ namespace CursorAiming
         private Vector2 distanceBetweenPlaterAndMouse;
         private readonly GraphicsDeviceManager graphics;
         private SoundEffect _shotSound;
-        private Song backgroundMusic;
+        private Song _backgroundMusic;
 
 
         private float rotation;
@@ -67,10 +67,11 @@ namespace CursorAiming
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             playerTexture = Content.Load<Texture2D>("spaceAstronauts_009");
-            //_shotSound = Content.Load<SoundEffect>("Laser_Gun");
-            //backgroundMusic = Content.Load<Song>("POL-flight-master-short");
-            MediaPlayer.Play(backgroundMusic);
+            _shotSound = Content.Load<SoundEffect>("Laser_Gun_Sound");
+            _backgroundMusic = Content.Load<Song>("POL-flight-master-short");
+            MediaPlayer.Play(_backgroundMusic);
             MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = 0.1f;
 
 
             // TODO: use this.Content to load your game content here
@@ -124,10 +125,14 @@ namespace CursorAiming
                 player.MoveDirection.Y += 1;
             }
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            {
                 player.IsShooting = true;
-                _shotSound.Play();
-            if (player.IsShooting && !player.HasShot) player.Shoot();
-
+            }
+            if (player.IsShooting && !player.HasShot) 
+            {
+                _shotSound.Play(0.3f, 0f, 0f);
+                player.Shoot();
+            }                
             if(player.MoveDirection.X != 0 && player.MoveDirection.Y != 0)player.MoveDirection.Normalize();
 
             player.Velocity = player.MoveDirection * (player.MoveSpeed * gameTime.ElapsedGameTime.Milliseconds/1000);

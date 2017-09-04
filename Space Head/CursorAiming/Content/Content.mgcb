@@ -25,3 +25,15 @@
 /processorParam:TextureFormat=Color
 /build:spaceAstronauts_009.png
 
+#begin Laser_Gun_Sound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Laser_Gun_Sound.wav
+
+#begin POL-flight-master-short.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:POL-flight-master-short.mp3
+
