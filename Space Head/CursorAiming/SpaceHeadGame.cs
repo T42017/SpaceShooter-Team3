@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace CursorAiming
 {
@@ -18,6 +20,8 @@ namespace CursorAiming
         Player player;
         private Vector2 distanceBetweenPlaterAndMouse;
         private readonly GraphicsDeviceManager graphics;
+        private SoundEffect _shotSound;
+        private Song backgroundMusic;
 
 
         private float rotation;
@@ -28,6 +32,7 @@ namespace CursorAiming
         public SpaceHeadGame()
         {
             graphics = new GraphicsDeviceManager(this);
+            
             Content.RootDirectory = "Content";
         }
 
@@ -62,6 +67,11 @@ namespace CursorAiming
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             playerTexture = Content.Load<Texture2D>("spaceAstronauts_009");
+            //_shotSound = Content.Load<SoundEffect>("Laser_Gun");
+            //backgroundMusic = Content.Load<Song>("POL-flight-master-short");
+            MediaPlayer.Play(backgroundMusic);
+            MediaPlayer.IsRepeating = true;
+
 
             // TODO: use this.Content to load your game content here
         }
@@ -115,6 +125,7 @@ namespace CursorAiming
             }
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                 player.IsShooting = true;
+                _shotSound.Play();
             if (player.IsShooting && !player.HasShot) player.Shoot();
 
             if(player.MoveDirection.X != 0 && player.MoveDirection.Y != 0)player.MoveDirection.Normalize();
