@@ -22,9 +22,14 @@ namespace CursorAiming
         UnitWithGun player;
 
         private UnitWithGun enemy;
+<<<<<<< Updated upstream
         private Texture2D start;
         private Texture2D exit;
 
+        #endregion
+
+=======
+>>>>>>> Stashed changes
         private readonly GraphicsDeviceManager graphics;
         private SoundEffect _shotSound;
         private Song backgroundMusic;
@@ -63,8 +68,9 @@ namespace CursorAiming
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            //playerTexture = Content.Load<Texture2D>("spaceAstronauts_009");
-            //bulletTexture = Content.Load<Texture2D>("laserBlue01");
+<<<<<<< Updated upstream
+            start = Content.Load<Texture2D>("start");
+            exit = Content.Load<Texture2D>("exit");
             //playerTexture = Content.Load<Texture2D>("spaceAstronauts_009");
             //bulletTexture = Content.Load<Texture2D>("laserBlue01");
 
@@ -73,6 +79,10 @@ namespace CursorAiming
             MediaPlayer.Play(backgroundMusic);
             MediaPlayer.IsRepeating = true;
 
+=======
+            //playerTexture = Content.Load<Texture2D>("spaceAstronauts_009");
+            //bulletTexture = Content.Load<Texture2D>("laserBlue01");
+>>>>>>> Stashed changes
 
         }
 
@@ -86,7 +96,7 @@ namespace CursorAiming
             switch (_state)
             {
                 case GameState.MainMenu:
-                    //UpdateMainMenu();
+                    UpdateMainMenu();
                     break;
 
                 case GameState.GameIsRunning:
@@ -110,11 +120,17 @@ namespace CursorAiming
 
             player.CalculateRotation(new Vector2(mouse.X, mouse.Y));       
             
-
+<<<<<<< Updated upstream
+            {
+                Player.Health = 0;
+            }
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                 player.IsShooting = true;
-                //_shotSound.Play();
-
+                _shotSound.Play();
+=======
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                player.IsShooting = true;
+>>>>>>> Stashed changes
             if (player.IsShooting && !player.HasShot) player.Shoot(player.BulletSpeed, player.BulletDamage);
             
             foreach (Bullet bullet in player.BulletsInAir)
@@ -134,12 +150,18 @@ namespace CursorAiming
             base.Update(gameTime);
         }
 
+<<<<<<< Updated upstream
+        
+
+=======
+>>>>>>> Stashed changes
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
 
+<<<<<<< Updated upstream
             base.Update(gameTime);
             switch (_state)
             {
@@ -149,12 +171,14 @@ namespace CursorAiming
                 case GameState.GameIsRunning:
                     break;
 
-                //case GameState.GameOver:
-                //    spriteBatch.Draw(playerTexture,
-                //new Rectangle(5, 5, playerTexture.Width, playerTexture.Height),
-                //null, Color.White, rotation, new Vector2(playerTexture.Width / 2, playerTexture.Height / 2), SpriteEffects.None, 0);
+                case GameState.GameOver:
+                    spriteBatch.Draw(playerTexture,
+                new Rectangle(5, 5, playerTexture.Width, playerTexture.Height),
+                null, Color.White, rotation, new Vector2(playerTexture.Width / 2, playerTexture.Height / 2), SpriteEffects.None, 0);
                     break;
             }
+=======
+>>>>>>> Stashed changes
             
 
             player.UpdateGraphics(spriteBatch);
@@ -183,13 +207,16 @@ namespace CursorAiming
             GameOver,
         }
 
-        
+        private void UpdateMainMenu()
+        {
+            throw new NotImplementedException();
+        }
 
         void UpdateGameIsRunning(GameTime deltaTime)
         {
             // Respond to user input for menu selections, etc
             
-            if (player.Health <= 0)
+            if (Player.Health <= 0)
                 _state = GameState.GameOver;
         }
 
