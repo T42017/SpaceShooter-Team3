@@ -18,6 +18,7 @@ namespace CursorAiming
         private Texture2D bulletTexture;
         UnitWithGun player;
         private readonly GraphicsDeviceManager graphics;
+        private Song _backgroundMusic;
 
 
         private float rotation;
@@ -63,6 +64,10 @@ namespace CursorAiming
 
             playerTexture = Content.Load<Texture2D>("spaceAstronauts_009");
             bulletTexture = Content.Load<Texture2D>("laserBlue01");
+            _shotSound = Content.Load<SoundEffect>("Laser_Gun_Sound");
+            _backgroundMusic = Content.Load<Song>("POL-flight-master-short");
+            MediaPlayer.Play(_backgroundMusic);
+            MediaPlayer.Volume = 0.1f;
 
             // TODO: use this.Content to load your game content here
         }
@@ -94,9 +99,14 @@ namespace CursorAiming
             var mouse = Mouse.GetState();
             player.CalculateRotation(new Vector2(mouse.X, mouse.Y));           
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            {
                 player.IsShooting = true;
-            if (player.IsShooting && !player.HasShot) player.Shoot();
-            
+            }
+            if (player.IsShooting && !player.HasShot) 
+            {
+                _shotSound.Play(0.3f, 0f, 0f);
+                player.Shoot();
+            }                
             foreach (Bullet bullet in player.BulletsInAir)
             {
                 bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds/1000;
