@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,15 +15,25 @@ namespace CursorAiming
     /// </summary>
     public class SpaceHeadGame : Game
     {
+        #region Texture2D variables
+
         private Texture2D playerTexture;
+        private Texture2D start;
+        private Texture2D exit;
+
+        #endregion
+
         Player player;
         private Vector2 distanceBetweenPlaterAndMouse;
         private readonly GraphicsDeviceManager graphics;
 
+        bool pushedStartGameButton = false;
+
 
         private float rotation;
         private SpriteBatch spriteBatch;
-        //private Vector2 spritePosition = new Vector2(500, 500);
+
+        private GameState _state = GameState.MainMenu;
 
 
         public SpaceHeadGame()
@@ -61,6 +72,9 @@ namespace CursorAiming
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            start = Content.Load<Texture2D>("start");
+            exit = Content.Load<Texture2D>("exit");
+
             playerTexture = Content.Load<Texture2D>("spaceAstronauts_009");
 
             // TODO: use this.Content to load your game content here
@@ -82,6 +96,22 @@ namespace CursorAiming
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
+            switch (_state)
+            {
+                case GameState.MainMenu:
+                    UpdateMainMenu();
+                    break;
+
+                case GameState.GameIsRunning:
+                    UpdateGameIsRunning(gameTime);
+                    break;
+
+                case GameState.GameOver:
+                    break;
+            }
+
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
@@ -113,6 +143,10 @@ namespace CursorAiming
             {
                 player.MoveDirection.Y += 1;
             }
+            if(Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
+                Player.Health = 0;
+            }
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                 player.IsShooting = true;
             if (player.IsShooting && !player.HasShot) player.Shoot();
@@ -130,6 +164,8 @@ namespace CursorAiming
             base.Update(gameTime);
         }
 
+        
+
         /// <summary>
         ///     This is called when the game should draw itself.
         /// </summary>
@@ -139,6 +175,22 @@ namespace CursorAiming
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
+
+            base.Update(gameTime);
+            switch (_state)
+            {
+                case GameState.MainMenu:
+                    break;
+
+                case GameState.GameIsRunning:
+                    break;
+
+                case GameState.GameOver:
+                    spriteBatch.Draw(playerTexture,
+                new Rectangle(5, 5, playerTexture.Width, playerTexture.Height),
+                null, Color.White, rotation, new Vector2(playerTexture.Width / 2, playerTexture.Height / 2), SpriteEffects.None, 0);
+                    break;
+            }
 
             spriteBatch.Draw(playerTexture,
                 new Rectangle((int) player.Position.X, (int) player.Position.Y, playerTexture.Width, playerTexture.Height),
@@ -154,5 +206,29 @@ namespace CursorAiming
 
             base.Draw(gameTime);
         }
+
+        enum GameState
+        {
+            MainMenu,
+            GameIsRunning,
+            EndOfGame,
+            GameOver,
+        }
+
+        private void UpdateMainMenu()
+        {
+            throw new NotImplementedException();
+        }
+
+        void UpdateGameIsRunning(GameTime deltaTime)
+        {
+            // Respond to user input for menu selections, etc
+            
+            if (Player.Health <= 0)
+                _state = GameState.GameOver;
+        }
+
+
+
     }
 }

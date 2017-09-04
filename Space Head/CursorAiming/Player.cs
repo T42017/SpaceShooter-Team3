@@ -13,7 +13,7 @@ namespace CursorAiming
     {
         public int MoveSpeed;
         public Texture2D Texture;
-        static int Health = 3;
+        public static int Health = 3;
         public bool IsShooting, HasShot;
         public Vector2 Position, MoveDirection, Velocity, AimDirection;
         Bullet bullet;
