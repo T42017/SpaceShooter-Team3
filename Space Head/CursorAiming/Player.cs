@@ -1,14 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Media;
 
 namespace CursorAiming
 {
     internal class Player : UnitWithGun
     {
-
         public Player(int moveSpeed, int bulletSpeed, int bulletDamage, Game game) : base(game)
         {
             MoveSpeed = moveSpeed;
@@ -40,19 +38,26 @@ namespace CursorAiming
                 IsShooting = true;
 
             if (IsShooting && !HasShot)
-            {
                 Shoot(BulletSpeed, BulletDamage, _shotSound);
-
-            }
-
-            foreach (var bullet in BulletsInAir)
-                bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds / 1000;
-
 
             HasShot = IsShooting;
             base.Update(gameTime);
         }
 
+        public override void Draw(GameTime gameTime)
+        {
+            SpriteBatch.Begin();
+
+            UpdateGraphics(SpriteBatch);
+
+            foreach (var bullet in BulletsInAir)
+                bullet.UpdateGraphics(SpriteBatch);
+            SpriteBatch.End();
+
+            base.Draw(gameTime);
+        }
+
+        #region OverrideMethods
 
         public override void UpdateGraphics(SpriteBatch spriteBatch)
         {
@@ -78,5 +83,7 @@ namespace CursorAiming
             Velocity = MoveDirection * (MoveSpeed * gameTime.ElapsedGameTime.Milliseconds / 1000);
             Position += Velocity;
         }
+
+        #endregion
     }
 }

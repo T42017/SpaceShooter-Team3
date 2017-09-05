@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace CursorAiming
 {
@@ -9,20 +8,25 @@ namespace CursorAiming
     {
         public BasicEnemyWithGun(Game game) : base(game)
         {
-            
         }
 
         public override void Draw(GameTime gameTime)
         {
-            base.Draw(gameTime);
+            SpriteBatch.Begin();
+
+            UpdateGraphics(SpriteBatch);
+
+            foreach (var bullet in BulletsInAir)
+                bullet.UpdateGraphics(SpriteBatch);
+
+            SpriteBatch.End();
         }
 
         public override void Update(GameTime gameTime)
         {
             if (DeltaDistance.Length() < 700) Shoot(500, 1, _shotSound);
 
-            foreach (var bullet in BulletsInAir)
-                bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds / 1000;
+
             base.Update(gameTime);
         }
 

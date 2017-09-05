@@ -24,6 +24,8 @@ namespace CursorAiming
             Rotation = rotation;
         }
 
+       
+
         public void UpdateGraphics(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Texture,
@@ -31,5 +33,9 @@ namespace CursorAiming
                 null, Color.White, Rotation, new Vector2(Texture.Width / 2, Texture.Height / 2), SpriteEffects.None, 0);
         }
 
+        public void UpdatePosition(GameTime gameTime)
+        {
+            Position += Direction * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000;
+        }
     }
 }

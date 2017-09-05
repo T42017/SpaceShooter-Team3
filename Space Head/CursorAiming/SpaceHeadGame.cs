@@ -1,22 +1,23 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 
 namespace CursorAiming
 {
     public class SpaceHeadGame : Game
     {
+        private readonly GameState _gameState = GameState.MainMenu;
         private readonly GraphicsDeviceManager _graphics;
+
+        private Song _backgroundMusic;
 
         private UnitWithGun _enemy;
         private UnitWithGun _player;
 
         private SpriteBatch _spriteBatch;
 
-        private Song _backgroundMusic;
-
+        private States _state;
 
         public SpaceHeadGame()
         {
@@ -32,6 +33,8 @@ namespace CursorAiming
             Components.Add(_player);
             Components.Add(_enemy);
 
+            _state = new States(this);
+            Components.Add(_state);
 
             #region windowSettings
 
@@ -49,7 +52,7 @@ namespace CursorAiming
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            
+
             _backgroundMusic = Content.Load<Song>("POL-flight-master-short");
             MediaPlayer.Play(_backgroundMusic);
             MediaPlayer.Volume = 0.1f;
@@ -69,6 +72,8 @@ namespace CursorAiming
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            _state.CheckPlayerInput(_gameState);
+
             _enemy.CalculateRotation(_player.Position);
         }
 
@@ -80,15 +85,6 @@ namespace CursorAiming
 
             base.Update(gameTime);
 
-            _player.UpdateGraphics(_spriteBatch);
-            foreach (var bullet in _player.BulletsInAir)
-                bullet.UpdateGraphics(_spriteBatch);
-
-            _player.UpdateGraphics(_spriteBatch);
-            _enemy.UpdateGraphics(_spriteBatch);
-
-            foreach (var bullet in _enemy.BulletsInAir)
-                bullet.UpdateGraphics(_spriteBatch);
             _spriteBatch.End();
 
             base.Draw(gameTime);
