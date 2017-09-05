@@ -62,7 +62,7 @@ namespace CursorAiming
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            _backgroundTexture = Content.Load<Texture2D>("Background1");
+            _backgroundTexture = Content.Load<Texture2D>("Background");
             playerTexture = Content.Load<Texture2D>("spaceAstronauts_009");
             bulletTexture = Content.Load<Texture2D>("laserBlue01");
             _shotSound = Content.Load<SoundEffect>("Laser_Gun_Sound");
@@ -129,14 +129,8 @@ namespace CursorAiming
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
+            spriteBatch.Draw(_backgroundTexture, GraphicsDevice.Viewport.Bounds, Color.White);
 
-            //for (int x = 0; x < Globals.ScreenWidth; x += _backgroundTexture.Width)
-            //{
-            //    for (int y = 0; y < Globals.ScreenHeight; y += _backgroundTexture.Height)
-            //    {
-                    spriteBatch.Draw(_backgroundTexture, GraphicsDevice.Viewport.Bounds, Color.White);
-            //    }
-            //}
 
             foreach (Bullet bullet in player.BulletsInAir)
             {
