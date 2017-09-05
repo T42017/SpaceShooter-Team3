@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace CursorAiming
@@ -15,13 +10,13 @@ namespace CursorAiming
         public Texture2D Texture;
         public Vector2 Direction, Position;
 
-        public Bullet(int _speed, int _damage, Texture2D _texture, Vector2 _startPosition, Vector2 _direction, float _rotation)
+        public Bullet(int speed, int damage, Texture2D texture, Vector2 startPosition, Vector2 direction, float rotation)
         {
-            Speed = _speed;
-            Texture = _texture;
-            Position = _startPosition;
-            Direction = _direction;
-            Rotation = _rotation;
+            Speed = speed;
+            Texture = texture;
+            Position = startPosition;
+            Direction = direction;
+            Rotation = rotation;
         }
 
         public void UpdateGraphics(SpriteBatch spriteBatch)

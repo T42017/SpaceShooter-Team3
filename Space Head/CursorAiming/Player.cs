@@ -6,10 +6,10 @@ namespace CursorAiming
 {
     internal class Player : UnitWithGun
     {
-        public Player(int _moveSpeed, int _bulletSpeed, int _bulletDamage, Game game) : base(game)
+        public Player(int moveSpeed, int bulletSpeed, int bulletDamage, Game game) : base(game)
         {
-            MoveSpeed = _moveSpeed;
-            BulletSpeed = _bulletSpeed;
+            MoveSpeed = moveSpeed;
+            BulletSpeed = bulletSpeed;
             Texture = Game.Content.Load<Texture2D>("spaceAstronauts_009");
             BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
         }

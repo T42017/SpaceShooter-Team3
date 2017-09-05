@@ -10,17 +10,17 @@ namespace CursorAiming
     public class SpaceHeadGame : Game
     {
         private Texture2D _backgroundTexture;
-        private readonly GraphicsDeviceManager graphics;
+        private readonly GraphicsDeviceManager _graphics;
         private Song _backgroundMusic;
         private SoundEffect _shotSound;
-        private UnitWithGun enemy;        
-        private UnitWithGun player;
-        private SpriteBatch spriteBatch;
+        private UnitWithGun _enemy;        
+        private UnitWithGun _player;
+        private SpriteBatch _spriteBatch;
 
 
         public SpaceHeadGame()
         {
-            graphics = new GraphicsDeviceManager(this);
+            _graphics = new GraphicsDeviceManager(this);
 
             Content.RootDirectory = "Content";
         }
@@ -28,23 +28,23 @@ namespace CursorAiming
         protected override void Initialize()
         {
             base.Initialize();
-            player = new Player(400, 1000, 1, this) {Position = new Vector2(500, 500)};
-            enemy = new BasicEnemyWithGun(this) {Position = new Vector2(500, 500)};
-            Components.Add(player);
-            graphics.PreferredBackBufferWidth = Globals.ScreenWidth;
-            graphics.PreferredBackBufferHeight = Globals.ScreenHeight;
-            graphics.ApplyChanges();
+            _player = new Player(400, 1000, 1, this) {Position = new Vector2(500, 500)};
+            _enemy = new BasicEnemyWithGun(this) {Position = new Vector2(500, 500)};
+            Components.Add(_player);
+            _graphics.PreferredBackBufferWidth = Globals.ScreenWidth;
+            _graphics.PreferredBackBufferHeight = Globals.ScreenHeight;
+            _graphics.ApplyChanges();
             IsMouseVisible = true;
         }
 
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
             _backgroundTexture = Content.Load<Texture2D>("Background");
             _shotSound = Content.Load<SoundEffect>("Laser_Gun_Sound");
             _backgroundMusic = Content.Load<Song>("POL-flight-master-short");
             MediaPlayer.Play(_backgroundMusic);
-            MediaPlayer.Volume = 0.1f;
+            MediaPlayer.Volume = 0.05f;
         }
 
         protected override void UnloadContent()
@@ -57,33 +57,33 @@ namespace CursorAiming
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            player.UpdateMovement(gameTime);
+            _player.UpdateMovement(gameTime);
 
-            player.IsShooting = false;
+            _player.IsShooting = false;
 
             var mouse = Mouse.GetState();
 
-            player.CalculateRotation(new Vector2(mouse.X, mouse.Y));
+            _player.CalculateRotation(new Vector2(mouse.X, mouse.Y));
 
 
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-                player.IsShooting = true;
+                _player.IsShooting = true;
 
-            if (player.IsShooting && !player.HasShot)
+            if (_player.IsShooting && !_player.HasShot)
             {
-                _shotSound.Play(0.2f, 0f, 0f);
-                player.Shoot(player.BulletSpeed, player.BulletDamage);
+                _shotSound.Play(0.05f, 0f, 0f);
+                _player.Shoot(_player.BulletSpeed, _player.BulletDamage);
             }
-            foreach (var bullet in player.BulletsInAir)
+            foreach (var bullet in _player.BulletsInAir)
                 bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds / 1000;
-            foreach (var bullet in enemy.BulletsInAir)
+            foreach (var bullet in _enemy.BulletsInAir)
                 bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds / 1000;
 
-            enemy.CalculateRotation(player.Position);
+            _enemy.CalculateRotation(_player.Position);
 
-            if (enemy.DeltaDistance.Length() < 700) enemy.Shoot(700, 1);
+            if (_enemy.DeltaDistance.Length() < 700) _enemy.Shoot(700, 1);
 
-            player.HasShot = player.IsShooting;
+            _player.HasShot = _player.IsShooting;
             base.Update(gameTime);
         }
 
@@ -91,17 +91,17 @@ namespace CursorAiming
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();
-            spriteBatch.Draw(_backgroundTexture, GraphicsDevice.Viewport.Bounds, Color.White);
+            _spriteBatch.Begin();
+            _spriteBatch.Draw(_backgroundTexture, GraphicsDevice.Viewport.Bounds, Color.White);
 
-            foreach (var bullet in player.BulletsInAir)
-                bullet.UpdateGraphics(spriteBatch);
+            foreach (var bullet in _player.BulletsInAir)
+                bullet.UpdateGraphics(_spriteBatch);
 
-            player.UpdateGraphics(spriteBatch);
-            enemy.UpdateGraphics(spriteBatch);
-            foreach (var bullet in enemy.BulletsInAir)
-                bullet.UpdateGraphics(spriteBatch);
-            spriteBatch.End();
+            _player.UpdateGraphics(_spriteBatch);
+            _enemy.UpdateGraphics(_spriteBatch);
+            foreach (var bullet in _enemy.BulletsInAir)
+                bullet.UpdateGraphics(_spriteBatch);
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }
