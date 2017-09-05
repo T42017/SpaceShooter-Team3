@@ -3,9 +3,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace CursorAiming
 {
@@ -14,41 +17,45 @@ namespace CursorAiming
     /// </summary>
     public class SpaceHeadGame : Game
     {
-        private Texture2D playerTexture;
-        private Texture2D bulletTexture;
+        //private Texture2D playerTexture;
+        //private Texture2D bulletTexture;
         UnitWithGun player;
-        private readonly GraphicsDeviceManager graphics;
-<<<<<<< HEAD
+
+        private UnitWithGun enemy;
+<<<<<<< Updated upstream
+        private Texture2D start;
+        private Texture2D exit;
+
+        #endregion
+
 =======
+>>>>>>> Stashed changes
+        private readonly GraphicsDeviceManager graphics;
         private SoundEffect _shotSound;
-        private Song _backgroundMusic;
->>>>>>> origin/feature-sound
+        private Song backgroundMusic;
+
+        bool pushedStartGameButton = false;
 
 
         private float rotation;
         private SpriteBatch spriteBatch;
+        private GameState _state = GameState.MainMenu;
 
 
         public SpaceHeadGame()
         {
             graphics = new GraphicsDeviceManager(this);
+            
             Content.RootDirectory = "Content";
         }
 
-        /// <summary>
-        ///     Allows the game to perform any initialization it needs to before starting to run.
-        ///     This is where it can query for any required services and load any non-graphic
-        ///     related content.  Calling base.Initialize will enumerate through any components
-        ///     and initialize them as well.
-        /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
 
             base.Initialize();
-            player = new Player(300, playerTexture, this);
-            player.BulletTexture = bulletTexture;
-            player.Position = new Vector2(500, 500);
+            player = new Player(400, 1000, 1, this) {Position = new Vector2(500, 500)};
+            enemy = new BasicEnemyWithGun(this) {Position = new Vector2(500, 500)};
+            Components.Add(player);
 
             graphics.PreferredBackBufferWidth = 1000;
             graphics.PreferredBackBufferHeight = 1000;
@@ -57,46 +64,48 @@ namespace CursorAiming
             IsMouseVisible = true;
         }
 
-        /// <summary>
-        ///     LoadContent will be called once per game and is the place to load
-        ///     all of your content.
-        /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            playerTexture = Content.Load<Texture2D>("spaceAstronauts_009");
-<<<<<<< HEAD
-            bulletTexture = Content.Load<Texture2D>("laserBlue01");
-=======
-            _shotSound = Content.Load<SoundEffect>("Laser_Gun_Sound");
-            _backgroundMusic = Content.Load<Song>("POL-flight-master-short");
-            MediaPlayer.Play(_backgroundMusic);
+<<<<<<< Updated upstream
+            start = Content.Load<Texture2D>("start");
+            exit = Content.Load<Texture2D>("exit");
+            //playerTexture = Content.Load<Texture2D>("spaceAstronauts_009");
+            //bulletTexture = Content.Load<Texture2D>("laserBlue01");
+
+            //_shotSound = Content.Load<SoundEffect>("Laser_Gun_Sound");
+            //backgroundMusic = Content.Load<Song>("POL-flight-master-short");
+            MediaPlayer.Play(backgroundMusic);
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = 0.1f;
 
 >>>>>>> origin/feature-sound
 
-            // TODO: use this.Content to load your game content here
         }
 
-        /// <summary>
-        ///     UnloadContent will be called once per game and is the place to unload
-        ///     game-specific content.
-        /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
         }
 
-        /// <summary>
-        ///     Allows the game to run logic such as updating the world,
-        ///     checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
+            switch (_state)
+            {
+                case GameState.MainMenu:
+                    UpdateMainMenu();
+                    break;
+
+                case GameState.GameIsRunning:
+                    UpdateGameIsRunning(gameTime);
+                    break;
+
+                case GameState.GameOver:
+                    break;
+            }
+
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
@@ -106,57 +115,110 @@ namespace CursorAiming
             player.IsShooting = false;
 
             var mouse = Mouse.GetState();
-            player.CalculateRotation(new Vector2(mouse.X, mouse.Y));           
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-            {
-                player.IsShooting = true;
-<<<<<<< HEAD
-            if (player.IsShooting && !player.HasShot) player.Shoot();
-            
-=======
-            }
-            if (player.IsShooting && !player.HasShot) 
-            {
-                _shotSound.Play(0.3f, 0f, 0f);
-                player.Shoot();
-            }                
-            if(player.MoveDirection.X != 0 && player.MoveDirection.Y != 0)player.MoveDirection.Normalize();
 
-            player.Velocity = player.MoveDirection * (player.MoveSpeed * gameTime.ElapsedGameTime.Milliseconds/1000);
-            player.Position += player.Velocity;
->>>>>>> origin/feature-sound
+            player.CalculateRotation(new Vector2(mouse.X, mouse.Y));       
+            
+<<<<<<< Updated upstream
+            {
+                Player.Health = 0;
+            }
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                player.IsShooting = true;
+                _shotSound.Play();
+=======
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                player.IsShooting = true;
+>>>>>>> Stashed changes
+            if (player.IsShooting && !player.HasShot) player.Shoot(player.BulletSpeed, player.BulletDamage);
+            
             foreach (Bullet bullet in player.BulletsInAir)
             {
                 bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds/1000;
-            }  
-            
+            }
+            foreach (Bullet bullet in enemy.BulletsInAir)
+            {
+                bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds / 1000;
+            }
+
             player.HasShot = player.IsShooting;
 
+            enemy.CalculateRotation(player.Position);
+            if(enemy.DeltaDistance.Length() < 700) enemy.Shoot(700, 1);
 
             base.Update(gameTime);
         }
 
-        /// <summary>
-        ///     This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+<<<<<<< Updated upstream
+        
+
+=======
+>>>>>>> Stashed changes
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
 
+<<<<<<< Updated upstream
+            base.Update(gameTime);
+            switch (_state)
+            {
+                case GameState.MainMenu:
+                    break;
 
+                case GameState.GameIsRunning:
+                    break;
 
+                case GameState.GameOver:
+                    spriteBatch.Draw(playerTexture,
+                new Rectangle(5, 5, playerTexture.Width, playerTexture.Height),
+                null, Color.White, rotation, new Vector2(playerTexture.Width / 2, playerTexture.Height / 2), SpriteEffects.None, 0);
+                    break;
+            }
+=======
+>>>>>>> Stashed changes
+            
+
+            player.UpdateGraphics(spriteBatch);
             foreach (Bullet bullet in player.BulletsInAir)
             {
-                bullet.UpdateBulletGraphics(spriteBatch);
+                bullet.UpdateGraphics(spriteBatch);
             }
 
+            player.UpdateGraphics(spriteBatch);
+            enemy.UpdateGraphics(spriteBatch);
 
+            foreach (Bullet bullet in enemy.BulletsInAir)
+            {
+                bullet.UpdateGraphics(spriteBatch);
+            }
             spriteBatch.End();
-
+            
             base.Draw(gameTime);
         }
+
+        enum GameState
+        {
+            MainMenu,
+            GameIsRunning,
+            EndOfGame,
+            GameOver,
+        }
+
+        private void UpdateMainMenu()
+        {
+            throw new NotImplementedException();
+        }
+
+        void UpdateGameIsRunning(GameTime deltaTime)
+        {
+            // Respond to user input for menu selections, etc
+            
+            if (Player.Health <= 0)
+                _state = GameState.GameOver;
+        }
+
+
+
     }
 }
