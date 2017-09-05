@@ -25,7 +25,6 @@
 /processorParam:TextureFormat=Color
 /build:spaceAstronauts_009.png
 
-<<<<<<< HEAD
 #begin exit.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -37,6 +36,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:exit.png
+
+#begin Laser_Gun_Sound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Laser_Gun_Sound.wav
+
+#begin POL-flight-master-short.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:POL-flight-master-short.mp3
 
 #begin start.png
 /importer:TextureImporter
@@ -61,17 +72,19 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:laserBlue01.png
+
+<<<<<<< HEAD
+#begin Background.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Background.png
+
 =======
-#begin Laser_Gun_Sound.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Laser_Gun_Sound.wav
-
-#begin POL-flight-master-short.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:POL-flight-master-short.mp3
->>>>>>> origin/feature-sound
-
+>>>>>>> origin/Develop

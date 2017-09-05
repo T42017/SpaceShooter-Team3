@@ -1,0 +1,186 @@
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+<<<<<<< HEAD
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
+=======
+>>>>>>> origin/Develop
+
+namespace CursorAiming
+{
+    
+    public class SpaceHeadGame : Game
+    {
+<<<<<<< HEAD
+        private Texture2D playerTexture;
+        private Texture2D bulletTexture;
+        private Texture2D _backgroundTexture;
+        UnitWithGun player;
+        private readonly GraphicsDeviceManager graphics;
+        private Song _backgroundMusic;
+        private SoundEffect _shotSound;
+        private float rotation;
+=======
+        private readonly GraphicsDeviceManager graphics;
+
+        private UnitWithGun enemy;        
+        private UnitWithGun player;
+
+>>>>>>> origin/Develop
+        private SpriteBatch spriteBatch;
+
+
+        public SpaceHeadGame()
+        {
+            graphics = new GraphicsDeviceManager(this);
+
+            Content.RootDirectory = "Content";
+        }
+
+        protected override void Initialize()
+        {
+            base.Initialize();
+<<<<<<< HEAD
+            player = new Player(300, playerTexture, this);
+            player.BulletTexture = bulletTexture;
+            player.Position = new Vector2(500, 500);
+            graphics.PreferredBackBufferWidth = Globals.ScreenWidth;
+            graphics.PreferredBackBufferHeight = Globals.ScreenHeight;
+=======
+            player = new Player(400, 1000, 1, this) {Position = new Vector2(500, 500)};
+            enemy = new BasicEnemyWithGun(this) {Position = new Vector2(500, 500)};
+            Components.Add(player);
+
+            graphics.PreferredBackBufferWidth = 1000;
+            graphics.PreferredBackBufferHeight = 1000;
+>>>>>>> origin/Develop
+            graphics.ApplyChanges();
+            IsMouseVisible = true;
+        }
+
+        protected override void LoadContent()
+        {
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+<<<<<<< HEAD
+            _backgroundTexture = Content.Load<Texture2D>("Background");
+            playerTexture = Content.Load<Texture2D>("spaceAstronauts_009");
+            bulletTexture = Content.Load<Texture2D>("laserBlue01");
+            _shotSound = Content.Load<SoundEffect>("Laser_Gun_Sound");
+            _backgroundMusic = Content.Load<Song>("POL-flight-master-short");
+            MediaPlayer.Play(_backgroundMusic);
+            MediaPlayer.Volume = 0.1f;
+            MediaPlayer.IsRepeating = true;
+
+            // TODO: use this.Content to load your game content here
+=======
+>>>>>>> origin/Develop
+        }
+
+        protected override void UnloadContent()
+        {
+        }
+
+        protected override void Update(GameTime gameTime)
+        {
+<<<<<<< HEAD
+=======
+            base.Update(gameTime);
+
+>>>>>>> origin/Develop
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
+                Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
+
+            player.UpdateMovement(gameTime);
+
+            player.IsShooting = false;
+
+            var mouse = Mouse.GetState();
+<<<<<<< HEAD
+            player.CalculateRotation(new Vector2(mouse.X, mouse.Y));           
+=======
+
+            player.CalculateRotation(new Vector2(mouse.X, mouse.Y));
+
+
+>>>>>>> origin/Develop
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            {
+                player.IsShooting = true;
+<<<<<<< HEAD
+            }
+            if (player.IsShooting && !player.HasShot) 
+            {
+                _shotSound.Play(0.3f, 0f, 0f);
+                player.Shoot();
+            }                
+            foreach (Bullet bullet in player.BulletsInAir)
+            {
+                bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds/1000;
+            }  
+            
+            player.HasShot = player.IsShooting;
+=======
+>>>>>>> origin/Develop
+
+            if (player.IsShooting && !player.HasShot) player.Shoot(player.BulletSpeed, player.BulletDamage);
+
+            foreach (var bullet in player.BulletsInAir)
+                bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds / 1000;
+            foreach (var bullet in enemy.BulletsInAir)
+                bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds / 1000;
+
+            enemy.CalculateRotation(player.Position);
+
+            if (enemy.DeltaDistance.Length() < 700) enemy.Shoot(700, 1);
+
+            player.HasShot = player.IsShooting;
+            base.Update(gameTime);
+        }
+
+<<<<<<< HEAD
+        /// <summary>
+        ///     This is called when the game should draw itself.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+=======
+>>>>>>> origin/Develop
+        protected override void Draw(GameTime gameTime)
+        {
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            spriteBatch.Begin();
+<<<<<<< HEAD
+            spriteBatch.Draw(_backgroundTexture, GraphicsDevice.Viewport.Bounds, Color.White);
+
+
+            foreach (Bullet bullet in player.BulletsInAir)
+            {
+                bullet.UpdateBulletGraphics(spriteBatch);
+            }
+
+=======
+
+            base.Update(gameTime);
+
+            player.UpdateGraphics(spriteBatch);
+            foreach (var bullet in player.BulletsInAir)
+                bullet.UpdateGraphics(spriteBatch);
+
+            player.UpdateGraphics(spriteBatch);
+            enemy.UpdateGraphics(spriteBatch);
+
+            foreach (var bullet in enemy.BulletsInAir)
+                bullet.UpdateGraphics(spriteBatch);
+>>>>>>> origin/Develop
+            spriteBatch.End();
+
+            base.Draw(gameTime);
+        }
+    }
+}
