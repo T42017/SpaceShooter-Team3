@@ -98,3 +98,9 @@
 /processorParam:Quality=Best
 /build:Laser_Gun.wav
 
+#begin Wound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Wound.wav
+
