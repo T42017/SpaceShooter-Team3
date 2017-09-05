@@ -32,15 +32,20 @@ namespace CursorAiming
         {
             foreach (var bullet in BulletsInAir)
                 bullet.UpdatePosition(gameTime);
+
+            HitBox.Middlepoint = Position;
+
             base.Update(gameTime);
         }
 
         #region variables
 
-        public int Health;
+        public int Health = 3;
         public int MoveSpeed, BulletSpeed, BulletDamage;
-        public bool IsShooting, HasShot;
-        public float attackInterval;
+        protected bool IsShooting, HasShot;
+        public float AttackInterval;
+        protected float Countdown;
+        public CircleHitBox HitBox;
 
         #endregion
 
@@ -91,5 +96,16 @@ namespace CursorAiming
         }
 
         #endregion
+    }
+
+    internal struct CircleHitBox
+    {
+        public Vector2 Middlepoint;
+        public int Radius;
+
+        public bool Contains(Vector2 point)
+        {
+            return (point - Middlepoint).Length() <= Radius;
+        }
     }
 }

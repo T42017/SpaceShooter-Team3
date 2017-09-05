@@ -7,19 +7,22 @@ namespace CursorAiming
 {
     internal class Player : UnitWithGun
     {
-        public Player(int moveSpeed, int bulletSpeed, int bulletDamage, Game game) : base(game)
+        public Player(int moveSpeed, int bulletSpeed, int bulletDamage, float attackInterval, Game game) : base(game)
         {
             MoveSpeed = moveSpeed;
             BulletSpeed = bulletSpeed;
             BulletDamage = bulletDamage;
+            AttackInterval = attackInterval;
+            Countdown = AttackInterval;
         }
 
         protected override void LoadContent()
         {
-            Texture = Game.Content.Load<Texture2D>("spaceAstronauts_009");
+            Texture = Game.Content.Load<Texture2D>("Player");
             BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
             _shotSound = Game.Content.Load<SoundEffect>("Laser_Gun");
 
+            HitBox.Radius = Texture.Width / 2;
             base.LoadContent();
         }
 
@@ -37,10 +40,22 @@ namespace CursorAiming
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                 IsShooting = true;
 
-            if (IsShooting && !HasShot)
-                Shoot(BulletSpeed, BulletDamage, _shotSound);
+            if (Countdown > 0)
+            {
+                Countdown -= (float) gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            else
+            {
+                if (IsShooting && !HasShot)
+                {
+                    Shoot(BulletSpeed, BulletDamage, _shotSound);
+                    Countdown = AttackInterval;
+                }
+            }
+
 
             HasShot = IsShooting;
+            if (Health <= 0) Game.Exit();
             base.Update(gameTime);
         }
 

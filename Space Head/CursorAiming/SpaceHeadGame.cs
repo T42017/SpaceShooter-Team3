@@ -29,8 +29,8 @@ namespace CursorAiming
 
         protected override void Initialize()
         {
-            _player = new Player(400, 1000, 1, this) {Position = new Vector2(510, 500)};
-            _enemy = new BasicEnemyWithGun(this) {Position = new Vector2(500, 500)};
+            _player = new Player(400, 1000, 1, 0.4f, this) {Position = new Vector2(700, 500)};
+            _enemy = new BasicEnemyWithGun(400, 1000, 1, 0.4f, this) {Position = new Vector2(500, 500)};
             Components.Add(_player);
             Components.Add(_enemy);
 
@@ -71,6 +71,13 @@ namespace CursorAiming
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
+
+            foreach (var bullet in _enemy.BulletsInAir)
+                if (_player.HitBox.Contains(bullet.Position))
+                    _player.Health--;
+
+            if (_player.HitBox.Contains(_enemy.Position))
                 Exit();
 
             _state.CheckPlayerInput(_gameState);

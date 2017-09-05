@@ -6,8 +6,14 @@ namespace CursorAiming
 {
     internal class BasicEnemyWithGun : UnitWithGun
     {
-        public BasicEnemyWithGun(Game game) : base(game)
+        public BasicEnemyWithGun(int moveSpeed, int bulletSpeed, int bulletDamage, float attackInterval,
+            Game game) : base(game)
         {
+            MoveSpeed = moveSpeed;
+            BulletSpeed = bulletSpeed;
+            BulletDamage = bulletDamage;
+            AttackInterval = attackInterval;
+            Countdown = AttackInterval;
         }
 
         public override void Draw(GameTime gameTime)
@@ -24,7 +30,18 @@ namespace CursorAiming
 
         public override void Update(GameTime gameTime)
         {
-            if (DeltaDistance.Length() < 700) Shoot(1000, 1, _shotSound);
+            if (Countdown > 0)
+            {
+                Countdown -= (float) gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            else
+            {
+                if (DeltaDistance.Length() < 700)
+                {
+                    Shoot(BulletSpeed, BulletDamage, _shotSound);
+                    Countdown = AttackInterval;
+                }
+            }
 
 
             base.Update(gameTime);
@@ -32,9 +49,11 @@ namespace CursorAiming
 
         protected override void LoadContent()
         {
-            Texture = Game.Content.Load<Texture2D>("spaceAstronauts_009");
+            Texture = Game.Content.Load<Texture2D>("BasicEnemy");
             BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
             _shotSound = Game.Content.Load<SoundEffect>("Laser_Gun");
+
+            HitBox.Radius = Texture.Width / 2;
 
             base.LoadContent();
         }
