@@ -10,15 +10,13 @@ namespace CursorAiming
         private readonly GameState _gameState = GameState.MainMenu;
         private readonly GraphicsDeviceManager _graphics;
         private Texture2D _backgroudImage;
-
         private Song _backgroundMusic;
-
         private UnitWithGun _enemy;
         private UnitWithGun _player;
-
+        private string _totalScore;
         private SpriteBatch _spriteBatch;
-
         private States _state;
+        private SpriteFont _font;
 
         public SpaceHeadGame()
         {
@@ -33,7 +31,7 @@ namespace CursorAiming
             _enemy = new BasicEnemyWithGun(this) {Position = new Vector2(500, 500)};
             Components.Add(_player);
             Components.Add(_enemy);
-
+            _totalScore = "0";
             _state = new States(this);
             Components.Add(_state);
 
@@ -55,6 +53,7 @@ namespace CursorAiming
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _backgroudImage = Content.Load<Texture2D>("Background");
             _backgroundMusic = Content.Load<Song>("POL-flight-master-short");
+            _font = Content.Load<SpriteFont>("Font");
             MediaPlayer.Play(_backgroundMusic);
             MediaPlayer.Volume = 0.1f;
             MediaPlayer.IsRepeating = true;
@@ -74,8 +73,9 @@ namespace CursorAiming
                 Exit();
 
             _state.CheckPlayerInput(_gameState);
-
             _enemy.CalculateRotation(_player.Position);
+            Points.AddPoints(EnemyPoints.Enemy50);
+            _totalScore = Points.Score.ToString();
         }
 
         protected override void Draw(GameTime gameTime)
@@ -85,6 +85,7 @@ namespace CursorAiming
             _spriteBatch.Begin();
 
             _spriteBatch.Draw(_backgroudImage, GraphicsDevice.Viewport.Bounds, Color.DarkGreen);
+            _spriteBatch.DrawString(_font, _totalScore, new Vector2(35, 20), Color.Aqua);
 
             _spriteBatch.End();
 

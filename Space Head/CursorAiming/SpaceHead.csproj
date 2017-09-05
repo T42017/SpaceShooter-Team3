@@ -45,6 +45,7 @@
     <Compile Include="Bullet.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="Points.cs" />
     <Compile Include="SpaceHeadGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -65,7 +66,9 @@
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <MonoGameContentReference Include="Content\Content.mgcb" />
+    <MonoGameContentReference Include="Content\Content.mgcb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </MonoGameContentReference>
     <None Include="app.manifest" />
     <None Include="Content\Laser_Gun.xnb" />
   </ItemGroup>
