@@ -74,7 +74,6 @@ namespace CursorAiming
 
             _state.CheckPlayerInput(_gameState);
             _enemy.CalculateRotation(_player.Position);
-            Points.AddPoints(EnemyPoints.Enemy50);
             _totalScore = Points.Score.ToString();
         }
 
