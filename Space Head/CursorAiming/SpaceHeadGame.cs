@@ -21,8 +21,6 @@ namespace CursorAiming
 
         static public GameState _state = GameState.MainMenu;
         
-
-        private States state;
         private SpriteBatch _spriteBatch;
 
         //private States _state;
@@ -103,28 +101,28 @@ namespace CursorAiming
 
             var kbState = Keyboard.GetState();
 
-            player.IsShooting = false;
-            {
-            var mouse = Mouse.GetState();
-                    state.CheckPlayerInput(_state);
-                    break;
-                case GameState.GameIsRunning:
-                    break;
+            //player.IsShooting = false;
+            //{
+            //var mouse = Mouse.GetState();
+            //        state.CheckPlayerInput(_state);
+            //        break;
+            //    case GameState.GameIsRunning:
+            //        break;
             
-                case GameState.GameIsPaused:
+            //    case GameState.GameIsPaused:
 
-                    break;
-            {
-                case GameState.GameOver:
+            //        break;
+            //{
+            //    case GameState.GameOver:
 
-                    break;
+            //        break;
 
-                case GameState.Exit:
-                    Exit();
-                    break;
-            }
+            //    case GameState.Exit:
+            //        Exit();
+            //        break;
+            //}
 
-            player.HasShot = player.IsShooting;
+            //player.HasShot = player.IsShooting;
 
             //player.IsShooting = false;
 
