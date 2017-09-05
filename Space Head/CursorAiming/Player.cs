@@ -12,6 +12,7 @@ namespace CursorAiming
             MoveSpeed = moveSpeed;
             BulletSpeed = bulletSpeed;
             BulletDamage = bulletDamage;
+            Health = 5;
         }
 
         protected override void LoadContent()
@@ -19,6 +20,7 @@ namespace CursorAiming
             Texture = Game.Content.Load<Texture2D>("spaceAstronauts_009");
             BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
             _shotSound = Game.Content.Load<SoundEffect>("Laser_Gun");
+            lifeTexture = Game.Content.Load<Texture2D>("spaceRocketParts_012");
 
             base.LoadContent();
         }
@@ -55,6 +57,7 @@ namespace CursorAiming
             SpriteBatch.End();
 
             base.Draw(gameTime);
+            SpriteBatch.End();
         }
 
         #region OverrideMethods

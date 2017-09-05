@@ -26,8 +26,14 @@ namespace CursorAiming
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
-        }
+            SpriteBatch.Begin();
+            for (int i = 0; i < Health; i++)
+            {
+                SpriteBatch.Draw(lifeTexture, new Vector2(40 + i * 50, 950), Color.White);
 
+            }
+        }
+        
         public override void Update(GameTime gameTime)
         {
             foreach (var bullet in BulletsInAir)
@@ -54,7 +60,7 @@ namespace CursorAiming
 
         #region Sound and textures
 
-        public Texture2D Texture, BulletTexture, GunTexture;
+        public Texture2D Texture, BulletTexture, GunTexture, lifeTexture;
         public SoundEffect _shotSound;
         protected SpriteBatch SpriteBatch { get; private set; }
 
