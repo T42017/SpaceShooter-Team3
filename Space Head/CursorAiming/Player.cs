@@ -33,11 +33,6 @@ namespace CursorAiming
             base.Update(gameTime);
         }
 
-        protected override void LoadContent()
-        {
-
-        }
-
         public override void UpdateGraphics(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Texture,

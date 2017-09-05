@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace CursorAiming
 {
@@ -10,6 +12,7 @@ namespace CursorAiming
         private Texture2D _backgroundTexture;
         private readonly GraphicsDeviceManager graphics;
         private Song _backgroundMusic;
+        private SoundEffect _shotSound;
         private UnitWithGun enemy;        
         private UnitWithGun player;
         private SpriteBatch spriteBatch;
@@ -66,8 +69,11 @@ namespace CursorAiming
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                 player.IsShooting = true;
 
-            if (player.IsShooting && !player.HasShot) player.Shoot(player.BulletSpeed, player.BulletDamage);
-
+            if (player.IsShooting && !player.HasShot)
+            {
+                _shotSound.Play(0.2f, 0f, 0f);
+                player.Shoot(player.BulletSpeed, player.BulletDamage);
+            }
             foreach (var bullet in player.BulletsInAir)
                 bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds / 1000;
             foreach (var bullet in enemy.BulletsInAir)
