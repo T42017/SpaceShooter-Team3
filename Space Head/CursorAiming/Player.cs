@@ -19,6 +19,7 @@ namespace CursorAiming
             Texture = Game.Content.Load<Texture2D>("spaceAstronauts_009");
             BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
             _shotSound = Game.Content.Load<SoundEffect>("Laser_Gun");
+            _damage = Game.Content.Load<SoundEffect>("Jump");
 
             base.LoadContent();
         }
@@ -30,9 +31,7 @@ namespace CursorAiming
             IsShooting = false;
             UpdateMovement(gameTime);
 
-
             CalculateRotation(new Vector2(mouse.X, mouse.Y));
-
 
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                 IsShooting = true;

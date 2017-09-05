@@ -92,3 +92,9 @@
 /processorParam:TextureFormat=Compressed
 /build:Font.spritefont
 
+#begin Jump.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Jump.wav
+
