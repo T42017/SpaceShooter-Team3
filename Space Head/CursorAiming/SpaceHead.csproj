@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="BasicEnemyWithGun.cs" />
     <Compile Include="Bullet.cs" />
+    <Compile Include="Globals.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="SpaceHeadGame.cs" />
     <Compile Include="Program.cs" />

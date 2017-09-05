@@ -9,6 +9,7 @@ namespace CursorAiming
     {
         private readonly GameState _gameState = GameState.MainMenu;
         private readonly GraphicsDeviceManager _graphics;
+        private Texture2D _backgroudImage;
 
         private Song _backgroundMusic;
 
@@ -28,7 +29,7 @@ namespace CursorAiming
 
         protected override void Initialize()
         {
-            _player = new Player(200, 500, 1, this) {Position = new Vector2(510, 500)};
+            _player = new Player(400, 1000, 1, this) {Position = new Vector2(510, 500)};
             _enemy = new BasicEnemyWithGun(this) {Position = new Vector2(500, 500)};
             Components.Add(_player);
             Components.Add(_enemy);
@@ -52,7 +53,7 @@ namespace CursorAiming
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            _backgroudImage = Content.Load<Texture2D>("Background");
             _backgroundMusic = Content.Load<Song>("POL-flight-master-short");
             MediaPlayer.Play(_backgroundMusic);
             MediaPlayer.Volume = 0.1f;
@@ -83,7 +84,7 @@ namespace CursorAiming
 
             _spriteBatch.Begin();
 
-            base.Update(gameTime);
+            _spriteBatch.Draw(_backgroudImage, GraphicsDevice.Viewport.Bounds, Color.DarkGreen);
 
             _spriteBatch.End();
 

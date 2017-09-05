@@ -24,7 +24,7 @@ namespace CursorAiming
 
         public override void Update(GameTime gameTime)
         {
-            if (DeltaDistance.Length() < 700) Shoot(500, 1, _shotSound);
+            if (DeltaDistance.Length() < 700) Shoot(1000, 1, _shotSound);
 
 
             base.Update(gameTime);
