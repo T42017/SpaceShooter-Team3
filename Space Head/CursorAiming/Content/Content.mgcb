@@ -97,3 +97,15 @@
 /processorParam:TextureFormat=Color
 /build:laserBlue01.png
 
+#begin Laser_Gun.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Laser_Gun.wav
+
+#begin POL-flight-master-short.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:POL-flight-master-short.mp3
+

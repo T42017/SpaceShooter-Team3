@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -10,14 +11,14 @@ namespace CursorAiming
         {
             MoveSpeed = moveSpeed;
             BulletSpeed = bulletSpeed;
-            Texture = Game.Content.Load<Texture2D>("spaceAstronauts_009");
-            BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
+            BulletDamage = bulletDamage;
         }
 
         protected override void LoadContent()
         {
             Texture = Game.Content.Load<Texture2D>("spaceAstronauts_009");
             BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
+            _shotSound = Game.Content.Load<SoundEffect>("Laser_Gun");
 
             base.LoadContent();
         }
@@ -30,8 +31,39 @@ namespace CursorAiming
         public override void Update(GameTime gameTime)
         {
 
+            var mouse = Mouse.GetState();
+
+            IsShooting = false;
+            UpdateMovement(gameTime);
+
+
+            CalculateRotation(new Vector2(mouse.X, mouse.Y));
+
+
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                IsShooting = true;
+
+            if (IsShooting && !HasShot)
+                Shoot(BulletSpeed, BulletDamage, _shotSound);
+
+            HasShot = IsShooting;
             base.Update(gameTime);
         }
+
+        public override void Draw(GameTime gameTime)
+        {
+            SpriteBatch.Begin();
+
+            UpdateGraphics(SpriteBatch);
+
+            foreach (var bullet in BulletsInAir)
+                bullet.UpdateGraphics(SpriteBatch);
+            SpriteBatch.End();
+
+            base.Draw(gameTime);
+        }
+
+        #region OverrideMethods
 
         public override void UpdateGraphics(SpriteBatch spriteBatch)
         {
@@ -52,10 +84,12 @@ namespace CursorAiming
             if (Keyboard.GetState().IsKeyDown(Keys.S))
                 MoveDirection.Y += 1;
 
-            if (MoveDirection.X != 0 && MoveDirection.Y != 0) MoveDirection.Normalize();
+            if ((int) MoveDirection.X != 0 && (int) MoveDirection.Y != 0) MoveDirection.Normalize();
 
             Velocity = MoveDirection * (MoveSpeed * gameTime.ElapsedGameTime.Milliseconds / 1000);
             Position += Velocity;
         }
+
+        #endregion
     }
 }
