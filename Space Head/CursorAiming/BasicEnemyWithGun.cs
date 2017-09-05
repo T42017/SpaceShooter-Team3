@@ -34,7 +34,7 @@ namespace CursorAiming
         {
             Texture = Game.Content.Load<Texture2D>("spaceAstronauts_009");
             BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
-            _shotSound = Game.Content.Load<SoundEffect>("Laser_Gun");
+            _shotSound = Game.Content.Load<SoundEffect>("Laser_Gun_Sound");
 
             base.LoadContent();
         }

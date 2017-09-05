@@ -18,24 +18,19 @@ namespace CursorAiming
         {
             Texture = Game.Content.Load<Texture2D>("spaceAstronauts_009");
             BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
-            _shotSound = Game.Content.Load<SoundEffect>("Laser_Gun");
+            _shotSound = Game.Content.Load<SoundEffect>("Laser_Gun_Sound");
 
             base.LoadContent();
         }
-        public override void Draw(GameTime gameTime)
-        {       
 
-            base.Draw(gameTime);
-        }
 
         public override void Update(GameTime gameTime)
         {
-
             var mouse = Mouse.GetState();
 
             IsShooting = false;
-            UpdateMovement(gameTime);
 
+            UpdateMovement(gameTime);
 
             CalculateRotation(new Vector2(mouse.X, mouse.Y));
 

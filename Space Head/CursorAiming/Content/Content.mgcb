@@ -43,12 +43,6 @@
 /processorParam:Quality=Best
 /build:Laser_Gun_Sound.wav
 
-#begin POL-flight-master-short.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:POL-flight-master-short.mp3
-
 #begin start.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -60,18 +54,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:start.png
-
-#begin laserBlue01.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:laserBlue01.png
 
 #begin Background.png
 /importer:TextureImporter
@@ -96,12 +78,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:laserBlue01.png
-
-#begin Laser_Gun.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Laser_Gun.wav
 
 #begin POL-flight-master-short.mp3
 /importer:Mp3Importer

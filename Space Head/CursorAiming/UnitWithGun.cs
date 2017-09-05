@@ -12,20 +12,6 @@ namespace CursorAiming
         public Bullet Bullet;
         public List<Bullet> BulletsInAir = new List<Bullet>();
 
-        public override void Draw(GameTime gameTime)
-        {
-            base.Draw(gameTime);
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-        }
-
-        protected override void LoadContent()
-        {
-            
-        }    
 
         public UnitWithGun(Game game) : base(game)
         {

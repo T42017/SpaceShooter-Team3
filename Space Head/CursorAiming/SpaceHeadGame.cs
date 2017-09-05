@@ -8,17 +8,15 @@ namespace CursorAiming
 {
     public class SpaceHeadGame : Game
     {
-        private Texture2D _backgroundTexture;
         private readonly GameState _gameState = GameState.MainMenu;
         private readonly GraphicsDeviceManager _graphics;
         private Song _backgroundMusic;
+        private Texture2D _backgroundTexture;
+        private UnitWithGun _enemy;
+        private UnitWithGun _player;
         private SoundEffect _shotSound;
-        private UnitWithGun _enemy;        
-        private UnitWithGun _player;
         private SpriteBatch _spriteBatch;
-        private UnitWithGun _player;
 
-        private SpriteBatch _spriteBatch;
 
         private States _state;
 
@@ -31,17 +29,18 @@ namespace CursorAiming
 
         protected override void Initialize()
         {
-            _player = new Player(200, 500, 1, this) {Position = new Vector2(510, 500)};
+            _player = new Player(200, 500, 1, this) {Position = new Vector2(510, 400)};
             _enemy = new BasicEnemyWithGun(this) {Position = new Vector2(500, 500)};
             Components.Add(_player);
             Components.Add(_enemy);
-            _graphics.PreferredBackBufferWidth = Globals.ScreenWidth;
-            _graphics.PreferredBackBufferHeight = Globals.ScreenHeight;
-            _graphics.ApplyChanges();
+            _state = new States(this);
+            Components.Add(_state);
+
+
             #region windowSettings
 
-            _graphics.PreferredBackBufferWidth = 1000;
-            _graphics.PreferredBackBufferHeight = 1000;
+            _graphics.PreferredBackBufferWidth = Globals.ScreenWidth;
+            _graphics.PreferredBackBufferHeight = Globals.ScreenHeight;
             _graphics.ApplyChanges();
             IsMouseVisible = true;
 
@@ -54,8 +53,9 @@ namespace CursorAiming
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _backgroundTexture = Content.Load<Texture2D>("Background");
-            _shotSound = Content.Load<SoundEffect>("Laser_Gun_Sound");
             _backgroundMusic = Content.Load<Song>("POL-flight-master-short");
+
+            MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(_backgroundMusic);
             MediaPlayer.Volume = 0.05f;
             base.LoadContent();
@@ -74,11 +74,6 @@ namespace CursorAiming
             _state.CheckPlayerInput(_gameState);
 
             _enemy.CalculateRotation(_player.Position);
-            {
-                _shotSound.Play(0.05f, 0f, 0f);
-                _player.Shoot(_player.BulletSpeed, _player.BulletDamage);
-            }
-            foreach (var bullet in _player.BulletsInAir)
         }
 
         protected override void Draw(GameTime gameTime)
@@ -88,8 +83,7 @@ namespace CursorAiming
             _spriteBatch.Begin();
             _spriteBatch.Draw(_backgroundTexture, GraphicsDevice.Viewport.Bounds, Color.White);
             _spriteBatch.End();
-                bullet.UpdateGraphics(_spriteBatch);
-            _spriteBatch.End();
+
 
             base.Draw(gameTime);
         }
