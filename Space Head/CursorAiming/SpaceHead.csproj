@@ -43,12 +43,15 @@
   <ItemGroup>
     <Compile Include="BasicEnemyWithGun.cs" />
     <Compile Include="Bullet.cs" />
+    <Compile Include="Components\DecorationComponent.cs" />
+    <Compile Include="GameStates.cs" />
     <Compile Include="Globals.cs" />
+    <Compile Include="Components\MenuComponent.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="Components\SpaceHeadBaseComponent.cs" />
     <Compile Include="SpaceHeadGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="States.cs" />
     <Compile Include="UnitWithGun.cs" />
   </ItemGroup>
   <ItemGroup>

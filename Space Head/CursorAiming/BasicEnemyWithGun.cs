@@ -8,6 +8,9 @@ namespace CursorAiming
     {
         public BasicEnemyWithGun(Game game) : base(game)
         {
+            DrawOrder = 3;
+            UpdatableStates = GameState.Playing;
+            DrawableStates = GameState.Playing;
         }
 
         public override void Draw(GameTime gameTime)

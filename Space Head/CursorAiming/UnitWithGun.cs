@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CursorAiming
 {
-    internal class UnitWithGun : DrawableGameComponent
+    internal class UnitWithGun : SpaceHeadBaseComponent
     {
         private Game _game;
         public Bullet Bullet;
@@ -14,6 +14,9 @@ namespace CursorAiming
 
         public UnitWithGun(Game game) : base(game)
         {
+            DrawOrder = 1;
+            DrawableStates = GameState.Playing;
+            UpdatableStates = GameState.Playing;
             _game = game;
         }
 

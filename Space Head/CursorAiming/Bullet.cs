@@ -22,6 +22,7 @@ namespace CursorAiming
             Position = startPosition;
             Direction = direction;
             Rotation = rotation;
+            
         }
 
        

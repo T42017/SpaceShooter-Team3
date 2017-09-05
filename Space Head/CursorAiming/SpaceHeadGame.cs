@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Linq;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
@@ -7,10 +9,11 @@ namespace CursorAiming
 {
     public class SpaceHeadGame : Game
     {
-        private readonly GameState _gameState = GameState.MainMenu;
+        private GameState _gameState;
         private readonly GraphicsDeviceManager _graphics;
         private Texture2D _backgroudImage;
 
+        private KeyboardState _previousKeyboardState;
         private Song _backgroundMusic;
 
         private UnitWithGun _enemy;
@@ -18,24 +21,42 @@ namespace CursorAiming
 
         private SpriteBatch _spriteBatch;
 
-        private States _state;
+        //private States _state;
+
+        
 
         public SpaceHeadGame()
         {
+            
+
             _graphics = new GraphicsDeviceManager(this);
 
             Content.RootDirectory = "Content";
         }
 
+        public void ChangeCurrentGameState(GameState wantedState)
+        {
+            _gameState = wantedState;
+
+            foreach (var component in Components.Cast<SpaceHeadBaseComponent>())
+            {
+                component.Visible = component.DrawableStates.HasFlag(_gameState);
+                component.Enabled = component.UpdatableStates.HasFlag(_gameState);
+            }
+        }
+
         protected override void Initialize()
         {
+            Components.Add(new DecorationComponent(this));
+            Components.Add(new MenuComponent(this));
+
             _player = new Player(400, 1000, 1, this) {Position = new Vector2(510, 500)};
             _enemy = new BasicEnemyWithGun(this) {Position = new Vector2(500, 500)};
             Components.Add(_player);
             Components.Add(_enemy);
 
-            _state = new States(this);
-            Components.Add(_state);
+            //_state = new States(this);
+            //Components.Add(_state);
 
             #region windowSettings
 
@@ -47,11 +68,14 @@ namespace CursorAiming
 
             #endregion
 
+            ChangeCurrentGameState(GameState.MainMenu);
+
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
+            
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _backgroudImage = Content.Load<Texture2D>("Background");
             _backgroundMusic = Content.Load<Song>("POL-flight-master-short");
@@ -73,7 +97,18 @@ namespace CursorAiming
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            _state.CheckPlayerInput(_gameState);
+            var kbState = Keyboard.GetState();
+
+            
+
+            if (kbState.IsKeyDown(Keys.Space) && _previousKeyboardState.IsKeyUp(Keys.Space))
+            {
+                ChangeCurrentGameState(GameState.Playing);
+            }
+
+            _previousKeyboardState = kbState;
+
+            //_state.CheckPlayerInput(_gameState);
 
             _enemy.CalculateRotation(_player.Position);
         }
@@ -84,7 +119,7 @@ namespace CursorAiming
 
             _spriteBatch.Begin();
 
-            _spriteBatch.Draw(_backgroudImage, GraphicsDevice.Viewport.Bounds, Color.DarkGreen);
+            //_spriteBatch.Draw(_backgroudImage, GraphicsDevice.Viewport.Bounds, Color.DarkGreen);
 
             _spriteBatch.End();
 
