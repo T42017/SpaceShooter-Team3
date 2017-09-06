@@ -1,89 +1,84 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 
 namespace CursorAiming
 {
-    /// <summary>
-    ///     This is the main type for your game.
-    /// </summary>
     public class SpaceHeadGame : Game
     {
-        //private Texture2D playerTexture;
-        //private Texture2D bulletTexture;
-        UnitWithGun player;
+        private readonly GameState _gameState = GameState.MainMenu;
+        private readonly GraphicsDeviceManager _graphics;
+        private Texture2D _backgroudImage;
+        private Song _backgroundMusic;
+<<<<<<< HEAD
 
-        private UnitWithGun enemy;
-<<<<<<< Updated upstream
-        private Texture2D start;
-        private Texture2D exit;
+        public static List<UnitWithGun> UnitsOnField = new List<UnitWithGun>();
 
-        #endregion
+        
 
 =======
->>>>>>> Stashed changes
-        private readonly GraphicsDeviceManager graphics;
-        private SoundEffect _shotSound;
-        private Song backgroundMusic;
-
-        bool pushedStartGameButton = false;
-
-
-        private float rotation;
-        private SpriteBatch spriteBatch;
-        private GameState _state = GameState.MainMenu;
-
+        private UnitWithGun _enemy;
+        private UnitWithGun _player;
+        private string _totalScore;
+>>>>>>> origin/Develop_2.0
+        private SpriteBatch _spriteBatch;
+        private States _state;
+        private SpriteFont _font;
 
         public SpaceHeadGame()
         {
-            graphics = new GraphicsDeviceManager(this);
-            
+            _graphics = new GraphicsDeviceManager(this);
+
             Content.RootDirectory = "Content";
         }
 
         protected override void Initialize()
         {
+<<<<<<< HEAD
+             
+            UnitsOnField.Add(new Player(400, 1000, 1, 0.4f, UnitType.Player, UnitType.Enemy, this) { Position = new Vector2(700, 500) });
+            UnitsOnField.Add(new BasicEnemyWithGun(400, 1000, 1, 0.4f, UnitType.Enemy, UnitType.Player, this) { Position = new Vector2(Globals.ScreenWidth / 2, Globals.ScreenHeight / 2) });
+            foreach (var unitWithGun in UnitsOnField)
+            {
+                Components.Add(unitWithGun);
+            }
 
-            base.Initialize();
-            player = new Player(400, 1000, 1, this) {Position = new Vector2(500, 500)};
-            enemy = new BasicEnemyWithGun(this) {Position = new Vector2(500, 500)};
-            Components.Add(player);
+=======
+            _player = new Player(400, 1000, 1, this) {Position = new Vector2(510, 500)};
+            _enemy = new BasicEnemyWithGun(this) {Position = new Vector2(500, 500)};
+            Components.Add(_player);
+            Components.Add(_enemy);
+            _totalScore = "0";
+>>>>>>> origin/Develop_2.0
+            _state = new States(this);
+            Components.Add(_state);
 
-            graphics.PreferredBackBufferWidth = 1000;
-            graphics.PreferredBackBufferHeight = 1000;
-            graphics.ApplyChanges();
+            #region windowSettings
+
+            _graphics.PreferredBackBufferWidth = Globals.ScreenWidth;
+            _graphics.PreferredBackBufferHeight = Globals.ScreenHeight;
+            _graphics.ApplyChanges();
 
             IsMouseVisible = true;
+
+            #endregion
+
+            base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-
-<<<<<<< Updated upstream
-            start = Content.Load<Texture2D>("start");
-            exit = Content.Load<Texture2D>("exit");
-            //playerTexture = Content.Load<Texture2D>("spaceAstronauts_009");
-            //bulletTexture = Content.Load<Texture2D>("laserBlue01");
-
-            //_shotSound = Content.Load<SoundEffect>("Laser_Gun");
-            //backgroundMusic = Content.Load<Song>("POL-flight-master-short");
-            MediaPlayer.Play(backgroundMusic);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            _backgroudImage = Content.Load<Texture2D>("Background");
+            _backgroundMusic = Content.Load<Song>("POL-flight-master-short");
+            _font = Content.Load<SpriteFont>("Font");
+            MediaPlayer.Play(_backgroundMusic);
+            MediaPlayer.Volume = 0.1f;
             MediaPlayer.IsRepeating = true;
-
-=======
-            //playerTexture = Content.Load<Texture2D>("spaceAstronauts_009");
-            //bulletTexture = Content.Load<Texture2D>("laserBlue01");
->>>>>>> Stashed changes
-
+            base.LoadContent();
         }
 
         protected override void UnloadContent()
@@ -93,134 +88,32 @@ namespace CursorAiming
         protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            switch (_state)
-            {
-                case GameState.MainMenu:
-                    UpdateMainMenu();
-                    break;
-
-                case GameState.GameIsRunning:
-                    UpdateGameIsRunning(gameTime);
-                    break;
-
-                case GameState.GameOver:
-                    break;
-            }
-
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            player.UpdateMovement(gameTime);
-        
-            player.IsShooting = false;
-
-            var mouse = Mouse.GetState();
-
-            player.CalculateRotation(new Vector2(mouse.X, mouse.Y));       
-            
-<<<<<<< Updated upstream
-            {
-                Player.Health = 0;
-            }
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-                player.IsShooting = true;
-                _shotSound.Play();
+            _state.CheckPlayerInput(_gameState);
+<<<<<<< HEAD
+                     
 =======
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-                player.IsShooting = true;
->>>>>>> Stashed changes
-            if (player.IsShooting && !player.HasShot) player.Shoot(player.BulletSpeed, player.BulletDamage);
-            
-            foreach (Bullet bullet in player.BulletsInAir)
-            {
-                bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds/1000;
-            }
-            foreach (Bullet bullet in enemy.BulletsInAir)
-            {
-                bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds / 1000;
-            }
-
-            player.HasShot = player.IsShooting;
-
-            enemy.CalculateRotation(player.Position);
-            if(enemy.DeltaDistance.Length() < 700) enemy.Shoot(700, 1);
-
-            base.Update(gameTime);
+            _enemy.CalculateRotation(_player.Position);
+            _totalScore = Points.Score.ToString();
+>>>>>>> origin/Develop_2.0
         }
 
-<<<<<<< Updated upstream
-        
-
-=======
->>>>>>> Stashed changes
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();
+            _spriteBatch.Begin();
 
-<<<<<<< Updated upstream
-            base.Update(gameTime);
-            switch (_state)
-            {
-                case GameState.MainMenu:
-                    break;
+            _spriteBatch.Draw(_backgroudImage, GraphicsDevice.Viewport.Bounds, Color.DarkGreen);
+            _spriteBatch.DrawString(_font, _totalScore, new Vector2(35, 20), Color.Aqua);
 
-                case GameState.GameIsRunning:
-                    break;
+            _spriteBatch.End();
 
-                case GameState.GameOver:
-                    spriteBatch.Draw(playerTexture,
-                new Rectangle(5, 5, playerTexture.Width, playerTexture.Height),
-                null, Color.White, rotation, new Vector2(playerTexture.Width / 2, playerTexture.Height / 2), SpriteEffects.None, 0);
-                    break;
-            }
-=======
->>>>>>> Stashed changes
-            
-
-            player.UpdateGraphics(spriteBatch);
-            foreach (Bullet bullet in player.BulletsInAir)
-            {
-                bullet.UpdateGraphics(spriteBatch);
-            }
-
-            player.UpdateGraphics(spriteBatch);
-            enemy.UpdateGraphics(spriteBatch);
-
-            foreach (Bullet bullet in enemy.BulletsInAir)
-            {
-                bullet.UpdateGraphics(spriteBatch);
-            }
-            spriteBatch.End();
-            
             base.Draw(gameTime);
         }
-
-        enum GameState
-        {
-            MainMenu,
-            GameIsRunning,
-            EndOfGame,
-            GameOver,
-        }
-
-        private void UpdateMainMenu()
-        {
-            throw new NotImplementedException();
-        }
-
-        void UpdateGameIsRunning(GameTime deltaTime)
-        {
-            // Respond to user input for menu selections, etc
-            
-            if (Player.Health <= 0)
-                _state = GameState.GameOver;
-        }
-
-
-
     }
 }

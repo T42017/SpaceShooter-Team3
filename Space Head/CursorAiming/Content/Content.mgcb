@@ -49,12 +49,6 @@
 /processorParam:TextureFormat=Color
 /build:laserBlue01.png
 
-#begin Laser_Gun.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Laser_Gun.wav
-
 #begin POL-flight-master-short.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
@@ -97,6 +91,30 @@
 /processorParam:TextureFormat=Color
 /build:BasicEnemy.png
 
+#begin Font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font.spritefont
+
+#begin Jump.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Jump.wav
+
+#begin Laser_Gun.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Laser_Gun.wav
+
+#begin Wound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Wound.wav
 #begin spaceRocketParts_012.png
 /importer:TextureImporter
 /processor:TextureProcessor

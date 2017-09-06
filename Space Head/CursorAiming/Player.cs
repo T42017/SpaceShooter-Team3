@@ -28,6 +28,7 @@ namespace CursorAiming
             BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
             _shotSound = Game.Content.Load<SoundEffect>("Laser_Gun");
             LifeTexture = Game.Content.Load<Texture2D>("spaceRocketParts_012");
+            _damage = Game.Content.Load<SoundEffect>("Jump");
 
             HitBox.Radius = Texture.Width / 2;
             base.LoadContent();

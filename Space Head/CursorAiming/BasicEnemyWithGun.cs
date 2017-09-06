@@ -55,6 +55,7 @@ namespace CursorAiming
             Texture = Game.Content.Load<Texture2D>("BasicEnemy");
             BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
             _shotSound = Game.Content.Load<SoundEffect>("Laser_Gun");
+            _enemyDamage = Game.Content.Load<SoundEffect>("Wound");
 
             HitBox.Radius = Texture.Width / 2;
 

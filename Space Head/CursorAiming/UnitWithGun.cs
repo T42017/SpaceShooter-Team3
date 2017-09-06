@@ -76,6 +76,8 @@ namespace CursorAiming
 
         public Texture2D Texture, BulletTexture, GunTexture;
         public SoundEffect _shotSound;
+        public SoundEffect _damage;
+        public SoundEffect _enemyDamage;
         protected SpriteBatch SpriteBatch { get; private set; }
 
         #endregion
