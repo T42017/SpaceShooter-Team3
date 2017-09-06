@@ -20,7 +20,7 @@ namespace CursorAiming
         private string _totalScore;
         static public GameState _state = GameState.MainMenu;
 
-        private SpriteFont _spriteFont;
+        private SpriteBatch _spriteBatch;
 
         //private States _state;
 

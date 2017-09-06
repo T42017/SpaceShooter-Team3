@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CursorAiming
 {
-    class SpaceHeadBaseComponent : DrawableGameComponent
+    public class SpaceHeadBaseComponent : DrawableGameComponent
     {
         public SpriteBatch SpriteBatch { get; private set; }
         public SpaceHeadGame SpaceHeadGame { get; private set; }
