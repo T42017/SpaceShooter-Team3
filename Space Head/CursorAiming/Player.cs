@@ -5,9 +5,11 @@ using Microsoft.Xna.Framework.Input;
 
 namespace CursorAiming
 {
-    internal class Player : UnitWithGun
+    public class Player : UnitWithGun
     {
-        public Player(int moveSpeed, int bulletSpeed, int bulletDamage, float attackInterval, Game game) : base(game)
+        private Texture2D LifeTexture;
+        public static Vector2 PlayerPosition;
+        public Player(int moveSpeed, int bulletSpeed, int bulletDamage, float attackInterval, UnitType type, UnitType typeToHit, Game game) : base(game)
         {
             MoveSpeed = moveSpeed;
             BulletSpeed = bulletSpeed;
@@ -15,6 +17,9 @@ namespace CursorAiming
             Health = 5;
             AttackInterval = attackInterval;
             Countdown = AttackInterval;
+            Type = type;
+            TypeToHit = typeToHit;
+            Position = new Vector2();
         }
 
         protected override void LoadContent()
@@ -22,7 +27,7 @@ namespace CursorAiming
             Texture = Game.Content.Load<Texture2D>("Player");
             BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
             _shotSound = Game.Content.Load<SoundEffect>("Laser_Gun");
-            lifeTexture = Game.Content.Load<Texture2D>("spaceRocketParts_012");
+            LifeTexture = Game.Content.Load<Texture2D>("spaceRocketParts_012");
 
             HitBox.Radius = Texture.Width / 2;
             base.LoadContent();
@@ -34,10 +39,8 @@ namespace CursorAiming
 
             IsShooting = false;
             UpdateMovement(gameTime);
-
-
             CalculateRotation(new Vector2(mouse.X, mouse.Y));
-
+            PlayerPosition = Position;
 
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                 IsShooting = true;
@@ -82,6 +85,12 @@ namespace CursorAiming
             spriteBatch.Draw(Texture,
                 new Rectangle((int) Position.X, (int) Position.Y, Texture.Width, Texture.Height),
                 null, Color.White, Rotation, new Vector2(Texture.Width / 2, Texture.Height / 2), SpriteEffects.None, 0);
+
+            for (int i = 0; i < Health; i++)
+            {
+                SpriteBatch.Draw(LifeTexture, new Vector2(40 + i * 50, Globals.ScreenHeight - 100), Color.White);
+
+            }
         }
 
         public override void UpdateMovement(GameTime gameTime)

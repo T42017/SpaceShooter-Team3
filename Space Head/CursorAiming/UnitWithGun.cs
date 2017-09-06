@@ -6,11 +6,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CursorAiming
 {
-    internal class UnitWithGun : DrawableGameComponent
+    public class UnitWithGun : DrawableGameComponent
     {
         private Game _game;
         public Bullet Bullet;
         public List<Bullet> BulletsInAir = new List<Bullet>();
+        public UnitType Type, TypeToHit;
 
         public UnitWithGun(Game game) : base(game)
         {
@@ -27,26 +28,34 @@ namespace CursorAiming
         {
             base.Draw(gameTime);
             SpriteBatch.Begin();
-            for (int i = 0; i < Health; i++)
-            {
-                SpriteBatch.Draw(lifeTexture, new Vector2(40 + i * 50, 950), Color.White);
-
-            }
+            
         }
         
         public override void Update(GameTime gameTime)
         {
-            foreach (var bullet in BulletsInAir)
-                bullet.UpdatePosition(gameTime);
+            for(int i = 0; i < BulletsInAir.Count; i++)
+            {
+                BulletsInAir[i].UpdatePosition(gameTime);
+                if (BulletsInAir[i].CheckForCollision(SpaceHeadGame.UnitsOnField))
+                {
+                    BulletsInAir.Remove(BulletsInAir[i]);
+                    i--;
+                }
+            }
 
             HitBox.Middlepoint = Position;
+
+            if (Health <= 0)
+            {
+                SpaceHeadGame.UnitsOnField.Remove(this);
+            }
 
             base.Update(gameTime);
         }
 
         #region variables
 
-        public int Health = 3;
+        public int Health;
         public int MoveSpeed, BulletSpeed, BulletDamage;
         protected bool IsShooting, HasShot;
         public float AttackInterval;
@@ -65,7 +74,7 @@ namespace CursorAiming
 
         #region Sound and textures
 
-        public Texture2D Texture, BulletTexture, GunTexture, lifeTexture;
+        public Texture2D Texture, BulletTexture, GunTexture;
         public SoundEffect _shotSound;
         protected SpriteBatch SpriteBatch { get; private set; }
 
@@ -75,7 +84,7 @@ namespace CursorAiming
 
         public void Shoot(int bulletSpeed, int bulletDamage, SoundEffect sound)
         {
-            Bullet = new Bullet(bulletSpeed, bulletDamage, BulletTexture, Position, AimDirection, Rotation);
+            Bullet = new Bullet(bulletSpeed, bulletDamage, BulletTexture, Position, AimDirection, TypeToHit, Rotation);
             BulletsInAir.Add(Bullet);
             sound.Play(0.3f, 0f, 0f);
         }
@@ -104,7 +113,7 @@ namespace CursorAiming
         #endregion
     }
 
-    internal struct CircleHitBox
+    public struct CircleHitBox
     {
         public Vector2 Middlepoint;
         public int Radius;
@@ -113,5 +122,11 @@ namespace CursorAiming
         {
             return (point - Middlepoint).Length() <= Radius;
         }
+    }
+
+    public enum UnitType
+    {
+        Enemy,
+        Player
     }
 }

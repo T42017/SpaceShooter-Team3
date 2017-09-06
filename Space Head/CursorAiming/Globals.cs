@@ -8,7 +8,7 @@ namespace CursorAiming
 {
     class Globals
     {
-        public static int ScreenWidth = 1000;
-        public static int ScreenHeight = 1000;
+        public static int ScreenWidth = 1500;
+        public static int ScreenHeight = 1100;
     }
 }

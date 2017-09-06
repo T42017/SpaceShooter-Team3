@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
@@ -13,8 +15,9 @@ namespace CursorAiming
 
         private Song _backgroundMusic;
 
-        private UnitWithGun _enemy;
-        private UnitWithGun _player;
+        public static List<UnitWithGun> UnitsOnField = new List<UnitWithGun>();
+
+        
 
         private SpriteBatch _spriteBatch;
 
@@ -29,18 +32,21 @@ namespace CursorAiming
 
         protected override void Initialize()
         {
-            _player = new Player(400, 1000, 1, 0.4f, this) {Position = new Vector2(700, 500)};
-            _enemy = new BasicEnemyWithGun(400, 1000, 1, 0.4f, this) {Position = new Vector2(500, 500)};
-            Components.Add(_player);
-            Components.Add(_enemy);
+             
+            UnitsOnField.Add(new Player(400, 1000, 1, 0.4f, UnitType.Player, UnitType.Enemy, this) { Position = new Vector2(700, 500) });
+            UnitsOnField.Add(new BasicEnemyWithGun(400, 1000, 1, 0.4f, UnitType.Enemy, UnitType.Player, this) { Position = new Vector2(Globals.ScreenWidth / 2, Globals.ScreenHeight / 2) });
+            foreach (var unitWithGun in UnitsOnField)
+            {
+                Components.Add(unitWithGun);
+            }
 
             _state = new States(this);
             Components.Add(_state);
 
             #region windowSettings
 
-            _graphics.PreferredBackBufferWidth = 1000;
-            _graphics.PreferredBackBufferHeight = 1000;
+            _graphics.PreferredBackBufferWidth = Globals.ScreenWidth;
+            _graphics.PreferredBackBufferHeight = Globals.ScreenHeight;
             _graphics.ApplyChanges();
 
             IsMouseVisible = true;
@@ -73,16 +79,8 @@ namespace CursorAiming
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            foreach (var bullet in _enemy.BulletsInAir)
-                if (_player.HitBox.Contains(bullet.Position))
-                    _player.Health--;
-
-            if (_player.HitBox.Contains(_enemy.Position))
-                Exit();
-
             _state.CheckPlayerInput(_gameState);
-
-            _enemy.CalculateRotation(_player.Position);
+                     
         }
 
         protected override void Draw(GameTime gameTime)

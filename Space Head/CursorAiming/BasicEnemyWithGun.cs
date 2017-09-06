@@ -6,14 +6,16 @@ namespace CursorAiming
 {
     internal class BasicEnemyWithGun : UnitWithGun
     {
-        public BasicEnemyWithGun(int moveSpeed, int bulletSpeed, int bulletDamage, float attackInterval,
-            Game game) : base(game)
+        public BasicEnemyWithGun(int moveSpeed, int bulletSpeed, int bulletDamage, float attackInterval, UnitType type, UnitType typeToHit, Game game) : base(game)
         {
             MoveSpeed = moveSpeed;
             BulletSpeed = bulletSpeed;
             BulletDamage = bulletDamage;
             AttackInterval = attackInterval;
             Countdown = AttackInterval;
+            Type = type;
+            TypeToHit = typeToHit;
+            Health = 1;
         }
 
         public override void Draw(GameTime gameTime)
@@ -34,6 +36,7 @@ namespace CursorAiming
             {
                 Countdown -= (float) gameTime.ElapsedGameTime.TotalSeconds;
             }
+            
             else
             {
                 if (DeltaDistance.Length() < 700)
@@ -42,7 +45,7 @@ namespace CursorAiming
                     Countdown = AttackInterval;
                 }
             }
-
+            CalculateRotation(Player.PlayerPosition);
 
             base.Update(gameTime);
         }
