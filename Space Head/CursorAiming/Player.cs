@@ -12,6 +12,7 @@ namespace CursorAiming
             MoveSpeed = moveSpeed;
             BulletSpeed = bulletSpeed;
             BulletDamage = bulletDamage;
+            Health = 5;
             AttackInterval = attackInterval;
             Countdown = AttackInterval;
         }
@@ -21,6 +22,7 @@ namespace CursorAiming
             Texture = Game.Content.Load<Texture2D>("Player");
             BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
             _shotSound = Game.Content.Load<SoundEffect>("Laser_Gun");
+            lifeTexture = Game.Content.Load<Texture2D>("spaceRocketParts_012");
 
             HitBox.Radius = Texture.Width / 2;
             base.LoadContent();
@@ -70,6 +72,7 @@ namespace CursorAiming
             SpriteBatch.End();
 
             base.Draw(gameTime);
+            SpriteBatch.End();
         }
 
         #region OverrideMethods

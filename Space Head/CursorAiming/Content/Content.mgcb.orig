@@ -73,7 +73,11 @@
 /processorParam:TextureFormat=Color
 /build:Background.png
 
+<<<<<<< HEAD
 #begin Player.png
+=======
+#begin spaceRocketParts_012.png
+>>>>>>> feature-Player_HP
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -83,6 +87,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
+<<<<<<< HEAD
 /build:Player.png
 
 #begin BasicEnemy.png
@@ -96,16 +101,7 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:BasicEnemy.png
-
-#begin spaceRocketParts_012.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
+=======
 /build:spaceRocketParts_012.png
+>>>>>>> feature-Player_HP
 

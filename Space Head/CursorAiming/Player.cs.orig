@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -11,103 +7,104 @@ namespace CursorAiming
 {
     internal class Player : UnitWithGun
     {
-       
-        
-            Texture = this.Game.Content.Load<Texture2D>("spaceAstronauts_009"); 
-            BulletTexture = this.Game.Content.Load<Texture2D>("laserBlue01");
-
-        public Player(int _moveSpeed, int _bulletSpeed, int _bulletDamage, Game game) : base(game)
+        public Player(int moveSpeed, int bulletSpeed, int bulletDamage, float attackInterval, Game game) : base(game)
         {
-            MoveSpeed = _moveSpeed;
-            BulletSpeed = _bulletSpeed;
-            Texture = this.Game.Content.Load<Texture2D>("spaceAstronauts_009"); 
-            BulletTexture = this.Game.Content.Load<Texture2D>("laserBlue01");
-            BulletDamage = _bulletDamage;
-            Texture = this.Game.Content.Load<Texture2D>("spaceAstronauts_009");
-            BulletTexture = this.Game.Content.Load<Texture2D>("laserBlue01");
-        }
-
-        public override void UpdateGraphics(SpriteBatch spriteBatch)
-        public Player(int _moveSpeed, int _bulletSpeed, int _bulletDamage, Game game) : base(game)
-        {
-            spriteBatch.Draw(Texture,
-            BulletSpeed = _bulletSpeed;
-            BulletDamage = _bulletDamage;
-                new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height),
-                null, Color.White, Rotation, new Vector2(Texture.Width / 2, Texture.Height / 2), SpriteEffects.None, 0);
-            Texture = this.Game.Content.Load<Texture2D>("spaceAstronauts_009");
-            BulletTexture = this.Game.Content.Load<Texture2D>("laserBlue01");
-        }
-
-        public Player(int _moveSpeed, int _bulletSpeed, int _bulletDamage, Game game) : base(game)
-        {
-<<<<<<< Updated upstream
-            spriteBatch.Draw(Texture,
-            BulletSpeed = _bulletSpeed;
-            BulletDamage = _bulletDamage;
-            Texture = this.Game.Content.Load<Texture2D>("spaceAstronauts_009");
-            BulletTexture = this.Game.Content.Load<Texture2D>("laserBlue01");
-        }
-        public override void UpdateGraphics(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(Texture,
+            MoveSpeed = moveSpeed;
+            BulletSpeed = bulletSpeed;
+            BulletDamage = bulletDamage;
+<<<<<<< HEAD
+            AttackInterval = attackInterval;
+            Countdown = AttackInterval;
 =======
-            Texture = this.Game.Content.Load<Texture2D>("spaceAstronauts_009"); 
-            BulletTexture = this.Game.Content.Load<Texture2D>("laserBlue01");
+            Health = 5;
+>>>>>>> feature-Player_HP
         }
 
-        public Player(int _moveSpeed, int _bulletSpeed, int _bulletDamage, Game game) : base(game)
+        protected override void LoadContent()
         {
-            MoveSpeed = _moveSpeed;
->>>>>>> Stashed changes
-            BulletSpeed = _bulletSpeed;
-            BulletDamage = _bulletDamage;
-            Texture = this.Game.Content.Load<Texture2D>("spaceAstronauts_009");
-            BulletTexture = this.Game.Content.Load<Texture2D>("laserBlue01");
-<<<<<<< Updated upstream
+            Texture = Game.Content.Load<Texture2D>("Player");
+            BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
+            _shotSound = Game.Content.Load<SoundEffect>("Laser_Gun");
+            lifeTexture = Game.Content.Load<Texture2D>("spaceRocketParts_012");
+
+            HitBox.Radius = Texture.Width / 2;
+            base.LoadContent();
         }
+
+        public override void Update(GameTime gameTime)
+        {
+            var mouse = Mouse.GetState();
+
+            IsShooting = false;
+            UpdateMovement(gameTime);
+
+
+            CalculateRotation(new Vector2(mouse.X, mouse.Y));
+
+
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                IsShooting = true;
+
+            if (Countdown > 0)
+            {
+                Countdown -= (float) gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            else
+            {
+                if (IsShooting && !HasShot)
+                {
+                    Shoot(BulletSpeed, BulletDamage, _shotSound);
+                    Countdown = AttackInterval;
+                }
+            }
+
+
+            HasShot = IsShooting;
+            if (Health <= 0) Game.Exit();
+            base.Update(gameTime);
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            SpriteBatch.Begin();
+
+            UpdateGraphics(SpriteBatch);
+
+            foreach (var bullet in BulletsInAir)
+                bullet.UpdateGraphics(SpriteBatch);
+            SpriteBatch.End();
+
+            base.Draw(gameTime);
+            SpriteBatch.End();
+        }
+
+        #region OverrideMethods
+
         public override void UpdateGraphics(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Texture,
-                new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height),
-                null, Color.White, Rotation, new Vector2(Texture.Width / 2, Texture.Height / 2), SpriteEffects.None, 0);
-        }
-=======
-        }
-
-        public override void UpdateGraphics(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(Texture,
-                new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height),
+                new Rectangle((int) Position.X, (int) Position.Y, Texture.Width, Texture.Height),
                 null, Color.White, Rotation, new Vector2(Texture.Width / 2, Texture.Height / 2), SpriteEffects.None, 0);
         }
 
->>>>>>> Stashed changes
         public override void UpdateMovement(GameTime gameTime)
         {
             MoveDirection = new Vector2(0, 0);
             if (Keyboard.GetState().IsKeyDown(Keys.A))
-            {
                 MoveDirection.X += -1;
-            }
             if (Keyboard.GetState().IsKeyDown(Keys.D))
-            {
                 MoveDirection.X += 1;
-            }
             if (Keyboard.GetState().IsKeyDown(Keys.W))
-            {
                 MoveDirection.Y += -1;
-            }
             if (Keyboard.GetState().IsKeyDown(Keys.S))
-            {
                 MoveDirection.Y += 1;
-            }
- 
-            if (MoveDirection.X != 0 && MoveDirection.Y != 0) MoveDirection.Normalize();
+
+            if ((int) MoveDirection.X != 0 && (int) MoveDirection.Y != 0) MoveDirection.Normalize();
 
             Velocity = MoveDirection * (MoveSpeed * gameTime.ElapsedGameTime.Milliseconds / 1000);
             Position += Velocity;
         }
-        
+
+        #endregion
     }
 }
