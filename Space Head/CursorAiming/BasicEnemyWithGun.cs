@@ -39,10 +39,19 @@ namespace CursorAiming
             
             else
             {
-                if (DeltaDistance.Length() < 700)
+                if (DeltaDistance.Length() < 200)
                 {
                     Shoot(BulletSpeed, BulletDamage, _shotSound);
                     Countdown = AttackInterval;
+                }
+                if (DeltaDistance.Length() > 400)
+                {
+                    //MoveSpeed = 1000;
+                    //float dirX = Player.PlayerPosition.X - Position.X;
+                    //float dirY = Player.PlayerPosition.Y - Position.Y;
+                    //float factor = MoveSpeed / (dirX * 2 + dirY * 2);
+                    //Velocity.X = dirX * factor;
+                    //Velocity.Y = dirY * factor;
                 }
             }
             CalculateRotation(Player.PlayerPosition);
