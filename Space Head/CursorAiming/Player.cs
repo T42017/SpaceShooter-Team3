@@ -17,6 +17,9 @@ namespace CursorAiming
             Health = 5;
             AttackInterval = attackInterval;
             Countdown = AttackInterval;
+            DrawOrder = 1;
+            DrawableStates = GameState.Playing | GameState.Paused;
+            UpdatableStates = GameState.Playing;
             Type = type;
             TypeToHit = typeToHit;
             Position = new Vector2();

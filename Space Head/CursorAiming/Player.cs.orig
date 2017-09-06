@@ -14,12 +14,18 @@ namespace CursorAiming
             MoveSpeed = moveSpeed;
             BulletSpeed = bulletSpeed;
             BulletDamage = bulletDamage;
+<<<<<<< HEAD
             Health = 5;
             AttackInterval = attackInterval;
             Countdown = AttackInterval;
             Type = type;
             TypeToHit = typeToHit;
             Position = new Vector2();
+=======
+            DrawOrder = 1;
+            DrawableStates = GameState.Playing | GameState.Paused;
+            UpdatableStates = GameState.Playing;
+>>>>>>> Feature-GameStates
         }
 
         protected override void LoadContent()
@@ -27,13 +33,15 @@ namespace CursorAiming
             Texture = Game.Content.Load<Texture2D>("Player");
             BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
             _shotSound = Game.Content.Load<SoundEffect>("Laser_Gun");
-<<<<<<< HEAD
             LifeTexture = Game.Content.Load<Texture2D>("spaceRocketParts_012");
-=======
             _damage = Game.Content.Load<SoundEffect>("Jump");
->>>>>>> origin/Develop_2.0
 
+<<<<<<< HEAD
             HitBox.Radius = Texture.Width / 2;
+=======
+            
+
+>>>>>>> Feature-GameStates
             base.LoadContent();
         }
 
@@ -43,13 +51,8 @@ namespace CursorAiming
 
             IsShooting = false;
             UpdateMovement(gameTime);
-<<<<<<< HEAD
             CalculateRotation(new Vector2(mouse.X, mouse.Y));
             PlayerPosition = Position;
-=======
-
-            CalculateRotation(new Vector2(mouse.X, mouse.Y));
->>>>>>> origin/Develop_2.0
 
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                 IsShooting = true;

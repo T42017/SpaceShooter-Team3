@@ -8,17 +8,20 @@ namespace CursorAiming
     {
         public BasicEnemyWithGun(int moveSpeed, int bulletSpeed, int bulletDamage, float attackInterval, UnitType type, UnitType typeToHit, Game game) : base(game)
         {
+<<<<<<< HEAD
             MoveSpeed = moveSpeed;
             BulletSpeed = bulletSpeed;
             BulletDamage = bulletDamage;
-            DrawOrder = 3;
-            UpdatableStates = GameState.Playing;
-            DrawableStates = GameState.Playing | GameState.Paused;
             AttackInterval = attackInterval;
             Countdown = AttackInterval;
             Type = type;
             TypeToHit = typeToHit;
             Health = 1;
+=======
+            DrawOrder = 3;
+            UpdatableStates = GameState.Playing;
+            DrawableStates = GameState.Playing | GameState.Paused;
+>>>>>>> Feature-GameStates
         }
 
         public override void Draw(GameTime gameTime)
@@ -55,7 +58,11 @@ namespace CursorAiming
 
         protected override void LoadContent()
         {
+<<<<<<< HEAD
             Texture = Game.Content.Load<Texture2D>("BasicEnemy");
+=======
+            Texture = Game.Content.Load<Texture2D>("Snoicdesu");
+>>>>>>> Feature-GameStates
             BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
             _shotSound = Game.Content.Load<SoundEffect>("Laser_Gun");
             _enemyDamage = Game.Content.Load<SoundEffect>("Wound");

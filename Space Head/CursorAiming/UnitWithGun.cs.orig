@@ -6,7 +6,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CursorAiming
 {
-    public class UnitWithGun : SpaceHeadBaseComponent
+<<<<<<< HEAD
+    public class UnitWithGun : DrawableGameComponent
+=======
+    internal class UnitWithGun : SpaceHeadBaseComponent
+>>>>>>> Feature-GameStates
     {
         public Bullet Bullet;
         public List<Bullet> BulletsInAir = new List<Bullet>();

@@ -48,9 +48,12 @@
     <Compile Include="Globals.cs" />
     <Compile Include="Components\MenuComponent.cs" />
     <Compile Include="Player.cs" />
+<<<<<<< HEAD
     <Compile Include="Points.cs" />
+=======
     <Compile Include="Components\SpaceHeadBaseComponent.cs" />
     <Compile Include="Components\ShopAndUpgradeComponent.cs" />
+>>>>>>> Feature-GameStates
     <Compile Include="SpaceHeadGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

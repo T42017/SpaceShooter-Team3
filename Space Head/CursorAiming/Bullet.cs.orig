@@ -24,8 +24,11 @@ namespace CursorAiming
             Position = startPosition;
             Direction = direction;
             Rotation = rotation;
+<<<<<<< HEAD
             _unitToHit = unitToHit;
+=======
             
+>>>>>>> Feature-GameStates
         }
 
         public void UpdateGraphics(SpriteBatch spriteBatch)
