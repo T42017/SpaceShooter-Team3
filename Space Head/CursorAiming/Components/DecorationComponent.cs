@@ -16,7 +16,7 @@ namespace CursorAiming
         {
             DrawOrder = 1;
             UpdatableStates = GameState.Playing;
-            DrawableStates = GameState.Playing;
+            DrawableStates = GameState.Playing | GameState.Paused;
         }
 
         protected override void LoadContent()

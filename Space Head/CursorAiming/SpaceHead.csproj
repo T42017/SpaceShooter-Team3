@@ -49,6 +49,7 @@
     <Compile Include="Components\MenuComponent.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Components\SpaceHeadBaseComponent.cs" />
+    <Compile Include="Components\ShopAndUpgradeComponent.cs" />
     <Compile Include="SpaceHeadGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

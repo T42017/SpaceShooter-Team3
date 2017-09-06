@@ -8,16 +8,14 @@ namespace CursorAiming
 {
     internal class UnitWithGun : SpaceHeadBaseComponent
     {
-        private Game _game;
         public Bullet Bullet;
         public List<Bullet> BulletsInAir = new List<Bullet>();
 
         public UnitWithGun(Game game) : base(game)
         {
             DrawOrder = 1;
-            DrawableStates = GameState.Playing;
+            DrawableStates = GameState.Playing | GameState.Paused;
             UpdatableStates = GameState.Playing;
-            _game = game;
         }
 
         protected override void LoadContent()

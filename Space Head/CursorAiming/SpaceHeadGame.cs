@@ -20,8 +20,8 @@ namespace CursorAiming
         private UnitWithGun _player;
 
         static public GameState _state = GameState.MainMenu;
-        
-        private SpriteBatch _spriteBatch;
+
+        private SpriteFont _spriteFont;
 
         //private States _state;
 
@@ -62,8 +62,8 @@ namespace CursorAiming
 
             #region windowSettings
 
-            _graphics.PreferredBackBufferWidth = 1000;
-            _graphics.PreferredBackBufferHeight = 1000;
+            _graphics.PreferredBackBufferWidth = Globals.ScreenWidth;
+            _graphics.PreferredBackBufferHeight = Globals.ScreenHeight;
             _graphics.ApplyChanges();
 
             IsMouseVisible = true;
@@ -77,7 +77,6 @@ namespace CursorAiming
 
         protected override void LoadContent()
         {
-            
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _backgroudImage = Content.Load<Texture2D>("Background");
             _backgroundMusic = Content.Load<Song>("POL-flight-master-short");
@@ -101,51 +100,22 @@ namespace CursorAiming
 
             var kbState = Keyboard.GetState();
 
-            //player.IsShooting = false;
-            //{
-            //var mouse = Mouse.GetState();
-            //        state.CheckPlayerInput(_state);
-            //        break;
-            //    case GameState.GameIsRunning:
-            //        break;
-            
-            //    case GameState.GameIsPaused:
+            if (kbState.IsKeyDown(Keys.Space) && _previousKeyboardState.IsKeyUp(Keys.Space))
+            {
+                if (_gameState == GameState.Paused)
+                {
+                    ChangeCurrentGameState(GameState.Playing);
+                }
+                else if (_gameState != GameState.Paused)
+                {
+                    ChangeCurrentGameState(GameState.Paused);
+                }
+            }
+            _enemy.CalculateRotation(_player.Position);
 
-            //        break;
-            //{
-            //    case GameState.GameOver:
+            _previousKeyboardState = kbState;
 
-            //        break;
-
-            //    case GameState.Exit:
-            //        Exit();
-            //        break;
-            //}
-
-            //player.HasShot = player.IsShooting;
-
-            //player.IsShooting = false;
-
-            //var mouse = Mouse.GetState();
-
-            //player.CalculateRotation(new Vector2(mouse.X, mouse.Y));
-
-
-            //if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-            //    player.IsShooting = true;
-
-            //if (player.IsShooting && !player.HasShot) player.Shoot(player.BulletSpeed, player.BulletDamage);
-
-            //foreach (var bullet in player.BulletsInAir)
-            //    bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds / 1000;
-            //foreach (var bullet in enemy.BulletsInAir)
-            //    bullet.Position += bullet.Direction * bullet.Speed * gameTime.ElapsedGameTime.Milliseconds / 1000;
-
-            //enemy.CalculateRotation(player.Position);
-
-            //if (enemy.DeltaDistance.Length() < 700) enemy.Shoot(700, 1);
-
-            //player.HasShot = player.IsShooting;
+            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
@@ -155,12 +125,6 @@ namespace CursorAiming
 
 
             _spriteBatch.Begin();
-
-            switch (_state)
-            {
-                case GameState.MainMenu:
-                    break;
-            }
 
             //_spriteBatch.Draw(_backgroudImage, GraphicsDevice.Viewport.Bounds, Color.DarkGreen);
 

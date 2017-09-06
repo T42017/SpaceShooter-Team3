@@ -10,7 +10,7 @@ namespace CursorAiming
         {
             DrawOrder = 3;
             UpdatableStates = GameState.Playing;
-            DrawableStates = GameState.Playing;
+            DrawableStates = GameState.Playing | GameState.Paused;
         }
 
         public override void Draw(GameTime gameTime)
@@ -35,7 +35,7 @@ namespace CursorAiming
 
         protected override void LoadContent()
         {
-            Texture = Game.Content.Load<Texture2D>("spaceAstronauts_009");
+            Texture = Game.Content.Load<Texture2D>("Snoicdesu");
             BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
             _shotSound = Game.Content.Load<SoundEffect>("Laser_Gun");
 

@@ -25,8 +25,6 @@ namespace CursorAiming
             
         }
 
-       
-
         public void UpdateGraphics(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Texture,

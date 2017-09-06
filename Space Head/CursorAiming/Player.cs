@@ -13,7 +13,7 @@ namespace CursorAiming
             BulletSpeed = bulletSpeed;
             BulletDamage = bulletDamage;
             DrawOrder = 1;
-            DrawableStates = GameState.Playing;
+            DrawableStates = GameState.Playing | GameState.Paused;
             UpdatableStates = GameState.Playing;
         }
 
