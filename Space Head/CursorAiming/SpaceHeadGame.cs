@@ -27,7 +27,8 @@ namespace CursorAiming
             _graphics = new GraphicsDeviceManager(this);
 
             Content.RootDirectory = "Content";
-            template1 = new BasicEnemyWithGun(new Gun(new Bullet(700, 1), "PlayerGun1", "laserBlue01", this), 400, 10,
+
+            template1 = new BasicEnemyWithGun(new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.player,  this), 400, 10,
                 1d, "BasicEnemy");
         }
 
@@ -39,9 +40,10 @@ namespace CursorAiming
             foreach (var unitWithGun in EnemyUnitsOnField)
             {
                 Components.Add(unitWithGun);
+                Components.Add(unitWithGun.Gun);
             }
 
-            player = new Player(400, 5, 0.4f, new Gun(new Bullet(700, 1), "PlayerGun1", "laserBlue01", this), this);
+            player = new Player(400, 5, 0.4f, new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.enemy, this), this);
             Components.Add(player);
             Components.Add(player.Gun);
 
@@ -103,5 +105,11 @@ namespace CursorAiming
 
             base.Draw(gameTime);
         }
+    }
+
+    public enum UnitType
+    {
+        enemy,
+        player
     }
 }

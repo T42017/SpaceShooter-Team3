@@ -1,19 +1,26 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace CursorAiming
 {
     public class Bullet
     {
+        private UnitType _typeToHit;
         public int Damage, Speed;
         public Vector2 Direction, Position;
         public float Rotation;
         public Texture2D Texture;
 
-        public Bullet(int speed, int damage)
+        public Bullet(int speed, int damage, Vector2 direction, Vector2 position, float rotation, Texture2D texture, UnitType typeToHit)
         {
             Speed = speed;
             Damage = damage;
+            Direction = direction;
+            Position = position;
+            Rotation = rotation;
+            Texture = texture;
+            _typeToHit = typeToHit;
         }
 
 
@@ -30,26 +37,27 @@ namespace CursorAiming
             Position += Direction * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000;
         }
 
-        
+        public bool CheckForEnemyCollision(List<Enemy> UnitsToCollideWith)
+        {
+            foreach (var unitToCollideWith in UnitsToCollideWith)
+                if (_typeToHit == unitToCollideWith.Type)
+                    if (unitToCollideWith.Hitbox.Contains(Position))
+                    {
+                        unitToCollideWith.Health -= Damage;
 
+                        return true;
+                    }
+            return false;
+        }
 
-        //            if (unitToCollideWith.HitBox.Contains(Position))
-        //        {
-        //        if (_unitToHit == unitToCollideWith.Type)
-        //    {
-        //    foreach (var unitToCollideWith in UnitsToCollideWith)
-        //{
-
-        //public bool CheckForCollision(List<UnitWithGun> UnitsToCollideWith)
-        //            {
-        //                unitToCollideWith.Health -= Damage;
-        //                return true;
-        //            }
-
-        //        }
-
-        //    }
-        //    return false;
-        //}
+        public bool CheckForPlayerCollision()
+        {
+            if (Player.Hitbox.Contains(Position))
+            {
+                Player.Health--;
+                return true;
+            }
+            return false;
+        }
     }
 }

@@ -6,28 +6,31 @@ namespace CursorAiming
 {
     public class Gun : DrawableGameComponent
     {
-        private readonly Bullet _bullet;
         private readonly string _bulletTexturePath;
+        private readonly int _damage;
+        private readonly int _shotSpeed;
         private readonly string _texturePath;
-        private readonly List<Bullet> bulletsInAir = new List<Bullet>();
-        private Texture2D _texture;
+        public List<Bullet> bulletsInAir = new List<Bullet>();
+        private Texture2D _texture, _bulletTexture;
         public Vector2 Position, AimDirection;
+        private UnitType _typeToHit;
 
         public float Rotation;
         private SpriteBatch spriteBatch;
 
-        public Gun(Bullet bullet, string gunTexturePath, string bulletTexturePath, Game game) : base(game)
+        public Gun(string gunTexturePath, string bulletTexturePath, int damage, int shotSpeed, UnitType typeToHit, Game game) : base(game)
         {
-            _bullet = bullet;
             _texturePath = gunTexturePath;
             _bulletTexturePath = bulletTexturePath;
+            _damage = damage;
+            _shotSpeed = shotSpeed;
+            DrawOrder = 10;
+            _typeToHit = typeToHit;
         }
 
         public void Shoot()
         {
-            _bullet.Direction = AimDirection;
-            _bullet.Position = Position;
-            bulletsInAir.Add(_bullet);
+            bulletsInAir.Add(new Bullet(_shotSpeed, _damage, AimDirection, Position, Rotation, _bulletTexture, _typeToHit));
         }
 
         public void UpdateGraphics(SpriteBatch spriteBatch)
@@ -40,28 +43,24 @@ namespace CursorAiming
 
         public void UpdatePosition()
         {
-            
         }
 
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(Game.GraphicsDevice);
             _texture = Game.Content.Load<Texture2D>(_texturePath);
-            _bullet.Texture = Game.Content.Load<Texture2D>(_bulletTexturePath);
+            _bulletTexture = Game.Content.Load<Texture2D>(_bulletTexturePath);
 
             base.LoadContent();
         }
 
         public override void Draw(GameTime gameTime)
         {
-            
             spriteBatch.Begin();
 
             UpdateGraphics(spriteBatch);
-            foreach (Bullet bullet in bulletsInAir)
-            {
+            foreach (var bullet in bulletsInAir)
                 bullet.UpdateGraphics(spriteBatch);
-            }
 
 
             spriteBatch.End();
@@ -70,11 +69,6 @@ namespace CursorAiming
 
         public override void Update(GameTime gameTime)
         {
-            foreach (Bullet bullet in bulletsInAir)
-            {
-                bullet.UpdatePosition(gameTime);
-            }
-
             base.Update(gameTime);
         }
     }

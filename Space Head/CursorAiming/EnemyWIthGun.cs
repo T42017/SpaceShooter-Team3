@@ -5,9 +5,6 @@ namespace CursorAiming
 {
     internal class EnemyWIthGun : Enemy
     {
-        public Gun Gun;
-
-
         public EnemyWIthGun(BasicEnemyWithGun template, Game game) : base(game)
         {
             Gun = template.Gun;
@@ -21,6 +18,7 @@ namespace CursorAiming
         {
             SpriteBatch = new SpriteBatch(Game.GraphicsDevice);
             UnitTexture = Game.Content.Load<Texture2D>(TexturePath);
+            Hitbox = new CircleHitBox(Position, UnitTexture.Width / 2);
             base.LoadContent();
         }
 
@@ -36,11 +34,20 @@ namespace CursorAiming
 
         public override void Update(GameTime gameTime)
         {
-            Hitbox.MiddlePoint = Position;
-
+            Gun.AimDirection = AimDirection;
+            Gun.Rotation = Rotation;
+            Gun.Position = Position;
 
             if (Health <= 0)
             {
+            }
+
+            Gun.Shoot();
+            for (var i = 0; i < Gun.bulletsInAir.Count; i++)
+            {
+                Gun.bulletsInAir[i].UpdatePosition(gameTime);
+                if (Gun.bulletsInAir[i].CheckForPlayerCollision())
+                    Gun.bulletsInAir.Remove(Gun.bulletsInAir[i]);
             }
 
             base.Update(gameTime);

@@ -13,14 +13,14 @@ namespace CursorAiming
         private readonly double _attackSpeed;
 
         private readonly int _moveSpeed;
+        public readonly Gun Gun;
         private Vector2 _aimDirection;
         private double _countDownTilNextAttack;
 
         private SoundEffect _damage;
         private Vector2 _deltaDistance;
-        public readonly Gun Gun;
 
-        private CircleHitBox _hitbox;
+        public static CircleHitBox Hitbox;
 
         private bool _isShooting, _hasShot;
         private Texture2D _lifeTexture;
@@ -29,6 +29,8 @@ namespace CursorAiming
         private float _rotation;
         private SpriteBatch _spriteBatch;
         private Vector2 _velocity;
+
+        public UnitType Type = UnitType.enemy;
 
         public Player(int moveSpeed, int health, float attackSpeed, Gun gun, Game game) : base(game)
         {
@@ -49,20 +51,23 @@ namespace CursorAiming
             _lifeTexture = Game.Content.Load<Texture2D>("spaceRocketParts_012");
             _damage = Game.Content.Load<SoundEffect>("Jump");
 
-            _hitbox.Radius = _playerTexture.Width / 2;
+            Hitbox = new CircleHitBox(PlayerPosition, _playerTexture.Width / 2);
             base.LoadContent();
         }
 
         public override void Update(GameTime gameTime)
         {
             var mouse = Mouse.GetState();
+            Hitbox.MiddlePoint = PlayerPosition;
 
             _isShooting = false;
             UpdateMovement(gameTime);
             CalculateRotation(new Vector2(mouse.X, mouse.Y));
 
             Gun.AimDirection = _aimDirection;
-            Gun.Position = PlayerPosition;
+            Gun.Rotation = _rotation;
+            Gun.Position = PlayerPosition + new Vector2(_aimDirection.X * (_playerTexture.Width + 5),
+                               _aimDirection.Y * (_playerTexture.Width + 5));
 
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                 _isShooting = true;
@@ -75,13 +80,21 @@ namespace CursorAiming
             {
                 if (_isShooting && !_hasShot)
                 {
-                    Shoot();
+                    Gun.Shoot();
                     _countDownTilNextAttack = _attackSpeed;
                 }
             }
 
 
             _hasShot = _isShooting;
+
+            for (var i = 0; i < Gun.bulletsInAir.Count; i++)
+            {
+                Gun.bulletsInAir[i].UpdatePosition(gameTime);
+                if (Gun.bulletsInAir[i].CheckForEnemyCollision(SpaceHeadGame.EnemyUnitsOnField))
+                    Gun.bulletsInAir.Remove(Gun.bulletsInAir[i]);
+            }
+
             if (Health <= 0) Game.Exit();
             base.Update(gameTime);
         }
@@ -95,10 +108,6 @@ namespace CursorAiming
             _aimDirection = tempDeltaDistance;
         }
 
-        public void Shoot()
-        {           
-            Gun.Shoot();
-        }
 
         public override void Draw(GameTime gameTime)
         {

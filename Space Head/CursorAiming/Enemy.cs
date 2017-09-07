@@ -9,10 +9,11 @@ namespace CursorAiming
         protected double AttackSpeed;
         protected double CountDownTilNextAttack;
         protected Vector2 DeltaDistance;
+        public Gun Gun;
+        public int Health;
+        public UnitType Type = UnitType.enemy; 
 
-        protected int Health;
-
-        protected CircleHitBox Hitbox;
+        public CircleHitBox Hitbox;
 
         protected bool IsShooting, HasShot;
         protected int MoveSpeed;
@@ -27,6 +28,7 @@ namespace CursorAiming
         public Enemy(Game game) : base(game)
         {
             Position = new Vector2(500, 500);
+
         }
 
         protected override void LoadContent()
@@ -43,10 +45,14 @@ namespace CursorAiming
         public override void Update(GameTime gameTime)
         {
             Hitbox.MiddlePoint = Position;
+
+
             CalculateRotation(Player.PlayerPosition);
             if (Health <= 0)
             {
+                SpaceHeadGame.EnemyUnitsOnField.Remove(this);
             }
+
 
             base.Update(gameTime);
         }
@@ -60,8 +66,14 @@ namespace CursorAiming
             AimDirection = tempDeltaDistance;
         }
 
+
         public virtual void UpdateGraphics(SpriteBatch spriteBatch)
         {
+            spriteBatch.Draw(UnitTexture,
+                new Rectangle((int) Position.X, (int) Position.Y, UnitTexture.Width,
+                    UnitTexture.Height),
+                null, Color.White, Rotation, new Vector2(UnitTexture.Width / 2, UnitTexture.Height / 2),
+                SpriteEffects.None, 0);
         }
 
         public virtual void UpdateMovement(GameTime gameTime)
