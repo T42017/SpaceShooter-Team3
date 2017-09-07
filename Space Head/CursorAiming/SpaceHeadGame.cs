@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -9,34 +8,43 @@ namespace CursorAiming
 {
     public class SpaceHeadGame : Game
     {
+        public static List<Enemy> EnemyUnitsOnField = new List<Enemy>();
         private readonly GameState _gameState = GameState.MainMenu;
         private readonly GraphicsDeviceManager _graphics;
+
+        private readonly BasicEnemyWithGun template1;
         private Texture2D _backgroudImage;
         private Song _backgroundMusic;
-        public static List<UnitWithGun> UnitsOnField = new List<UnitWithGun>();
-
-        private string _totalScore;
+        private SpriteFont _font;
         private SpriteBatch _spriteBatch;
         private States _state;
-        private SpriteFont _font;
+
+        private string _totalScore;
+        private Player player;
 
         public SpaceHeadGame()
         {
             _graphics = new GraphicsDeviceManager(this);
 
             Content.RootDirectory = "Content";
+            template1 = new BasicEnemyWithGun(new Gun(new Bullet(700, 1), "PlayerGun1", "laserBlue01", this), 400, 10,
+                1d, "BasicEnemy");
         }
 
         protected override void Initialize()
         {
-             _totalScore = "0";
-            UnitsOnField.Add(new Player(400, 1000, 1, 0.4f, UnitType.Player, UnitType.Enemy, this) { Position = new Vector2(700, 500) });
-            UnitsOnField.Add(new BasicEnemyWithGun(400, 1000, 1, 0.4f, UnitType.Enemy, UnitType.Player, this) { Position = new Vector2(Globals.ScreenWidth / 2, Globals.ScreenHeight / 2) });
-            foreach (var unitWithGun in UnitsOnField)
-            {           
+            _totalScore = "0";
+            EnemyUnitsOnField.Add(new EnemyWIthGun(template1, this));
+
+            foreach (var unitWithGun in EnemyUnitsOnField)
+            {
                 Components.Add(unitWithGun);
             }
-            
+
+            player = new Player(400, 5, 0.4f, new Gun(new Bullet(700, 1), "PlayerGun1", "laserBlue01", this), this);
+            Components.Add(player);
+            Components.Add(player.Gun);
+
             _state = new States(this);
             Components.Add(_state);
 

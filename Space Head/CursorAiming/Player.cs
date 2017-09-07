@@ -1,36 +1,55 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace CursorAiming
 {
-    public class Player : UnitWithGun
+    public class Player : DrawableGameComponent
     {
-        private Texture2D LifeTexture;
         public static Vector2 PlayerPosition;
-        public Player(int moveSpeed, int bulletSpeed, int bulletDamage, float attackInterval, UnitType type, UnitType typeToHit, Game game) : base(game)
+        public static int Health;
+        private readonly double _attackSpeed;
+
+        private readonly int _moveSpeed;
+        private Vector2 _aimDirection;
+        private double _countDownTilNextAttack;
+
+        private SoundEffect _damage;
+        private Vector2 _deltaDistance;
+        public readonly Gun Gun;
+
+        private CircleHitBox _hitbox;
+
+        private bool _isShooting, _hasShot;
+        private Texture2D _lifeTexture;
+        private Vector2 _moveDirection;
+        private Texture2D _playerTexture;
+        private float _rotation;
+        private SpriteBatch _spriteBatch;
+        private Vector2 _velocity;
+
+        public Player(int moveSpeed, int health, float attackSpeed, Gun gun, Game game) : base(game)
         {
-            MoveSpeed = moveSpeed;
-            BulletSpeed = bulletSpeed;
-            BulletDamage = bulletDamage;
-            Health = 5;
-            AttackInterval = attackInterval;
-            Countdown = AttackInterval;
-            Type = type;
-            TypeToHit = typeToHit;
-            Position = new Vector2();
+            _moveSpeed = moveSpeed;
+            Health = health;
+            _attackSpeed = attackSpeed;
+            _countDownTilNextAttack = _attackSpeed;
+            Gun = gun;
+            DrawOrder = 10;
+
+            PlayerPosition = new Vector2(Globals.ScreenWidth / 2, Globals.ScreenHeight / 2);
         }
 
         protected override void LoadContent()
         {
-            Texture = Game.Content.Load<Texture2D>("Player");
-            BulletTexture = Game.Content.Load<Texture2D>("laserBlue01");
-            _shotSound = Game.Content.Load<SoundEffect>("Laser_Gun");
-            LifeTexture = Game.Content.Load<Texture2D>("spaceRocketParts_012");
+            _spriteBatch = new SpriteBatch(Game.GraphicsDevice);
+            _playerTexture = Game.Content.Load<Texture2D>("Player");
+            _lifeTexture = Game.Content.Load<Texture2D>("spaceRocketParts_012");
             _damage = Game.Content.Load<SoundEffect>("Jump");
 
-            HitBox.Radius = Texture.Width / 2;
+            _hitbox.Radius = _playerTexture.Width / 2;
             base.LoadContent();
         }
 
@@ -38,78 +57,90 @@ namespace CursorAiming
         {
             var mouse = Mouse.GetState();
 
-            IsShooting = false;
+            _isShooting = false;
             UpdateMovement(gameTime);
             CalculateRotation(new Vector2(mouse.X, mouse.Y));
-            PlayerPosition = Position;
+
+            Gun.AimDirection = _aimDirection;
+            Gun.Position = PlayerPosition;
 
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-                IsShooting = true;
+                _isShooting = true;
 
-            if (Countdown > 0)
+            if (_countDownTilNextAttack > 0)
             {
-                Countdown -= (float) gameTime.ElapsedGameTime.TotalSeconds;
+                _countDownTilNextAttack -= (float) gameTime.ElapsedGameTime.TotalSeconds;
             }
             else
             {
-                if (IsShooting && !HasShot)
+                if (_isShooting && !_hasShot)
                 {
-                    Shoot(BulletSpeed, BulletDamage, _shotSound);
-                    Countdown = AttackInterval;
+                    Shoot();
+                    _countDownTilNextAttack = _attackSpeed;
                 }
             }
 
 
-            HasShot = IsShooting;
+            _hasShot = _isShooting;
             if (Health <= 0) Game.Exit();
             base.Update(gameTime);
         }
 
+        public void CalculateRotation(Vector2 objectToPointAt)
+        {
+            _deltaDistance = objectToPointAt - PlayerPosition;
+            _rotation = (float) Math.Atan2(_deltaDistance.Y, _deltaDistance.X);
+            var tempDeltaDistance = _deltaDistance;
+            tempDeltaDistance.Normalize();
+            _aimDirection = tempDeltaDistance;
+        }
+
+        public void Shoot()
+        {           
+            Gun.Shoot();
+        }
+
         public override void Draw(GameTime gameTime)
         {
-            SpriteBatch.Begin();
+            _spriteBatch.Begin();
 
-            UpdateGraphics(SpriteBatch);
+            UpdateGraphics(_spriteBatch);
 
-            foreach (var bullet in BulletsInAir)
-                bullet.UpdateGraphics(SpriteBatch);
-            SpriteBatch.End();
+            _spriteBatch.End();
 
             base.Draw(gameTime);
-            SpriteBatch.End();
         }
 
         #region OverrideMethods
 
-        public override void UpdateGraphics(SpriteBatch spriteBatch)
+        public void UpdateGraphics(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture,
-                new Rectangle((int) Position.X, (int) Position.Y, Texture.Width, Texture.Height),
-                null, Color.White, Rotation, new Vector2(Texture.Width / 2, Texture.Height / 2), SpriteEffects.None, 0);
+            spriteBatch.Draw(_playerTexture,
+                new Rectangle((int) PlayerPosition.X, (int) PlayerPosition.Y, _playerTexture.Width,
+                    _playerTexture.Height),
+                null, Color.White, _rotation, new Vector2(_playerTexture.Width / 2, _playerTexture.Height / 2),
+                SpriteEffects.None, 0);
 
-            for (int i = 0; i < Health; i++)
-            {
-                SpriteBatch.Draw(LifeTexture, new Vector2(40 + i * 50, Globals.ScreenHeight - 100), Color.White);
-
-            }
+            for (var i = 0; i < Health; i++)
+                _spriteBatch.Draw(_lifeTexture, new Vector2(40 + i * 50, Globals.ScreenHeight - 100), Color.White);
         }
 
-        public override void UpdateMovement(GameTime gameTime)
+        public void UpdateMovement(GameTime gameTime)
         {
-            MoveDirection = new Vector2(0, 0);
+            _moveDirection = new Vector2(0, 0);
             if (Keyboard.GetState().IsKeyDown(Keys.A))
-                MoveDirection.X += -1;
+                _moveDirection.X += -1;
             if (Keyboard.GetState().IsKeyDown(Keys.D))
-                MoveDirection.X += 1;
+                _moveDirection.X += 1;
             if (Keyboard.GetState().IsKeyDown(Keys.W))
-                MoveDirection.Y += -1;
+                _moveDirection.Y += -1;
             if (Keyboard.GetState().IsKeyDown(Keys.S))
-                MoveDirection.Y += 1;
+                _moveDirection.Y += 1;
 
-            if ((int) MoveDirection.X != 0 && (int) MoveDirection.Y != 0) MoveDirection.Normalize();
+            if ((int) _moveDirection.X != 0 && (int) _moveDirection.Y != 0) _moveDirection.Normalize();
 
-            Velocity = MoveDirection * (MoveSpeed * gameTime.ElapsedGameTime.Milliseconds / 1000);
-            Position += Velocity;
+            _velocity = _moveDirection * (_moveSpeed * gameTime.ElapsedGameTime.Milliseconds / 1000);
+            PlayerPosition += _velocity;
         }
 
         #endregion
