@@ -11,6 +11,7 @@ namespace CursorAiming
             MoveSpeed = template.MoveSpeed;
             Health = template.Health;
             AttackSpeed = template.AttackSpeed;
+            CountDownTilNextAttack = AttackSpeed;
             TexturePath = template.TexturePath;
         }
 
@@ -36,18 +37,45 @@ namespace CursorAiming
         {
             Gun.AimDirection = AimDirection;
             Gun.Rotation = Rotation;
-            Gun.Position = Position;
+            Gun.Position = Position + new Vector2(AimDirection.X * (UnitTexture.Width + 5),
+                               AimDirection.Y * (UnitTexture.Width + 5));
 
             if (Health <= 0)
             {
             }
 
-            Gun.Shoot();
+            if (CountDownTilNextAttack > 0)
+            {
+                CountDownTilNextAttack -= (float) gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            else
+            {
+                Gun.Shoot();
+                CountDownTilNextAttack = AttackSpeed;
+            }
+
             for (var i = 0; i < Gun.bulletsInAir.Count; i++)
             {
                 Gun.bulletsInAir[i].UpdatePosition(gameTime);
                 if (Gun.bulletsInAir[i].CheckForPlayerCollision())
                     Gun.bulletsInAir.Remove(Gun.bulletsInAir[i]);
+            }
+
+            if (DeltaDistance.Length() > 200)
+            {
+                MoveDirection = Player.PlayerPosition - Position;
+                MoveDirection.Normalize();
+
+                Velocity = MoveDirection * (int) (MoveSpeed * gameTime.ElapsedGameTime.TotalSeconds);
+                Position += Velocity;
+            }
+            else if (DeltaDistance.Length() < 190)
+            {
+                MoveDirection = Player.PlayerPosition - Position;
+                MoveDirection.Normalize();
+
+                Velocity = MoveDirection * (int) (MoveSpeed * gameTime.ElapsedGameTime.TotalSeconds);
+                Position -= Velocity;
             }
 
             base.Update(gameTime);

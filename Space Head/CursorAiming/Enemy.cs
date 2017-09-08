@@ -4,14 +4,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CursorAiming
 {
-    public class Enemy : DrawableGameComponent
+    public class Enemy : SpaceHeadBaseComponent
     {
         protected double AttackSpeed;
         protected double CountDownTilNextAttack;
         protected Vector2 DeltaDistance;
         public Gun Gun;
         public int Health;
-        public UnitType Type = UnitType.enemy; 
 
         public CircleHitBox Hitbox;
 
@@ -22,13 +21,18 @@ namespace CursorAiming
 
         protected SpriteBatch SpriteBatch;
         protected string TexturePath;
+        public UnitType Type = UnitType.Enemy;
         protected Texture2D UnitTexture;
 
 
         public Enemy(Game game) : base(game)
         {
             Position = new Vector2(500, 500);
+            DrawOrder = 2;
 
+            DrawableStates = GameState.Playing | GameState.Paused | GameState.ShopUpgradeMenu;
+
+            UpdatableStates = GameState.Playing;
         }
 
         protected override void LoadContent()
@@ -49,9 +53,7 @@ namespace CursorAiming
 
             CalculateRotation(Player.PlayerPosition);
             if (Health <= 0)
-            {
                 SpaceHeadGame.EnemyUnitsOnField.Remove(this);
-            }
 
 
             base.Update(gameTime);

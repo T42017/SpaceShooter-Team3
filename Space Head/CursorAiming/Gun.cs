@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CursorAiming
 {
-    public class Gun : DrawableGameComponent
+    public class Gun : SpaceHeadBaseComponent
     {
         private readonly string _bulletTexturePath;
         private readonly int _damage;
@@ -24,8 +24,13 @@ namespace CursorAiming
             _bulletTexturePath = bulletTexturePath;
             _damage = damage;
             _shotSpeed = shotSpeed;
-            DrawOrder = 10;
             _typeToHit = typeToHit;
+
+            DrawOrder = 2;
+
+            DrawableStates = GameState.Playing | GameState.Paused | GameState.ShopUpgradeMenu;
+
+            UpdatableStates = GameState.Playing;
         }
 
         public void Shoot()
@@ -61,7 +66,6 @@ namespace CursorAiming
             UpdateGraphics(spriteBatch);
             foreach (var bullet in bulletsInAir)
                 bullet.UpdateGraphics(spriteBatch);
-
 
             spriteBatch.End();
             base.Draw(gameTime);

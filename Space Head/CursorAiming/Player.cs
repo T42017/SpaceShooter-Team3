@@ -6,10 +6,12 @@ using Microsoft.Xna.Framework.Input;
 
 namespace CursorAiming
 {
-    public class Player : DrawableGameComponent
+    public class Player : SpaceHeadBaseComponent
     {
         public static Vector2 PlayerPosition;
         public static int Health;
+
+        public static CircleHitBox Hitbox;
         private readonly double _attackSpeed;
 
         private readonly int _moveSpeed;
@@ -20,8 +22,6 @@ namespace CursorAiming
         private SoundEffect _damage;
         private Vector2 _deltaDistance;
 
-        public static CircleHitBox Hitbox;
-
         private bool _isShooting, _hasShot;
         private Texture2D _lifeTexture;
         private Vector2 _moveDirection;
@@ -30,7 +30,7 @@ namespace CursorAiming
         private SpriteBatch _spriteBatch;
         private Vector2 _velocity;
 
-        public UnitType Type = UnitType.enemy;
+        public UnitType Type = UnitType.Player;
 
         public Player(int moveSpeed, int health, float attackSpeed, Gun gun, Game game) : base(game)
         {
@@ -39,7 +39,7 @@ namespace CursorAiming
             _attackSpeed = attackSpeed;
             _countDownTilNextAttack = _attackSpeed;
             Gun = gun;
-            DrawOrder = 10;
+
             DrawOrder = 1;
             DrawableStates = GameState.Playing | GameState.Paused | GameState.ShopUpgradeMenu;
 
@@ -93,7 +93,7 @@ namespace CursorAiming
             if (Health <= 0)
             {
                 SpaceHeadGame.ChangeCurrentGameState(GameState.GameOver);
-                Health = 1;
+                Health = 5;
             }
 
             for (var i = 0; i < Gun.bulletsInAir.Count; i++)
@@ -136,10 +136,10 @@ namespace CursorAiming
                     _playerTexture.Height),
                 null, Color.White, _rotation, new Vector2(_playerTexture.Width / 2, _playerTexture.Height / 2),
                 SpriteEffects.None, 0);
-                SpriteBatch.Draw(LifeTexture, new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + (Globals.ScreenHeight * 0.01f)), Color.White);
 
             for (var i = 0; i < Health; i++)
-                _spriteBatch.Draw(_lifeTexture, new Vector2(40 + i * 50, Globals.ScreenHeight - 100), Color.White);
+                spriteBatch.Draw(_lifeTexture,
+                    new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + Globals.ScreenHeight * 0.01f), Color.White);
         }
 
         public void UpdateMovement(GameTime gameTime)

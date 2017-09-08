@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CursorAiming
 {
@@ -15,7 +11,6 @@ namespace CursorAiming
         Paused = 4,
         MainMenu = 8,
         ShopUpgradeMenu = 16,
-        GameOver = 32,
-        All = Loading | Playing | Paused
+        GameOver = 32
     }
 }
