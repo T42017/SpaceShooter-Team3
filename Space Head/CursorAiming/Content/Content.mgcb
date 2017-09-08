@@ -117,6 +117,7 @@
 /build:spaceRocketParts_012.png
 
 #begin exitGameIcon.jpg
+#begin PlayerGun1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -127,6 +128,7 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:exitGameIcon.jpg
+/build:PlayerGun1.png
 
 #begin survivalModeIcon.jpg
 /importer:TextureImporter

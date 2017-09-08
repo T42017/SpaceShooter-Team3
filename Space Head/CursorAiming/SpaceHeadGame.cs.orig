@@ -1,5 +1,10 @@
-﻿using System.Collections.Generic;
+<<<<<<< HEAD
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+=======
+﻿using System.Collections.Generic;
+>>>>>>> Feature-enemies
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -9,23 +14,38 @@ namespace CursorAiming
 {
     public class SpaceHeadGame : Game
     {
+<<<<<<< HEAD
         private GameState _gameState;
+=======
         public static List<Enemy> EnemyUnitsOnField = new List<Enemy>();
+        private readonly GameState _gameState = GameState.MainMenu;
+>>>>>>> Feature-enemies
         private readonly GraphicsDeviceManager _graphics;
 
         private readonly BasicEnemyWithGun template1;
         private Texture2D _backgroudImage;
         private KeyboardState _previousKeyboardState;
         private Song _backgroundMusic;
-        private SpriteFont _font;
+<<<<<<< HEAD
+        public static List<UnitWithGun> UnitsOnField = new List<UnitWithGun>();
+
+        
         static public GameState _state = GameState.MainMenu;
 
         private SpriteBatch _spriteBatch;
 
+        //private States _state;
+
+
+        
+=======
+        private SpriteFont _font;
+        private SpriteBatch _spriteBatch;
+        private States _state;
 
         private string _totalScore;
         private Player player;
-        
+>>>>>>> Feature-enemies
 
         public SpaceHeadGame()
         {
@@ -52,27 +72,40 @@ namespace CursorAiming
 
         protected override void Initialize()
         {
+<<<<<<< HEAD
             UnitsOnField.Add(new Player(300, 700, 1, 0.4f, UnitType.Player, UnitType.Enemy, this) { Position = new Vector2(700, 500) });
-            EnemyUnitsOnField.Add(new EnemyWIthGun(template1, this));
-
-            foreach (var unitWithGun in EnemyUnitsOnField)
-           {
-                Components.Add(unitWithGun);
-                Components.Add(unitWithGun.Gun);
-            }
-
+            UnitsOnField.Add(new BasicEnemyWithGun(150, 400, 1, 1f, UnitType.Enemy, UnitType.Player, this) { Position = new Vector2(Globals.ScreenWidth / 2, Globals.ScreenHeight / 2) });
             Components.Add(new UIComponent(this));
             Components.Add(new EnviornmentComponent(this));
             Components.Add(new MenuComponent(this));
             Components.Add(new ShopAndUpgradeComponent(this));
             Components.Add(new GameOverComponent(this));
             
+            foreach (var unitWithGun in UnitsOnField)
+            {           
+=======
+            _totalScore = "0";
+            EnemyUnitsOnField.Add(new EnemyWIthGun(template1, this));
+
+            foreach (var unitWithGun in EnemyUnitsOnField)
+            {
+>>>>>>> Feature-enemies
+                Components.Add(unitWithGun);
+                Components.Add(unitWithGun.Gun);
+            }
+<<<<<<< HEAD
             
+            //_state = new States(this);
+            //Components.Add(_state);
+=======
 
             player = new Player(400, 5, 0.4f, new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.enemy, this), this);
             Components.Add(player);
             Components.Add(player.Gun);
 
+            _state = new States(this);
+            Components.Add(_state);
+>>>>>>> Feature-enemies
 
             #region windowSettings
 

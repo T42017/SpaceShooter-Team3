@@ -41,23 +41,33 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BasicEnemyWithGun.cs" />
     <Compile Include="Bullet.cs" />
-    <Compile Include="Components\DecorationComponent.cs" />
+<<<<<<< HEAD
+    <Compile Include="Components\EnvironmentComponent.cs" />
+    <Compile Include="Components\GameOverComponent.cs" />
     <Compile Include="GameStates.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Components\MenuComponent.cs" />
-    <Compile Include="Player.cs" />
-<<<<<<< HEAD
-    <Compile Include="Points.cs" />
 =======
+    <Compile Include="Enemy.cs" />
+    <Compile Include="EnemyWIthGun.cs" />
+    <Compile Include="Globals.cs" />
+    <Compile Include="Gun.cs" />
+    <Compile Include="Hitboxes.cs" />
+>>>>>>> Feature-enemies
+    <Compile Include="Player.cs" />
+    <Compile Include="Points.cs" />
     <Compile Include="Components\SpaceHeadBaseComponent.cs" />
     <Compile Include="Components\ShopAndUpgradeComponent.cs" />
->>>>>>> Feature-GameStates
     <Compile Include="SpaceHeadGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+<<<<<<< HEAD
+    <Compile Include="Components\UIComponent.cs" />
     <Compile Include="UnitWithGun.cs" />
+=======
+    <Compile Include="States.cs" />
+>>>>>>> Feature-enemies
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
