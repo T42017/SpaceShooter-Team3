@@ -8,26 +8,33 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CursorAiming
 {
-    class DecorationComponent : SpaceHeadBaseComponent
+    class EnviornmentComponent : SpaceHeadBaseComponent
     {
         private Texture2D _backgroundTexture2D;
+        private SpriteFont _font;
 
-        public DecorationComponent(Game game) : base(game)
+        private int _currentPlayerLevel, _currentGoldAmount;
+
+        private string _totalScore;
+
+        public EnviornmentComponent(Game game) : base(game)
         {
+            _totalScore = "0";
             DrawOrder = 1;
             UpdatableStates = GameState.Playing;
-            DrawableStates = GameState.Playing | GameState.Paused;
+            DrawableStates = GameState.Playing | GameState.Paused | GameState.ShopUpgradeMenu;
         }
 
         protected override void LoadContent()
         {
+            _font = Game.Content.Load<SpriteFont>("Font");
             _backgroundTexture2D = Game.Content.Load<Texture2D>("Background");
             base.LoadContent();
         }
 
         public override void Update(GameTime gameTime)
         {
-            
+            _totalScore = Points.Score.ToString();
 
             base.Update(gameTime);
         }
@@ -36,7 +43,7 @@ namespace CursorAiming
         {
             SpriteBatch.Begin();
 
-            SpriteBatch.Draw(_backgroundTexture2D, GraphicsDevice.Viewport.Bounds, Color.AliceBlue);
+            SpriteBatch.Draw(_backgroundTexture2D, GraphicsDevice.Viewport.Bounds, Color.White);
 
             SpriteBatch.End();
 

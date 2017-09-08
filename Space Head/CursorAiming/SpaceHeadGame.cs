@@ -17,7 +17,7 @@ namespace CursorAiming
         private Song _backgroundMusic;
         public static List<UnitWithGun> UnitsOnField = new List<UnitWithGun>();
 
-        private string _totalScore;
+        
         static public GameState _state = GameState.MainMenu;
 
         private SpriteBatch _spriteBatch;
@@ -25,7 +25,7 @@ namespace CursorAiming
         //private States _state;
 
 
-        private SpriteFont _font;
+        
 
         public SpaceHeadGame()
         {
@@ -49,11 +49,13 @@ namespace CursorAiming
 
         protected override void Initialize()
         {
-             _totalScore = "0";
-            UnitsOnField.Add(new Player(400, 1000, 1, 0.4f, UnitType.Player, UnitType.Enemy, this) { Position = new Vector2(700, 500) });
-            UnitsOnField.Add(new BasicEnemyWithGun(400, 1000, 1, 0.4f, UnitType.Enemy, UnitType.Player, this) { Position = new Vector2(Globals.ScreenWidth / 2, Globals.ScreenHeight / 2) });
-            Components.Add(new DecorationComponent(this));
+            UnitsOnField.Add(new Player(300, 700, 1, 0.4f, UnitType.Player, UnitType.Enemy, this) { Position = new Vector2(700, 500) });
+            UnitsOnField.Add(new BasicEnemyWithGun(150, 400, 1, 1f, UnitType.Enemy, UnitType.Player, this) { Position = new Vector2(Globals.ScreenWidth / 2, Globals.ScreenHeight / 2) });
+            Components.Add(new UIComponent(this));
+            Components.Add(new EnviornmentComponent(this));
             Components.Add(new MenuComponent(this));
+            Components.Add(new ShopAndUpgradeComponent(this));
+            Components.Add(new GameOverComponent(this));
             
             foreach (var unitWithGun in UnitsOnField)
             {           
@@ -83,9 +85,8 @@ namespace CursorAiming
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _backgroudImage = Content.Load<Texture2D>("Background");
             _backgroundMusic = Content.Load<Song>("POL-flight-master-short");
-            _font = Content.Load<SpriteFont>("Font");
             MediaPlayer.Play(_backgroundMusic);
-            MediaPlayer.Volume = 0.1f;
+            MediaPlayer.Volume = 0.5f;
             MediaPlayer.IsRepeating = true;
             base.LoadContent();
         }
@@ -104,8 +105,8 @@ namespace CursorAiming
 
             var kbState = Keyboard.GetState();
 
-            _totalScore = Points.Score.ToString();
-            if (kbState.IsKeyDown(Keys.Space) && _previousKeyboardState.IsKeyUp(Keys.Space))
+            
+            if (kbState.IsKeyDown(Keys.P) && _previousKeyboardState.IsKeyUp(Keys.P))
             {
                 if (_gameState == GameState.Paused)
                 {
@@ -116,6 +117,28 @@ namespace CursorAiming
                     ChangeCurrentGameState(GameState.Paused);
                 }
             }
+
+            if (kbState.IsKeyDown(Keys.Space) && _previousKeyboardState.IsKeyUp(Keys.Space))
+            {
+                if (_gameState == GameState.GameOver)
+                {
+                    ChangeCurrentGameState(GameState.MainMenu);
+                }
+            }
+
+            if (kbState.IsKeyDown(Keys.B) && _previousKeyboardState.IsKeyUp(Keys.B))
+            {
+                if (_gameState == GameState.ShopUpgradeMenu)
+                {
+                    ChangeCurrentGameState(GameState.Playing);
+                }
+                else if (_gameState != GameState.ShopUpgradeMenu)
+                {
+                    ChangeCurrentGameState(GameState.ShopUpgradeMenu);
+                }
+            }
+
+
 
             _previousKeyboardState = kbState;
 
@@ -131,7 +154,6 @@ namespace CursorAiming
             _spriteBatch.Begin();
 
             //_spriteBatch.Draw(_backgroudImage, GraphicsDevice.Viewport.Bounds, Color.DarkGreen);
-            _spriteBatch.DrawString(_font, _totalScore, new Vector2(35, 20), Color.Aqua);
 
             _spriteBatch.End();
 

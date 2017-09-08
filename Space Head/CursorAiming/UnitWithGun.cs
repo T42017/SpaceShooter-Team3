@@ -15,7 +15,7 @@ namespace CursorAiming
         public UnitWithGun(Game game) : base(game)
         {
             DrawOrder = 1;
-            DrawableStates = GameState.Playing | GameState.Paused;
+            DrawableStates = GameState.Playing | GameState.Paused | GameState.ShopUpgradeMenu;
             UpdatableStates = GameState.Playing;
         }
 

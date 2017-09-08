@@ -48,6 +48,22 @@ namespace CursorAiming
                     Countdown = AttackInterval;
                 }
             }
+            if (DeltaDistance.Length() > 200)
+            {
+                MoveDirection = Player.PlayerPosition - Position;
+                MoveDirection.Normalize();
+
+                Velocity = MoveDirection * (int)(MoveSpeed * gameTime.ElapsedGameTime.TotalSeconds);
+                Position += Velocity;
+            }
+            else if (DeltaDistance.Length() < 190)
+            {
+                MoveDirection = Player.PlayerPosition - Position;
+                MoveDirection.Normalize();
+
+                Velocity = MoveDirection * (int)(MoveSpeed * gameTime.ElapsedGameTime.TotalSeconds);
+                Position -= Velocity;
+            }
             CalculateRotation(Player.PlayerPosition);
 
             base.Update(gameTime);

@@ -14,11 +14,11 @@ namespace CursorAiming
             MoveSpeed = moveSpeed;
             BulletSpeed = bulletSpeed;
             BulletDamage = bulletDamage;
-            Health = 5;
+            Health = 9;
             AttackInterval = attackInterval;
             Countdown = AttackInterval;
             DrawOrder = 1;
-            DrawableStates = GameState.Playing | GameState.Paused;
+            DrawableStates = GameState.Playing | GameState.Paused | GameState.ShopUpgradeMenu;
             UpdatableStates = GameState.Playing;
             Type = type;
             TypeToHit = typeToHit;
@@ -64,7 +64,11 @@ namespace CursorAiming
 
 
             HasShot = IsShooting;
-            if (Health <= 0) Game.Exit();
+            if (Health <= 0)
+            {
+                SpaceHeadGame.ChangeCurrentGameState(GameState.GameOver);
+                Health = 1;
+            }
             base.Update(gameTime);
         }
 
@@ -92,7 +96,7 @@ namespace CursorAiming
 
             for (int i = 0; i < Health; i++)
             {
-                SpriteBatch.Draw(LifeTexture, new Vector2(40 + i * 50, Globals.ScreenHeight - 100), Color.White);
+                SpriteBatch.Draw(LifeTexture, new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + (Globals.ScreenHeight * 0.01f)), Color.White);
 
             }
         }
