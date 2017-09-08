@@ -7,14 +7,16 @@ namespace CursorAiming
 {
     public class Player : UnitWithGun
     {
-        private Texture2D LifeTexture;
         public static Vector2 PlayerPosition;
-        public Player(int moveSpeed, int bulletSpeed, int bulletDamage, float attackInterval, UnitType type, UnitType typeToHit, Game game) : base(game)
+        private Texture2D LifeTexture;
+
+        public Player(int moveSpeed, int bulletSpeed, int bulletDamage, float attackInterval, UnitType type,
+            UnitType typeToHit, Game game) : base(game)
         {
             MoveSpeed = moveSpeed;
             BulletSpeed = bulletSpeed;
             BulletDamage = bulletDamage;
-            Health = 5;
+            Health = 1000;
             AttackInterval = attackInterval;
             Countdown = AttackInterval;
             Type = type;
@@ -87,11 +89,8 @@ namespace CursorAiming
                 new Rectangle((int) Position.X, (int) Position.Y, Texture.Width, Texture.Height),
                 null, Color.White, Rotation, new Vector2(Texture.Width / 2, Texture.Height / 2), SpriteEffects.None, 0);
 
-            for (int i = 0; i < Health; i++)
-            {
+            for (var i = 0; i < Health; i++)
                 SpriteBatch.Draw(LifeTexture, new Vector2(40 + i * 50, Globals.ScreenHeight - 100), Color.White);
-
-            }
         }
 
         public override void UpdateMovement(GameTime gameTime)

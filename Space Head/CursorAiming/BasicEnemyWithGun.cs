@@ -6,7 +6,8 @@ namespace CursorAiming
 {
     internal class BasicEnemyWithGun : UnitWithGun
     {
-        public BasicEnemyWithGun(int moveSpeed, int bulletSpeed, int bulletDamage, float attackInterval, UnitType type, UnitType typeToHit, Game game) : base(game)
+        public BasicEnemyWithGun(int moveSpeed, int bulletSpeed, int bulletDamage, float attackInterval, UnitType type,
+            UnitType typeToHit, Game game) : base(game)
         {
             MoveSpeed = moveSpeed;
             BulletSpeed = bulletSpeed;
@@ -36,23 +37,31 @@ namespace CursorAiming
             {
                 Countdown -= (float) gameTime.ElapsedGameTime.TotalSeconds;
             }
-            
+
             else
             {
-                if (DeltaDistance.Length() < 200)
+                if (DeltaDistance.Length() < 300)
                 {
                     Shoot(BulletSpeed, BulletDamage, _shotSound);
                     Countdown = AttackInterval;
                 }
-                if (DeltaDistance.Length() > 400)
-                {
-                    //MoveSpeed = 1000;
-                    //float dirX = Player.PlayerPosition.X - Position.X;
-                    //float dirY = Player.PlayerPosition.Y - Position.Y;
-                    //float factor = MoveSpeed / (dirX * 2 + dirY * 2);
-                    //Velocity.X = dirX * factor;
-                    //Velocity.Y = dirY * factor;
-                }
+            }
+
+            if (DeltaDistance.Length() > 200)
+            {
+                MoveDirection = Player.PlayerPosition - Position;
+                MoveDirection.Normalize();
+
+                Velocity = MoveDirection * (int) (MoveSpeed * gameTime.ElapsedGameTime.TotalSeconds);
+                Position += Velocity;
+            }
+            else if (DeltaDistance.Length() < 190)
+            {
+                MoveDirection = Player.PlayerPosition - Position;
+                MoveDirection.Normalize();
+
+                Velocity = MoveDirection * (int) (MoveSpeed * gameTime.ElapsedGameTime.TotalSeconds);
+                Position -= Velocity;
             }
             CalculateRotation(Player.PlayerPosition);
 
