@@ -18,7 +18,6 @@ namespace CursorAiming
         protected Vector2 MoveDirection, Velocity, AimDirection;
         public float Rotation;
 
-        protected SpriteBatch SpriteBatch;
         protected string TexturePath;
         public UnitType Type = UnitType.Enemy;
         protected Texture2D UnitTexture;
@@ -36,7 +35,6 @@ namespace CursorAiming
 
         protected override void LoadContent()
         {
-            SpriteBatch = new SpriteBatch(Game.GraphicsDevice);
             Hitbox = new RectangleHitBox(UnitTexture.Width);
             base.LoadContent();
         }

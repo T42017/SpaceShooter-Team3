@@ -22,7 +22,6 @@ namespace CursorAiming
 
         protected override void LoadContent()
         {
-            SpriteBatch = new SpriteBatch(Game.GraphicsDevice);
             UnitTexture = Game.Content.Load<Texture2D>(TexturePath);
             base.LoadContent();
         }

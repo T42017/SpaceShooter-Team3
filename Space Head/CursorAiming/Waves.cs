@@ -27,10 +27,11 @@ namespace CursorAiming
             _rng = new Random();
             var newEnemyPosition = Vector2.Zero;
             newEnemyPosition.X = _rng.Next(0, 1280);    
-            newEnemyPosition.Y = _rng.Next(0, 1280);      
+            newEnemyPosition.Y = _rng.Next(0, 1280);
 
-            var spawnedEnemies = new EnemyWithGun(new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Player, Game), 200, 2, 1d, "BasicEnemy", Game);
-            spawnedEnemies.Position = newEnemyPosition;
+            var spawnedEnemies = new EnemyWithGun(new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Player, Game),
+                200, 2, 1d, "BasicEnemy", Game) {Position = newEnemyPosition};
+
             EnemyUnitsOnField.Add(spawnedEnemies);
 
             _spawnTimer = new Timer(_rng.Next(500, 500));
