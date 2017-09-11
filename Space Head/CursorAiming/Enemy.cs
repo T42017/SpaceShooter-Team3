@@ -9,12 +9,10 @@ namespace CursorAiming
         protected double AttackSpeed;
         protected double CountDownTilNextAttack;
         protected Vector2 DeltaDistance;
-        public Gun Gun;
         public int Health;
 
-        public CircleHitBox Hitbox;
+        public RectangleHitBox Hitbox;
 
-        protected bool IsShooting, HasShot;
         protected int MoveSpeed;
         protected Vector2 Position, MoveDirection, Velocity, AimDirection;
         protected float Rotation;
@@ -38,6 +36,7 @@ namespace CursorAiming
         protected override void LoadContent()
         {
             SpriteBatch = new SpriteBatch(Game.GraphicsDevice);
+            Hitbox = new RectangleHitBox(UnitTexture.Width);
             base.LoadContent();
         }
 
@@ -48,8 +47,7 @@ namespace CursorAiming
 
         public override void Update(GameTime gameTime)
         {
-            Hitbox.MiddlePoint = Position;
-
+            Hitbox.UpdatePosition(Position);
 
             CalculateRotation(Player.PlayerPosition);
             if (Health <= 0)

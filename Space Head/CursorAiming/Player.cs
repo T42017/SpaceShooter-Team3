@@ -11,7 +11,7 @@ namespace CursorAiming
         public static Vector2 PlayerPosition;
         public static int Health;
 
-        public static CircleHitBox Hitbox;
+        public static Rectangle Hitbox;
         private readonly double _attackSpeed;
 
         private readonly int _moveSpeed;
@@ -22,7 +22,7 @@ namespace CursorAiming
         private SoundEffect _damage;
         private Vector2 _deltaDistance;
 
-        private bool _isShooting, _hasShot;
+        private bool _isShooting;
         private Texture2D _lifeTexture;
         private Vector2 _moveDirection;
         private Texture2D _playerTexture;
@@ -54,14 +54,16 @@ namespace CursorAiming
             _lifeTexture = Game.Content.Load<Texture2D>("spaceRocketParts_012");
             _damage = Game.Content.Load<SoundEffect>("Jump");
 
-            Hitbox = new CircleHitBox(PlayerPosition, _playerTexture.Width / 2);
+            Hitbox = new Rectangle((int) PlayerPosition.X - _playerTexture.Width / 2,
+                (int) PlayerPosition.Y - _playerTexture.Height / 2, _playerTexture.Width, _playerTexture.Height);
             base.LoadContent();
         }
 
         public override void Update(GameTime gameTime)
         {
             var mouse = Mouse.GetState();
-            Hitbox.MiddlePoint = PlayerPosition;
+            Hitbox.Location = new Point((int) PlayerPosition.X - _playerTexture.Width / 2,
+                (int) PlayerPosition.Y - _playerTexture.Height / 2);
 
             _isShooting = false;
             UpdateMovement(gameTime);
@@ -76,12 +78,10 @@ namespace CursorAiming
                 _isShooting = true;
 
             if (_countDownTilNextAttack > 0)
-            {
                 _countDownTilNextAttack -= (float) gameTime.ElapsedGameTime.TotalSeconds;
-            }
-            else
+            //else
             {
-                if (_isShooting && !_hasShot)
+                if (_isShooting)
                 {
                     Gun.Shoot();
                     _countDownTilNextAttack = _attackSpeed;
@@ -89,7 +89,6 @@ namespace CursorAiming
             }
 
 
-            _hasShot = _isShooting;
             if (Health <= 0)
             {
                 SpaceHeadGame.ChangeCurrentGameState(GameState.GameOver);

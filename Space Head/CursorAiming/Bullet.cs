@@ -6,13 +6,15 @@ namespace CursorAiming
 {
     public class Bullet
     {
-        private UnitType _typeToHit;
+        private readonly UnitType _typeToHit;
         public int Damage, Speed;
         public Vector2 Direction, Position;
         public float Rotation;
         public Texture2D Texture;
 
-        public Bullet(int speed, int damage, Vector2 direction, Vector2 position, float rotation, Texture2D texture, UnitType typeToHit)
+
+        public Bullet(int speed, int damage, Vector2 direction, Vector2 position, float rotation, Texture2D texture,
+            UnitType typeToHit)
         {
             Speed = speed;
             Damage = damage;
@@ -21,8 +23,8 @@ namespace CursorAiming
             Rotation = rotation;
             Texture = texture;
             _typeToHit = typeToHit;
-
         }
+
         public void UpdateGraphics(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Texture,
@@ -33,16 +35,16 @@ namespace CursorAiming
 
         public void UpdatePosition(GameTime gameTime)
         {
-            Position += Direction * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000;
+            Position += Direction * (int) (Speed * gameTime.ElapsedGameTime.TotalSeconds);
         }
 
         public bool CheckForEnemyCollision(List<Enemy> UnitsToCollideWith)
         {
             foreach (var unitToCollideWith in UnitsToCollideWith)
                 if (_typeToHit == unitToCollideWith.Type)
-                    if (unitToCollideWith.Hitbox.Contains(Position))
+                    if (unitToCollideWith.Hitbox.CollidesWith(Position))
                     {
-                        unitToCollideWith.Health -= Damage;
+                        unitToCollideWith.Health = Damage;
 
                         return true;
                     }
@@ -52,10 +54,7 @@ namespace CursorAiming
         public bool CheckForPlayerCollision()
         {
             if (Player.Hitbox.Contains(Position))
-            {
-                Player.Health--;
                 return true;
-            }
             return false;
         }
     }

@@ -5,6 +5,8 @@ namespace CursorAiming
 {
     internal class EnemyWIthGun : Enemy
     {
+        private readonly Gun Gun;
+
         public EnemyWIthGun(BasicEnemyWithGun template, Game game) : base(game)
         {
             Gun = template.Gun;
@@ -13,13 +15,14 @@ namespace CursorAiming
             AttackSpeed = template.AttackSpeed;
             CountDownTilNextAttack = AttackSpeed;
             TexturePath = template.TexturePath;
+            Game.Components.Add(this);
+            //Game.Components.Add(Gun);
         }
 
         protected override void LoadContent()
         {
             SpriteBatch = new SpriteBatch(Game.GraphicsDevice);
             UnitTexture = Game.Content.Load<Texture2D>(TexturePath);
-            Hitbox = new CircleHitBox(Position, UnitTexture.Width / 2);
             base.LoadContent();
         }
 
@@ -48,7 +51,7 @@ namespace CursorAiming
             {
                 CountDownTilNextAttack -= (float) gameTime.ElapsedGameTime.TotalSeconds;
             }
-            else
+            else if (DeltaDistance.Length() < 300)
             {
                 Gun.Shoot();
                 CountDownTilNextAttack = AttackSpeed;

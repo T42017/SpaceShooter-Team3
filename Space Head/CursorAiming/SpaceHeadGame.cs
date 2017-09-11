@@ -49,13 +49,11 @@ namespace CursorAiming
         protected override void Initialize()
         {
             player = new Player(400, 5, 0.4f, new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Enemy, this), this);
+
             EnemyUnitsOnField.Add(new EnemyWIthGun(template1, this));
 
-            foreach (var unitWithGun in EnemyUnitsOnField)
-            {
-                Components.Add(unitWithGun);
-                Components.Add(unitWithGun.Gun);
-            }
+            EnemyUnitsOnField.Add(new EnemyWIthGun(template1, this));
+
 
             Components.Add(new UIComponent(this));
             Components.Add(new EnviornmentComponent(this));
