@@ -10,6 +10,7 @@ namespace CursorAiming
         protected double CountDownTilNextAttack;
         protected Vector2 DeltaDistance;
         public int Health;
+        protected int PointValue, XpValue, CoinValue; 
 
         public RectangleHitBox Hitbox;
 
@@ -53,7 +54,7 @@ namespace CursorAiming
             {
                 Game.Components.Remove(this);
                 Waves.EnemyUnitsOnField.Remove(this);
-
+                Die();
             }
             base.Update(gameTime);
         }
@@ -80,22 +81,14 @@ namespace CursorAiming
         public virtual void UpdateMovement(GameTime gameTime)
         {
         }
-    }
 
-    public struct BasicEnemyWithGun
-    {
-        public Gun Gun;
-        public int MoveSpeed, Health;
-        public string TexturePath;
-        public double AttackSpeed;
-
-        public BasicEnemyWithGun(Gun gun, int moveSpeed, int health, double attackSpeed, string texturePath)
+        public void Die()
         {
-            Gun = gun;
-            MoveSpeed = moveSpeed;
-            Health = health;
-            AttackSpeed = attackSpeed;
-            TexturePath = texturePath;
+            Player.XP += XpValue;
+            Player.Coins += CoinValue;
+            Player.Points += PointValue;
         }
+
     }
+
 }

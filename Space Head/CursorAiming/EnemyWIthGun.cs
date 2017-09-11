@@ -7,7 +7,7 @@ namespace CursorAiming
     {
         private readonly Gun Gun;
 
-        public EnemyWithGun(Gun gun, int moveSpeed, int health, double attackSpeed, string texturePath,
+        public EnemyWithGun(Gun gun, int moveSpeed, int health, double attackSpeed, string texturePath, int pointValue, int xpValue, int coinValue,
             Game game) : base(game)
         {
             Gun = gun;
@@ -16,8 +16,13 @@ namespace CursorAiming
             AttackSpeed = attackSpeed;
             CountDownTilNextAttack = AttackSpeed;
             TexturePath = texturePath;
+            PointValue = pointValue;
+            XpValue = xpValue;
+            CoinValue = coinValue;
             Game.Components.Add(this);
             Game.Components.Add(Gun);
+
+            DrawOrder = 10000;
         }
 
         protected override void LoadContent()
@@ -41,6 +46,8 @@ namespace CursorAiming
             if (Health <= 0)
                 Game.Components.Remove(Gun);
 
+            UpdateMovement(gameTime);
+
             Gun.AimDirection = AimDirection;
             Gun.Rotation = Rotation;
             Gun.Position = Position + new Vector2(AimDirection.X * (UnitTexture.Width + 5),
@@ -63,22 +70,7 @@ namespace CursorAiming
                     Gun.bulletsInAir.Remove(Gun.bulletsInAir[i]);
             }
 
-            if (DeltaDistance.Length() > 200)
-            {
-                MoveDirection = Player.PlayerPosition - Position;
-                MoveDirection.Normalize();
-
-                Velocity = MoveDirection * (int) (MoveSpeed * gameTime.ElapsedGameTime.TotalSeconds);
-                Position += Velocity;
-            }
-            else if (DeltaDistance.Length() < 190)
-            {
-                MoveDirection = Player.PlayerPosition - Position;
-                MoveDirection.Normalize();
-
-                Velocity = MoveDirection * (int) (MoveSpeed * gameTime.ElapsedGameTime.TotalSeconds);
-                Position -= Velocity;
-            }
+            
 
             base.Update(gameTime);
         }
@@ -96,6 +88,22 @@ namespace CursorAiming
 
         public override void UpdateMovement(GameTime gameTime)
         {
+            if (DeltaDistance.Length() > 200)
+            {
+                MoveDirection = Player.PlayerPosition - Position;
+                MoveDirection.Normalize();
+
+                Velocity = MoveDirection * (int)(MoveSpeed * gameTime.ElapsedGameTime.TotalSeconds);
+                Position += Velocity;
+            }
+            else if (DeltaDistance.Length() < 190)
+            {
+                MoveDirection = Player.PlayerPosition - Position;
+                MoveDirection.Normalize();
+
+                Velocity = MoveDirection * (int)(MoveSpeed * gameTime.ElapsedGameTime.TotalSeconds);
+                Position -= Velocity;
+            }
             base.UpdateMovement(gameTime);
         }
     }

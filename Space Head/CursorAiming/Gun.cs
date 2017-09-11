@@ -10,15 +10,16 @@ namespace CursorAiming
         private readonly int _damage;
         private readonly int _shotSpeed;
         private readonly string _texturePath;
-        public List<Bullet> bulletsInAir = new List<Bullet>();
+        private readonly UnitType _typeToHit;
         private Texture2D _texture, _bulletTexture;
+        public List<Bullet> bulletsInAir = new List<Bullet>();
         public Vector2 Position, AimDirection;
-        private UnitType _typeToHit;
 
         public float Rotation;
         private SpriteBatch spriteBatch;
 
-        public Gun(string gunTexturePath, string bulletTexturePath, int damage, int shotSpeed, UnitType typeToHit, Game game) : base(game)
+        public Gun(string gunTexturePath, string bulletTexturePath, int damage, int shotSpeed, UnitType typeToHit,
+            Game game) : base(game)
         {
             _texturePath = gunTexturePath;
             _bulletTexturePath = bulletTexturePath;
@@ -26,7 +27,7 @@ namespace CursorAiming
             _shotSpeed = shotSpeed;
             _typeToHit = typeToHit;
 
-            DrawOrder = 2;
+            DrawOrder = 3;
 
             DrawableStates = GameState.Playing | GameState.Paused | GameState.ShopUpgradeMenu;
 
@@ -35,7 +36,8 @@ namespace CursorAiming
 
         public void Shoot()
         {
-            bulletsInAir.Add(new Bullet(_shotSpeed, _damage, AimDirection, Position, Rotation, _bulletTexture, _typeToHit));
+            bulletsInAir.Add(new Bullet(_shotSpeed, _damage, AimDirection, Position, Rotation, _bulletTexture,
+                _typeToHit));
         }
 
         public void UpdateGraphics(SpriteBatch spriteBatch)

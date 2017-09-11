@@ -32,6 +32,9 @@ namespace CursorAiming
 
         public UnitType Type = UnitType.Player;
 
+        public static int XP;
+        public static int Points { get; set; }
+        public static int Coins { get; set; }
         public Player(int moveSpeed, int health, float attackSpeed, Gun gun, Game game) : base(game)
         {
             _moveSpeed = moveSpeed;
@@ -46,6 +49,8 @@ namespace CursorAiming
             PlayerPosition = new Vector2(Globals.ScreenWidth / 2, Globals.ScreenHeight / 2);
             UpdatableStates = GameState.Playing;
         }
+
+        
 
         protected override void LoadContent()
         {
@@ -79,7 +84,7 @@ namespace CursorAiming
 
             if (_countDownTilNextAttack > 0)
                 _countDownTilNextAttack -= (float) gameTime.ElapsedGameTime.TotalSeconds;
-            //else
+            else
             {
                 if (_isShooting)
                 {

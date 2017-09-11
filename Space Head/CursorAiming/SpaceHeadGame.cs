@@ -42,7 +42,7 @@ namespace CursorAiming
 
         protected override void Initialize()
         {
-            player = new Player(400, 5, 0.4f, new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Enemy, this), this);
+            player = new Player(310, 5, 0.4f, new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Enemy, this), this);
             Wave = new Waves(this);
 
             Components.Add(new UIComponent(this));
@@ -50,7 +50,6 @@ namespace CursorAiming
             Components.Add(new MenuComponent(this));
             Components.Add(new ShopAndUpgradeComponent(this));
             Components.Add(new GameOverComponent(this));
-
 
             Components.Add(player);
             Components.Add(player.Gun);
