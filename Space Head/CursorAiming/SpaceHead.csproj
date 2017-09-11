@@ -52,6 +52,7 @@
     <Compile Include="Gun.cs" />
     <Compile Include="Hitboxes.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="PlayerGun.cs" />
     <Compile Include="Points.cs" />
     <Compile Include="Components\SpaceHeadBaseComponent.cs" />
     <Compile Include="Components\ShopAndUpgradeComponent.cs" />

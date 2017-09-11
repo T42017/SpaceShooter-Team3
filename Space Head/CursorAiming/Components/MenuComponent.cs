@@ -11,11 +11,8 @@ namespace CursorAiming
 {
     class MenuComponent : SpaceHeadBaseComponent
     {
-        private Random rnd = new Random();
+        private Texture2D _survivalModeButton, _exitGameButton, _menuBackground;
 
-        private Texture2D _survivalModeButton, _exitGameButton;
-        
-        
         private Vector2 _survivalModeButtonPos = Vector2.Zero;
         private Vector2 _exitGameButtonPos = Vector2.Zero;
 
@@ -38,6 +35,7 @@ namespace CursorAiming
 
         protected override void LoadContent()
         {
+            _menuBackground = Game.Content.Load<Texture2D>("gameOverBackground");
             _survivalModeButton = Game.Content.Load<Texture2D>("survivalModeIcon");
             _exitGameButton = Game.Content.Load<Texture2D>("exitGameIcon");
             _font = Game.Content.Load<SpriteFont>("Font");
@@ -60,7 +58,8 @@ namespace CursorAiming
         public override void Draw(GameTime gameTime)
         {
             SpriteBatch.Begin();
-            
+
+            SpriteBatch.Draw(_menuBackground, GraphicsDevice.Viewport.Bounds, Color.White);
             SpriteBatch.DrawString(_font, "Space Head", new Vector2(Globals.ScreenWidth/2 - _titleTextMeasure.X/2, Globals.ScreenHeight * 0.3f), Color.Green);
             SpriteBatch.Draw(_survivalModeButton, _survivalModeButtonPos, Color.AliceBlue);
             SpriteBatch.Draw(_exitGameButton, _exitGameButtonPos, Color.AliceBlue);

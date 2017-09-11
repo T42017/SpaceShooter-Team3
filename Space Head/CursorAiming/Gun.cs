@@ -7,7 +7,7 @@ namespace CursorAiming
     public class Gun : SpaceHeadBaseComponent
     {
         private readonly string _bulletTexturePath;
-        private readonly int _damage;
+        protected int Damage;
         private readonly int _shotSpeed;
         private readonly string _texturePath;
         public List<Bullet> bulletsInAir = new List<Bullet>();
@@ -22,7 +22,7 @@ namespace CursorAiming
         {
             _texturePath = gunTexturePath;
             _bulletTexturePath = bulletTexturePath;
-            _damage = damage;
+            Damage = damage;
             _shotSpeed = shotSpeed;
             _typeToHit = typeToHit;
 
@@ -35,7 +35,7 @@ namespace CursorAiming
 
         public void Shoot()
         {
-            bulletsInAir.Add(new Bullet(_shotSpeed, _damage, AimDirection, Position, Rotation, _bulletTexture, _typeToHit));
+            bulletsInAir.Add(new Bullet(_shotSpeed, Damage, AimDirection, Position, Rotation, _bulletTexture, _typeToHit));
         }
 
         public void UpdateGraphics(SpriteBatch spriteBatch)

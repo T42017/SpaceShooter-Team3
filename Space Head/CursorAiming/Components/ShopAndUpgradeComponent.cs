@@ -10,6 +10,8 @@ namespace CursorAiming
 {
     class ShopAndUpgradeComponent : SpaceHeadBaseComponent
     {
+        private Texture2D _menuBackground;
+
         private int _currentPlayerLevel, _currentGoldAmount;
         private SpriteFont _font;
 
@@ -25,6 +27,7 @@ namespace CursorAiming
 
         protected override void LoadContent()
         {
+            _menuBackground = Game.Content.Load<Texture2D>("gameOverBackground");
             _font = Game.Content.Load<SpriteFont>("Font");
 
             base.LoadContent();
@@ -41,6 +44,7 @@ namespace CursorAiming
         {
             SpriteBatch.Begin();
 
+            SpriteBatch.Draw(_menuBackground, GraphicsDevice.Viewport.Bounds, Color.White);
             SpriteBatch.DrawString(_font, "Gold:" + _currentGoldAmount, new Vector2(0, 50), Color.Khaki);
             SpriteBatch.DrawString(_font, "Level:" + _currentPlayerLevel, new Vector2(0, 100), Color.Khaki);
 

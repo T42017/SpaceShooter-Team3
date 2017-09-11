@@ -42,6 +42,7 @@ namespace CursorAiming
 
             if (Health <= 0)
             {
+                Player.PlayerGoldAmount += 2;
             }
 
             if (CountDownTilNextAttack > 0)

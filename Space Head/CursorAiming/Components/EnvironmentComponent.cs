@@ -22,7 +22,7 @@ namespace CursorAiming
             _totalScore = "0";
             DrawOrder = 1;
             UpdatableStates = GameState.Playing;
-            DrawableStates = GameState.Playing | GameState.Paused | GameState.ShopUpgradeMenu;
+            DrawableStates = GameState.Playing | GameState.Paused;
         }
 
         protected override void LoadContent()

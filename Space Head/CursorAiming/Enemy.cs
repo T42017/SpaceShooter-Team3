@@ -30,7 +30,7 @@ namespace CursorAiming
             Position = new Vector2(500, 500);
             DrawOrder = 2;
 
-            DrawableStates = GameState.Playing | GameState.Paused | GameState.ShopUpgradeMenu;
+            DrawableStates = GameState.Playing;
 
             UpdatableStates = GameState.Playing;
         }
