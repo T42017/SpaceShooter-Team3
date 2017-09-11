@@ -16,7 +16,10 @@ namespace CursorAiming
             CountDownTilNextAttack = AttackSpeed;
             TexturePath = template.TexturePath;
             Game.Components.Add(this);
+<<<<<<< HEAD
             //Game.Components.Add(Gun);
+=======
+>>>>>>> origin/feature_Wave
         }
 
         protected override void LoadContent()
