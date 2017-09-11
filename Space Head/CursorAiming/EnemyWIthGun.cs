@@ -13,6 +13,7 @@ namespace CursorAiming
             AttackSpeed = template.AttackSpeed;
             CountDownTilNextAttack = AttackSpeed;
             TexturePath = template.TexturePath;
+            Game.Components.Add(this);
         }
 
         protected override void LoadContent()
@@ -42,6 +43,7 @@ namespace CursorAiming
 
             if (Health <= 0)
             {
+
             }
 
             if (CountDownTilNextAttack > 0)

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Xml.Schema;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -38,11 +39,11 @@ namespace CursorAiming
 
         public bool CheckForEnemyCollision(List<Enemy> UnitsToCollideWith)
         {
-            foreach (var unitToCollideWith in UnitsToCollideWith)
-                if (_typeToHit == unitToCollideWith.Type)
-                    if (unitToCollideWith.Hitbox.Contains(Position))
+            for (int i = 0; i<UnitsToCollideWith.Count; i++)
+                if (_typeToHit == UnitsToCollideWith[i].Type)
+                    if (UnitsToCollideWith[i].Hitbox.Contains(Position))
                     {
-                        unitToCollideWith.Health -= Damage;
+                        UnitsToCollideWith[i].Health -= Damage;
 
                         return true;
                     }
@@ -53,7 +54,7 @@ namespace CursorAiming
         {
             if (Player.Hitbox.Contains(Position))
             {
-                Player.Health--;
+                //Player.Health--;
                 return true;
             }
             return false;
