@@ -45,7 +45,7 @@
     <Compile Include="Components\EnvironmentComponent.cs" />
     <Compile Include="Components\GameOverComponent.cs" />
     <Compile Include="Enemy.cs" />
-    <Compile Include="EnemyWIthGun.cs" />
+    <Compile Include="EnemyWithGun.cs" />
     <Compile Include="GameStates.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Components\MenuComponent.cs" />

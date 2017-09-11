@@ -14,15 +14,12 @@ namespace CursorAiming
         protected new SpriteBatch SpriteBatch;
         private Random _rng = new Random();
         public Texture2D UnitTexture { get; set; }
-        private readonly BasicEnemyWithGun template1;
 
         public Waves(Game game) : base(game)
         {
             _spawnTimer = new Timer(_rng.Next(500, 500));
             _spawnTimer.Elapsed += SpawnEnemy;
             _spawnTimer.Start();
-            template1 = new BasicEnemyWithGun(new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Player, Game), 200,
-                1, 1d, "BasicEnemy");
         }
 
         public void SpawnEnemy(object sender, ElapsedEventArgs e)
@@ -32,7 +29,7 @@ namespace CursorAiming
             newEnemyPosition.X = _rng.Next(0, 1280);    
             newEnemyPosition.Y = _rng.Next(0, 1280);      
 
-            var spawnedEnemies = new EnemyWIthGun(template1, Game);
+            var spawnedEnemies = new EnemyWithGun(new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Player, Game), 200, 2, 1d, "BasicEnemy", Game);
             spawnedEnemies.Position = newEnemyPosition;
             EnemyUnitsOnField.Add(spawnedEnemies);
 

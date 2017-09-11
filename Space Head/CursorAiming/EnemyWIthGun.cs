@@ -3,20 +3,21 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CursorAiming
 {
-    internal class EnemyWIthGun : Enemy
+    internal class EnemyWithGun : Enemy
     {
         private readonly Gun Gun;
 
-        public EnemyWIthGun(BasicEnemyWithGun template, Game game) : base(game)
+        public EnemyWithGun(Gun gun, int moveSpeed, int health, double attackSpeed, string texturePath,
+            Game game) : base(game)
         {
-            Gun = template.Gun;
-            MoveSpeed = template.MoveSpeed;
-            Health = template.Health;
-            AttackSpeed = template.AttackSpeed;
+            Gun = gun;
+            MoveSpeed = moveSpeed;
+            Health = health;
+            AttackSpeed = attackSpeed;
             CountDownTilNextAttack = AttackSpeed;
-            TexturePath = template.TexturePath;
+            TexturePath = texturePath;
             Game.Components.Add(this);
-            //Game.Components.Add(Gun);
+            Game.Components.Add(Gun);
         }
 
         protected override void LoadContent()
@@ -38,15 +39,13 @@ namespace CursorAiming
 
         public override void Update(GameTime gameTime)
         {
+            if (Health <= 0)
+                Game.Components.Remove(Gun);
+
             Gun.AimDirection = AimDirection;
             Gun.Rotation = Rotation;
             Gun.Position = Position + new Vector2(AimDirection.X * (UnitTexture.Width + 5),
                                AimDirection.Y * (UnitTexture.Width + 5));
-
-            if (Health <= 0)
-            {
-
-            }
 
             if (CountDownTilNextAttack > 0)
             {

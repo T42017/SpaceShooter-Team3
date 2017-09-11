@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -9,7 +8,8 @@ namespace CursorAiming
 {
     public class SpaceHeadGame : Game
     {
-       
+        public static Waves Wave;
+
         private readonly GraphicsDeviceManager _graphics;
 
         private Song _backgroundMusic;
@@ -18,8 +18,6 @@ namespace CursorAiming
         private KeyboardState _previousKeyboardState;
 
         private SpriteBatch _spriteBatch;
-
-        public static Waves Wave; 
         private string _totalScore;
         private Player player;
 
@@ -29,7 +27,6 @@ namespace CursorAiming
             _graphics = new GraphicsDeviceManager(this);
 
             Content.RootDirectory = "Content";
-
         }
 
         public void ChangeCurrentGameState(GameState wantedState)
@@ -47,10 +44,7 @@ namespace CursorAiming
         {
             player = new Player(400, 5, 0.4f, new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Enemy, this), this);
             Wave = new Waves(this);
-            EnemyUnitsOnField.Add(new EnemyWIthGun(template1, this));
 
-
-            
             Components.Add(new UIComponent(this));
             Components.Add(new EnviornmentComponent(this));
             Components.Add(new MenuComponent(this));
