@@ -55,7 +55,7 @@ namespace CursorAiming
         {
             if (Player.Hitbox.Contains(Position))
             {
-                Player.Health--;
+                //Player.Health--;
                 return true;
             }
             return false;

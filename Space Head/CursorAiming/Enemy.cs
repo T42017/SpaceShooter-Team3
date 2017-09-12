@@ -10,7 +10,7 @@ namespace CursorAiming
         protected double CountDownTilNextAttack;
         protected Vector2 DeltaDistance;
         public int Health;
-        protected int PointValue, XpValue, CoinValue; 
+        protected int PointValue, XpValue, CoinValue;
 
         public RectangleHitBox Hitbox;
 
@@ -52,6 +52,11 @@ namespace CursorAiming
             CalculateRotation(Player.PlayerPosition);
             if (Health <= 0)
             {
+                if (Waves.EnemyUnitsOnField.Count == 0)
+                {
+                    Waves._waveRound++;
+                    Waves._enemyCount = 0;
+                }
                 Game.Components.Remove(this);
                 Waves.EnemyUnitsOnField.Remove(this);
                 Die();

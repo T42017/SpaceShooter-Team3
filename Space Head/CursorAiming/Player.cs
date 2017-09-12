@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -35,6 +36,7 @@ namespace CursorAiming
         public static int XP;
         public static int Points { get; set; }
         public static int Coins { get; set; }
+
         public Player(int moveSpeed, int health, float attackSpeed, Gun gun, Game game) : base(game)
         {
             _moveSpeed = moveSpeed;
@@ -93,9 +95,9 @@ namespace CursorAiming
                 }
             }
 
-
             if (Health <= 0)
             {
+                Waves.EnemyUnitsOnField.Clear();
                 SpaceHeadGame.ChangeCurrentGameState(GameState.GameOver);
                 Health = 5;
             }
