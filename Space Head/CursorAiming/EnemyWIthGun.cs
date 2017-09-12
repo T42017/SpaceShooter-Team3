@@ -7,7 +7,8 @@ namespace CursorAiming
     {
         private readonly Gun Gun;
 
-        public EnemyWithGun(Gun gun, int moveSpeed, int health, double attackSpeed, string texturePath, int pointValue, int xpValue, int coinValue,
+        public EnemyWithGun(Gun gun, int moveSpeed, int health, double attackSpeed, string texturePath, int pointValue,
+            int xpValue, int coinValue,
             Game game) : base(game)
         {
             Gun = gun;
@@ -21,8 +22,6 @@ namespace CursorAiming
             CoinValue = coinValue;
             Game.Components.Add(this);
             Game.Components.Add(Gun);
-
-            DrawOrder = 10000;
         }
 
         protected override void LoadContent()
@@ -70,7 +69,6 @@ namespace CursorAiming
                     Gun.bulletsInAir.Remove(Gun.bulletsInAir[i]);
             }
 
-            
 
             base.Update(gameTime);
         }
@@ -93,7 +91,7 @@ namespace CursorAiming
                 MoveDirection = Player.PlayerPosition - Position;
                 MoveDirection.Normalize();
 
-                Velocity = MoveDirection * (int)(MoveSpeed * gameTime.ElapsedGameTime.TotalSeconds);
+                Velocity = MoveDirection * (int) (MoveSpeed * gameTime.ElapsedGameTime.TotalSeconds);
                 Position += Velocity;
             }
             else if (DeltaDistance.Length() < 190)
@@ -101,7 +99,7 @@ namespace CursorAiming
                 MoveDirection = Player.PlayerPosition - Position;
                 MoveDirection.Normalize();
 
-                Velocity = MoveDirection * (int)(MoveSpeed * gameTime.ElapsedGameTime.TotalSeconds);
+                Velocity = MoveDirection * (int) (MoveSpeed * gameTime.ElapsedGameTime.TotalSeconds);
                 Position -= Velocity;
             }
             base.UpdateMovement(gameTime);

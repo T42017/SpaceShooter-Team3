@@ -53,9 +53,9 @@ namespace CursorAiming
 
         public bool CheckForPlayerCollision()
         {
-            if (Player.Hitbox.Contains(Position))
+            if (Player.Hitbox.CollidesWith(Position))
             {
-                Player.Health--;
+                //Player.Health--;
                 return true;
             }
             return false;

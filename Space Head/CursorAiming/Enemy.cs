@@ -10,13 +10,13 @@ namespace CursorAiming
         protected double CountDownTilNextAttack;
         protected Vector2 DeltaDistance;
         public int Health;
-        protected int PointValue, XpValue, CoinValue; 
 
         public RectangleHitBox Hitbox;
+        protected Vector2 MoveDirection, Velocity, AimDirection;
 
         protected int MoveSpeed;
+        protected int PointValue, XpValue, CoinValue;
         public Vector2 Position;
-        protected Vector2 MoveDirection, Velocity, AimDirection;
         public float Rotation;
 
         protected string TexturePath;
@@ -26,8 +26,8 @@ namespace CursorAiming
 
         public Enemy(Game game) : base(game)
         {
-            Position = new Vector2(500, 500);
-            DrawOrder = 2;
+            DrawOrder = 1;
+            Hitbox = new RectangleHitBox(3);
 
             DrawableStates = GameState.Playing | GameState.Paused | GameState.ShopUpgradeMenu;
 
@@ -36,7 +36,7 @@ namespace CursorAiming
 
         protected override void LoadContent()
         {
-            Hitbox = new RectangleHitBox(UnitTexture.Width);
+            Hitbox.Box.Size = new Point(UnitTexture.Width / 2, UnitTexture.Width / 2);
             base.LoadContent();
         }
 
@@ -84,11 +84,9 @@ namespace CursorAiming
 
         public void Die()
         {
-            Player.XP += XpValue;
+            Player.Xp += XpValue;
             Player.Coins += CoinValue;
             Player.Points += PointValue;
         }
-
     }
-
 }

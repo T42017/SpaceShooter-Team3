@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -9,6 +10,8 @@ namespace CursorAiming
     public class SpaceHeadGame : Game
     {
         public static Waves Wave;
+
+        public static List<Rectangle> ObstaclesOnField = new List<Rectangle>();
 
         private readonly GraphicsDeviceManager _graphics;
 
@@ -54,6 +57,9 @@ namespace CursorAiming
             Components.Add(player);
             Components.Add(player.Gun);
 
+
+            ObstaclesOnField.Add(new Rectangle(Globals.ScreenWidth / 2 - 100, Globals.ScreenHeight / 2 - 100, 200,
+                200));
 
             #region windowSettings
 
