@@ -41,8 +41,8 @@ namespace CursorAiming
         public void UpdateGraphics(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_texture,
-                new Rectangle((int) Position.X, (int) Position.Y, _texture.Width, _texture.Height),
-                null, Color.White, Rotation, new Vector2(_texture.Width / 2, _texture.Height / 2), SpriteEffects.None,
+                new Rectangle((int)Position.X, (int)Position.Y, _texture.Width, _texture.Height),
+                null, Color.White, Rotation, new Vector2(_texture.Width /1, _texture.Height /-2), SpriteEffects.None,
                 0);
         }
 

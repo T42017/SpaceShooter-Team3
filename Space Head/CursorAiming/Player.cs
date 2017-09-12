@@ -69,8 +69,8 @@ namespace CursorAiming
 
             Gun.AimDirection = _aimDirection;
             Gun.Rotation = _rotation;
-            Gun.Position = PlayerPosition + new Vector2(_aimDirection.X * (_playerTexture.Width + 5),
-                               _aimDirection.Y * (_playerTexture.Width + 5));
+            Gun.Position = PlayerPosition + new Vector2(_aimDirection.X * (_playerTexture.Width + 2),
+                               _aimDirection.Y * (_playerTexture.Width + 2));
 
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                 _isShooting = true;
@@ -139,7 +139,7 @@ namespace CursorAiming
 
             for (var i = 0; i < Health; i++)
                 spriteBatch.Draw(_lifeTexture,
-                    new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + Globals.ScreenHeight * 0.01f), Color.White);
+                     new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + Globals.ScreenHeight * 0.01f), Color.White);
         }
 
         public void UpdateMovement(GameTime gameTime)
