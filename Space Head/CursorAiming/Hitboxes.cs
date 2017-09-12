@@ -43,34 +43,43 @@ namespace CursorAiming
 
             bool collision;
 
-            for (int i = 1; i < _amountOfRays+1; i++)
+            float spaceBetweenRays;
+            for (int i = 0; i < _amountOfRays; i++)
             {
                 if (direction == Vector2.UnitX)
                 {
+                    spaceBetweenRays = (Box.Height - 2) / (_amountOfRays - 1);
+
                     Ray.StartPos.X = Box.Right;
-                    Ray.StartPos.Y = Box.Bottom + Box.Height / i;
+                    Ray.StartPos.Y = Box.Bottom - (spaceBetweenRays * i) - 1;
                     Ray.EndPos.X = Globals.ScreenWidth;
-                    Ray.EndPos.Y = Box.Bottom + Box.Height / i;
+                    Ray.EndPos.Y = Box.Bottom - (spaceBetweenRays * i) - 1;
                 }
                 else if (direction == -Vector2.UnitX)
                 {
+                    spaceBetweenRays = (Box.Height - 2) / (_amountOfRays-1);
+
                     Ray.StartPos.X = Box.Left;
-                    Ray.StartPos.Y = Box.Bottom + Box.Height / i;
+                    Ray.StartPos.Y = Box.Bottom - (spaceBetweenRays * i) - 1;
                     Ray.EndPos.X = 0;
-                    Ray.EndPos.Y = Box.Bottom + Box.Height / i;
+                    Ray.EndPos.Y = Box.Bottom - (spaceBetweenRays * i) - 1;
                 }
                 else if (direction == Vector2.UnitY)
                 {
-                    Ray.StartPos.X = Box.Left + Box.Width / i;
+                    spaceBetweenRays = (Box.Width - 2) / (_amountOfRays - 1);
+
+                    Ray.StartPos.X = Box.Right - (spaceBetweenRays * i) - 1;
                     Ray.StartPos.Y = Box.Bottom;
-                    Ray.EndPos.X = Box.Left + Box.Width / i;
+                    Ray.EndPos.X = Box.Right - (spaceBetweenRays * i) - 1;
                     Ray.EndPos.Y = Globals.ScreenHeight;
                 }
                 else if (direction == -Vector2.UnitY)
                 {
-                    Ray.StartPos.X = Box.Left + Box.Width / i;
+                    spaceBetweenRays = (Box.Width - 2) / (_amountOfRays - 1);
+
+                    Ray.StartPos.X = Box.Left - (spaceBetweenRays * i) - 1;
                     Ray.StartPos.Y = Box.Top;
-                    Ray.EndPos.X = Box.Left + Box.Width / i;
+                    Ray.EndPos.X = Box.Left - (spaceBetweenRays * i) - 1;
                     Ray.EndPos.Y = 0;
                 }
 

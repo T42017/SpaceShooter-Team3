@@ -28,7 +28,7 @@ namespace CursorAiming
         public SpaceHeadGame()
         {
             _graphics = new GraphicsDeviceManager(this);
-
+            
             Content.RootDirectory = "Content";
         }
 
@@ -58,7 +58,7 @@ namespace CursorAiming
             Components.Add(player.Gun);
 
 
-            ObstaclesOnField.Add(new Rectangle(Globals.ScreenWidth / 2 - 100, Globals.ScreenHeight / 2 - 100, 200,
+            ObstaclesOnField.Add(new Rectangle(Globals.ScreenWidth / 2 - 100, Globals.ScreenHeight / 2 - 100, 100,
                 200));
 
             #region windowSettings
@@ -83,6 +83,7 @@ namespace CursorAiming
             MediaPlayer.Play(_backgroundMusic);
             MediaPlayer.Volume = 0.3f;
             MediaPlayer.IsRepeating = true;
+
             base.LoadContent();
         }
 

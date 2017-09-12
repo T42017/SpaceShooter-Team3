@@ -9,6 +9,8 @@ namespace CursorAiming
 {
     public class Player : SpaceHeadBaseComponent
     {
+        Texture2D Obstacletexture;
+
         public static Vector2 PlayerPosition;
         public static int Health;
         public static RectangleHitBox Hitbox;
@@ -47,10 +49,10 @@ namespace CursorAiming
             DrawOrder = 1;
             DrawableStates = GameState.Playing | GameState.Paused | GameState.ShopUpgradeMenu;
 
-            PlayerPosition = new Vector2(Globals.ScreenWidth / 2, Globals.ScreenHeight / 2);
+            PlayerPosition = new Vector2(Globals.ScreenWidth, Globals.ScreenHeight);
             UpdatableStates = GameState.Playing;
 
-            Hitbox = new RectangleHitBox(3);
+            Hitbox = new RectangleHitBox(5);
         }
 
         public static int Xp { get; set; }
@@ -64,6 +66,8 @@ namespace CursorAiming
             _playerTexture = Game.Content.Load<Texture2D>("Player");
             _lifeTexture = Game.Content.Load<Texture2D>("spaceRocketParts_012");
             _takeDamage = Game.Content.Load<SoundEffect>("Jump");
+            Obstacletexture = Game.Content.Load<Texture2D>("gameOverBackground");
+
             Hitbox.Box.Size = new Point(_playerTexture.Width / 2, _playerTexture.Width / 2);
             base.LoadContent();
         }
@@ -153,6 +157,9 @@ namespace CursorAiming
             for (var i = 0; i < Health; i++)
                 spriteBatch.Draw(_lifeTexture,
                     new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + Globals.ScreenHeight * 0.01f), Color.White);
+
+            _spriteBatch.Draw(Obstacletexture, SpaceHeadGame.ObstaclesOnField[0], Color.White);
+
         }
 
         public void UpdateMovement(GameTime gameTime)
@@ -204,7 +211,7 @@ namespace CursorAiming
             else if (_moveDirection.Y < 0)
             {
                 distanceToCollision = Math.Abs(Hitbox.CheckForRayCollision(-Vector2.UnitY));
-                if (distanceToCollision < Math.Abs(_moveDirection.X *
+                if (distanceToCollision < Math.Abs(_moveDirection.Y *
                                                    _moveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds))
                     _velocity.Y = -distanceToCollision;
                 else
