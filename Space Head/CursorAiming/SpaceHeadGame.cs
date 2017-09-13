@@ -55,8 +55,7 @@ namespace CursorAiming
             Components.Add(new ShopAndUpgradeComponent(this));
             Components.Add(new GameOverComponent(this));
             Components.Add(new MouseComponent(this));
-            Components.Add(_player);
-            Components.Add(_player.Gun);
+            
             
             _wave = new Waves(this);            
 
@@ -95,12 +94,7 @@ namespace CursorAiming
 
         protected override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
-
-            
-
-            //_mouseX = _mouseState.X;
-            //_mouseY = _mouseState.Y;
+            base.Update(gameTime);           
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))

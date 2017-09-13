@@ -53,6 +53,9 @@ namespace CursorAiming
             UpdatableStates = GameState.Playing;
 
             Hitbox = new RectangleHitBox(2);
+
+            game.Components.Add(this);
+            game.Components.Add(Gun);
         }
 
         public static int Xp { get; set; }

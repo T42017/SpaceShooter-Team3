@@ -20,7 +20,7 @@ namespace CursorAiming
         public EnviornmentComponent(Game game) : base(game)
         {
             _totalScore = "0";
-            DrawOrder = 1;
+            DrawOrder = 0;
             UpdatableStates = GameState.Playing;
             DrawableStates = GameState.Playing | GameState.Paused;
         }
