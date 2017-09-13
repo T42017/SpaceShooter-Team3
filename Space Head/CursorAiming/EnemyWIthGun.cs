@@ -1,10 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace CursorAiming
 {
     internal class EnemyWIthGun : Enemy
     {
+        private SoundEffect _damage;
+
         public EnemyWIthGun(BasicEnemyWithGun template, Game game) : base(game)
         {
             Gun = template.Gun;
@@ -17,6 +21,7 @@ namespace CursorAiming
 
         protected override void LoadContent()
         {
+            _damage = Game.Content.Load<SoundEffect>("STRONK");
             SpriteBatch = new SpriteBatch(Game.GraphicsDevice);
             UnitTexture = Game.Content.Load<Texture2D>(TexturePath);
             Hitbox = new CircleHitBox(Position, UnitTexture.Width / 2);
@@ -59,7 +64,11 @@ namespace CursorAiming
             {
                 Gun.bulletsInAir[i].UpdatePosition(gameTime);
                 if (Gun.bulletsInAir[i].CheckForPlayerCollision())
+                {
                     Gun.bulletsInAir.Remove(Gun.bulletsInAir[i]);
+                    _damage.Play(1, -0.4f, 0);
+                    
+                }   
             }
 
             if (DeltaDistance.Length() > 200)

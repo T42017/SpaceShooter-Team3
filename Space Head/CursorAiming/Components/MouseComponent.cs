@@ -9,30 +9,32 @@ using Microsoft.Xna.Framework.Input;
 
 namespace CursorAiming
 {
-    public class PlayerGun : Gun
+    class MouseComponent : SpaceHeadBaseComponent
     {
-        private KeyboardState _previousKeyboardState;
+        private Texture2D _gameCursor;
+        private Vector2 _gameCursorPos;
+        private MouseState _mouseState;
 
-        private KeyboardState kbState;
-
-        private SpriteFont _font;
-
-        public PlayerGun(string gunTexturePath, string bulletTexturePath, int damage, int shotSpeed, UnitType typeToHit,
-            Game game) : base(gunTexturePath, bulletTexturePath, damage, shotSpeed, typeToHit, game)
+        public MouseComponent(Game game) : base(game)
         {
-            UpdatableStates = GameState.ShopUpgradeMenu;
-            DrawableStates = GameState.Playing | GameState.Paused;
+            DrawOrder = 99;
+            DrawableStates = GameState.All;
+            UpdatableStates = GameState.All;
         }
 
         protected override void LoadContent()
         {
-            _font = Game.Content.Load<SpriteFont>("Font");
+            _gameCursor = Game.Content.Load<Texture2D>("crossair");
 
             base.LoadContent();
         }
 
         public override void Update(GameTime gameTime)
         {
+            _mouseState = Mouse.GetState();
+
+            _gameCursorPos = new Vector2(_mouseState.X, _mouseState.Y);
+
             base.Update(gameTime);
         }
 
@@ -40,7 +42,7 @@ namespace CursorAiming
         {
             SpriteBatch.Begin();
 
-            //SpriteBatch.DrawString(_font, Damage.ToString(), new Vector2(420, 420), Color.White );
+            SpriteBatch.Draw(_gameCursor, _gameCursorPos - new Vector2(_gameCursor.Width/2, _gameCursor.Height/2), Color.White);
 
             SpriteBatch.End();
 

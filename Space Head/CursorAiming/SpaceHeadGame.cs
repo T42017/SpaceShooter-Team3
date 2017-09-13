@@ -15,15 +15,13 @@ namespace CursorAiming
         private readonly BasicEnemyWithGun template1;
         private Song _backgroundMusic;
 
-        public GameState _gameState { get; set; }
+        public GameState GameState { get; private set; }
         private KeyboardState _previousKeyboardState;
 
         private SpriteBatch _spriteBatch;
-        
 
         private string _totalScore;
         private Player player;
-
         
         public SpaceHeadGame()
         {
@@ -32,17 +30,17 @@ namespace CursorAiming
             Content.RootDirectory = "Content";
 
             template1 = new BasicEnemyWithGun(new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Player, this), 200,
-                2, 1d, "BasicEnemy");
+                50, 1d, "BasicEnemy");
         }
 
         public void ChangeCurrentGameState(GameState wantedState)
         {
-            _gameState = wantedState;
+            GameState = wantedState;
 
             foreach (var component in Components.Cast<SpaceHeadBaseComponent>())
             {
-                component.Visible = component.DrawableStates.HasFlag(_gameState);
-                component.Enabled = component.UpdatableStates.HasFlag(_gameState);
+                component.Visible = component.DrawableStates.HasFlag(GameState);
+                component.Enabled = component.UpdatableStates.HasFlag(GameState);
             }
         }
 
@@ -62,10 +60,11 @@ namespace CursorAiming
             Components.Add(new MenuComponent(this));
             Components.Add(new ShopAndUpgradeComponent(this));
             Components.Add(new GameOverComponent(this));
+            Components.Add(new MouseComponent(this));
 
 
             Components.Add(player);
-            Components.Add(player.Gun);
+            Components.Add(Player.Gun);
 
 
             #region windowSettings
@@ -74,7 +73,7 @@ namespace CursorAiming
             _graphics.PreferredBackBufferHeight = Globals.ScreenHeight;
             _graphics.ApplyChanges();
 
-            IsMouseVisible = true;
+            IsMouseVisible = false;
 
             #endregion
 
@@ -86,9 +85,9 @@ namespace CursorAiming
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _backgroundMusic = Content.Load<Song>("yeahBoy");
+            _backgroundMusic = Content.Load<Song>("heman");
             MediaPlayer.Play(_backgroundMusic);
-            MediaPlayer.Volume = 0.5f;
+            MediaPlayer.Volume = 1f;
             MediaPlayer.IsRepeating = true;
             base.LoadContent();
         }
@@ -100,7 +99,11 @@ namespace CursorAiming
         protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
             
+
+            //_mouseX = _mouseState.X;
+            //_mouseY = _mouseState.Y;
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -110,19 +113,19 @@ namespace CursorAiming
 
 
             if (kbState.IsKeyDown(Keys.P) && _previousKeyboardState.IsKeyUp(Keys.P))
-                if (_gameState == GameState.Paused)
+                if (GameState == GameState.Paused)
                     ChangeCurrentGameState(GameState.Playing);
-                else if (_gameState != GameState.Paused)
+                else if (GameState != GameState.Paused)
                     ChangeCurrentGameState(GameState.Paused);
 
             if (kbState.IsKeyDown(Keys.Space) && _previousKeyboardState.IsKeyUp(Keys.Space))
-                if (_gameState == GameState.GameOver)
+                if (GameState == GameState.GameOver)
                     ChangeCurrentGameState(GameState.MainMenu);
 
             if (kbState.IsKeyDown(Keys.B) && _previousKeyboardState.IsKeyUp(Keys.B))
-                if (_gameState == GameState.ShopUpgradeMenu)
+                if (GameState == GameState.ShopUpgradeMenu)
                     ChangeCurrentGameState(GameState.Playing);
-                else if (_gameState != GameState.ShopUpgradeMenu)
+                else if (GameState != GameState.ShopUpgradeMenu)
                     ChangeCurrentGameState(GameState.ShopUpgradeMenu);
 
 

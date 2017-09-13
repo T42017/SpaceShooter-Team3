@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -11,86 +8,119 @@ namespace CursorAiming
 {
     class MenuComponent : SpaceHeadBaseComponent
     {
-        private Texture2D _survivalModeButton, _exitGameButton, _menuBackground;
+        SpriteBatch _spriteBatch;
+        SpriteFont _normalFont;
+        List<MenuChoice> _choices;
+        MouseState _previousMouseState;
 
-        private Vector2 _survivalModeButtonPos = Vector2.Zero;
-        private Vector2 _exitGameButtonPos = Vector2.Zero;
-
-        private MouseState _mouseState;
-        private MouseState _previousMouseState;
-
-        private SpriteFont _font;
-
-        private Vector2 _titleTextMeasure;
-        private string _titleText = "Space Head";
-
-        private int _mouseX, _mouseY;
-        
-        public MenuComponent(Game game) : base(game)
+        public MenuComponent(Game game)
+            : base(game)
         {
-            DrawOrder = 10;
-            UpdatableStates = GameState.MainMenu;
+            DrawOrder = 44;
             DrawableStates = GameState.MainMenu;
+            UpdatableStates = GameState.MainMenu;
         }
+
+        public override void Initialize()
+        {
+            _choices = new List<MenuChoice>();
+            _choices.Add(new MenuChoice() { Text = "START", Selected = true, ClickAction = MenuStartClicked });
+            _choices.Add(new MenuChoice() { Text = "QUIT", ClickAction = MenuQuitClicked });
+
+            base.Initialize();
+        }
+
+        #region Menu Clicks
+
+        private void MenuStartClicked()
+        {
+            SpaceHeadGame.ChangeCurrentGameState(GameState.Playing);
+        }
+
+        private void MenuQuitClicked()
+        {
+            Game.Exit();
+        }
+
+        #endregion
 
         protected override void LoadContent()
         {
-            _menuBackground = Game.Content.Load<Texture2D>("gameOverBackground");
-            _survivalModeButton = Game.Content.Load<Texture2D>("survivalModeIcon");
-            _exitGameButton = Game.Content.Load<Texture2D>("exitGameIcon");
-            _font = Game.Content.Load<SpriteFont>("Font");
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            _normalFont = Game.Content.Load<SpriteFont>("Font");
 
-            _titleTextMeasure = _font.MeasureString(_titleText);
-            
+            float startY = 0.2f * Globals.ScreenHeight;
+
+            foreach (var choice in _choices)
+            {
+                Vector2 size = _normalFont.MeasureString(choice.Text);
+                choice.Y = startY;
+                choice.X = Globals.ScreenWidth / 2.0f - size.X / 2;
+                choice.HitBox = new Rectangle((int)choice.X, (int)choice.Y, (int)size.X, (int)size.Y);
+                startY += 70;
+            }
+
+            _previousMouseState = Mouse.GetState();
             base.LoadContent();
         }
-        
+
         public override void Update(GameTime gameTime)
         {
-            CheckPlayerInput(GameState.MainMenu);
-            
-            _survivalModeButtonPos = new Vector2(Globals.ScreenWidth/2 - _survivalModeButton.Width/2, Globals.ScreenHeight * 0.75f);
-            _exitGameButtonPos = new Vector2(Globals.ScreenWidth / 2 - _exitGameButton.Width / 2, Globals.ScreenHeight * 0.8f);
+            var mouseState = Mouse.GetState();
+
+            //... Komplettering #3
+            foreach (var choice in _choices)
+            {
+                if (choice.HitBox.Contains(mouseState.X, mouseState.Y))
+                {
+                    _choices.ForEach(c => c.Selected = false);
+                    choice.Selected = true;
+
+                    if (_previousMouseState.LeftButton == ButtonState.Released
+                        && mouseState.LeftButton == ButtonState.Pressed)
+                        choice.ClickAction.Invoke();
+                }
+            }
+
+            _previousMouseState = mouseState;
 
             base.Update(gameTime);
         }
+        
+        // ... Komplettering #4   
+        private void PreviousMenuChoice()
+        {
+            int selectedIndex = _choices.IndexOf(_choices.First(c => c.Selected));
+            _choices[selectedIndex].Selected = false;
+            selectedIndex--;
+            if (selectedIndex < 0)
+                selectedIndex = _choices.Count - 1;
+            _choices[selectedIndex].Selected = true;
+        }
+
+        private void NextMenuChoice()
+        {
+            int selectedIndex = _choices.IndexOf(_choices.First(c => c.Selected));
+            _choices[selectedIndex].Selected = false;
+            selectedIndex++;
+            if (selectedIndex >= _choices.Count)
+                selectedIndex = 0;
+            _choices[selectedIndex].Selected = true;
+        }
+        // ... Komplettering #4
+
 
         public override void Draw(GameTime gameTime)
         {
-            SpriteBatch.Begin();
+            _spriteBatch.Begin();
 
-            SpriteBatch.Draw(_menuBackground, GraphicsDevice.Viewport.Bounds, Color.White);
-            SpriteBatch.DrawString(_font, "Space Head", new Vector2(Globals.ScreenWidth/2 - _titleTextMeasure.X/2, Globals.ScreenHeight * 0.3f), Color.Green);
-            SpriteBatch.Draw(_survivalModeButton, _survivalModeButtonPos, Color.AliceBlue);
-            SpriteBatch.Draw(_exitGameButton, _exitGameButtonPos, Color.AliceBlue);
-
-            SpriteBatch.End();
-
-            base.Draw(gameTime);
-        }
-
-        public void CheckPlayerInput(GameState gameState)
-        {
-            _mouseState = Mouse.GetState();
-
-            _mouseX = _mouseState.X;
-            _mouseY = _mouseState.Y;
-
-            if (gameState == GameState.MainMenu)
+            foreach (var choice in _choices)
             {
-                if (_mouseState.LeftButton == ButtonState.Pressed && _previousMouseState.LeftButton != ButtonState.Pressed)
-                {
-                    if (new Rectangle((int) _survivalModeButtonPos.X, (int) _survivalModeButtonPos.Y, _survivalModeButton.Width, _survivalModeButton.Height).Contains(_mouseX, _mouseY))
-                    {
-                        SpaceHeadGame.ChangeCurrentGameState(GameState.Playing);
-                    }
-
-                    if (new Rectangle((int)_exitGameButtonPos.X, (int)_exitGameButtonPos.Y, _exitGameButton.Width, _exitGameButton.Height).Contains(_mouseX, _mouseY))
-                    {
-                        Game.Exit();
-                    }
-                }
+                _spriteBatch.DrawString(_normalFont, choice.Text, new Vector2(choice.X, choice.Y), Color.White);
             }
+
+            _spriteBatch.End();
+            base.Draw(gameTime);
         }
     }
 }

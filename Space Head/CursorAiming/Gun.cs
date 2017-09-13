@@ -6,9 +6,11 @@ namespace CursorAiming
 {
     public class Gun : SpaceHeadBaseComponent
     {
+        public int GunAtkLevel;
+        public int GunAtkSpeedLevel;
         private readonly string _bulletTexturePath;
-        protected int Damage;
-        private readonly int _shotSpeed;
+        public int Damage;
+        public int ShotSpeed;
         private readonly string _texturePath;
         public List<Bullet> bulletsInAir = new List<Bullet>();
         private Texture2D _texture, _bulletTexture;
@@ -23,19 +25,19 @@ namespace CursorAiming
             _texturePath = gunTexturePath;
             _bulletTexturePath = bulletTexturePath;
             Damage = damage;
-            _shotSpeed = shotSpeed;
+            ShotSpeed = shotSpeed;
             _typeToHit = typeToHit;
 
             DrawOrder = 2;
 
-            DrawableStates = GameState.Playing | GameState.Paused | GameState.ShopUpgradeMenu;
+            DrawableStates = GameState.Playing | GameState.Paused;
 
             UpdatableStates = GameState.Playing;
         }
 
         public void Shoot()
         {
-            bulletsInAir.Add(new Bullet(_shotSpeed, Damage, AimDirection, Position, Rotation, _bulletTexture, _typeToHit));
+            bulletsInAir.Add(new Bullet(ShotSpeed, Damage, AimDirection, Position, Rotation, _bulletTexture, _typeToHit));
         }
 
         public void UpdateGraphics(SpriteBatch spriteBatch)
