@@ -10,7 +10,6 @@ namespace CursorAiming
         protected double CountDownTilNextAttack;
         protected Vector2 DeltaDistance;
         public int Health;
-        protected int PointValue, XpValue, CoinValue;
 
         public RectangleHitBox Hitbox;
         protected Vector2 MoveDirection, Velocity, AimDirection;

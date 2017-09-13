@@ -16,21 +16,21 @@ namespace CursorAiming
         private readonly GraphicsDeviceManager _graphics;
 
         private Song _backgroundMusic;
+        private Enemy _enemy;
         private SpriteFont _font;
         private GameState _gameState;
+        private Player _player;
         private KeyboardState _previousKeyboardState;
 
         private SpriteBatch _spriteBatch;
         private string _totalScore;
-        private Player _player;
-        private Enemy _enemy;
         private Waves _wave;
-        
+
 
         public SpaceHeadGame()
         {
             _graphics = new GraphicsDeviceManager(this);
-            
+
             Content.RootDirectory = "Content";
         }
 
@@ -47,7 +47,8 @@ namespace CursorAiming
 
         protected override void Initialize()
         {
-            _player = new Player(310, 5, 0.4f, new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Enemy, this), this);
+            _player = new Player(310, 5, 0.4f, new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Enemy, this),
+                this);
 
             Components.Add(new UIComponent(this));
             Components.Add(new EnviornmentComponent(this));
