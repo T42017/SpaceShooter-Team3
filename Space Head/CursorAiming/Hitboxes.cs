@@ -75,9 +75,9 @@ namespace CursorAiming
                 {
                     spaceBetweenRays = (Box.Width - 2) / (_amountOfRays - 1);
 
-                    Ray.StartPos.X = Box.Left - spaceBetweenRays * i - 1;
+                    Ray.StartPos.X = Box.Right - spaceBetweenRays * i - 1;
                     Ray.StartPos.Y = Box.Top;
-                    Ray.EndPos.X = Box.Left - spaceBetweenRays * i - 1;
+                    Ray.EndPos.X = Box.Right - spaceBetweenRays * i - 1;
                     Ray.EndPos.Y = 0;
                 }
 
