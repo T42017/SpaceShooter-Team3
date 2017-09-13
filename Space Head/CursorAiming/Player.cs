@@ -37,6 +37,7 @@ namespace CursorAiming
         public UnitType Type = UnitType.Player;
 
 
+
         public Player(int moveSpeed, int health, float attackSpeed, Gun gun, Game game) : base(game)
         {
             _moveSpeed = moveSpeed;
@@ -101,9 +102,9 @@ namespace CursorAiming
                 }
             }
 
-
             if (Health <= 0)
             {
+                Waves.EnemyUnitsOnField.Clear();
                 SpaceHeadGame.ChangeCurrentGameState(GameState.GameOver);
                 Health = 5;
             }

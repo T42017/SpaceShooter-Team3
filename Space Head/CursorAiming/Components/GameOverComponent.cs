@@ -17,7 +17,6 @@ namespace CursorAiming
         private string _diedMessage = "You have died..";
         private Vector2 _diedMeasure;
 
-
         private string _returnMessage = "Press space to return to the main menu!";
         private Vector2 _returnMeasure;
 
@@ -38,8 +37,6 @@ namespace CursorAiming
 
             base.LoadContent();
         }
-
-        
 
         public override void Draw(GameTime gameTime)
         {

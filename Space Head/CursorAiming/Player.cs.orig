@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -6,74 +7,80 @@ using Microsoft.Xna.Framework.Input;
 
 namespace CursorAiming
 {
-    public class Player : DrawableGameComponent
+    public class Player : SpaceHeadBaseComponent
     {
         public static Vector2 PlayerPosition;
         public static int Health;
-        private readonly double _attackSpeed;
+        public static RectangleHitBox Hitbox;
 
+        private readonly double _attackSpeed;
         private readonly int _moveSpeed;
+
         public readonly Gun Gun;
         private Vector2 _aimDirection;
         private double _countDownTilNextAttack;
-
-        private SoundEffect _damage;
         private Vector2 _deltaDistance;
 
-        public static CircleHitBox Hitbox;
-
-        private bool _isShooting, _hasShot;
+        private bool _isShooting;
         private Texture2D _lifeTexture;
         private Vector2 _moveDirection;
-        private Texture2D _playerTexture;
-        private float _rotation;
-        private SpriteBatch _spriteBatch;
-        private Vector2 _velocity;
 
-        public UnitType Type = UnitType.enemy;
+        private Texture2D _playerTexture;
+
+        private float _rotation;
+
+        private SpriteBatch _spriteBatch;
+        private SoundEffect _takeDamage;
+        private Vector2 _velocity;
+        private Texture2D Obstacletexture;
+
+        public UnitType Type = UnitType.Player;
+
+<<<<<<< HEAD
+=======
+        public static int XP;
+        public static int Points { get; set; }
+        public static int Coins { get; set; }
+>>>>>>> feature_Wave
 
         public Player(int moveSpeed, int health, float attackSpeed, Gun gun, Game game) : base(game)
         {
-<<<<<<< HEAD
-            MoveSpeed = moveSpeed;
-            BulletSpeed = bulletSpeed;
-            BulletDamage = bulletDamage;
-            Health = 9;
-            AttackInterval = attackInterval;
-            Countdown = AttackInterval;
-            DrawOrder = 1;
-            DrawableStates = GameState.Playing | GameState.Paused | GameState.ShopUpgradeMenu;
-            UpdatableStates = GameState.Playing;
-            Type = type;
-            TypeToHit = typeToHit;
-            Position = new Vector2();
-=======
             _moveSpeed = moveSpeed;
             Health = health;
             _attackSpeed = attackSpeed;
             _countDownTilNextAttack = _attackSpeed;
             Gun = gun;
-            DrawOrder = 10;
 
-            PlayerPosition = new Vector2(Globals.ScreenWidth / 2, Globals.ScreenHeight / 2);
->>>>>>> Feature-enemies
+            DrawOrder = 1;
+            DrawableStates = GameState.Playing | GameState.Paused | GameState.ShopUpgradeMenu;
+
+            PlayerPosition = new Vector2(Globals.ScreenWidth, Globals.ScreenHeight);
+            UpdatableStates = GameState.Playing;
+
+            Hitbox = new RectangleHitBox(2);
         }
+
+        public static int Xp { get; set; }
+        public static int Points { get; set; }
+        public static int Coins { get; set; }
+
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(Game.GraphicsDevice);
             _playerTexture = Game.Content.Load<Texture2D>("Player");
             _lifeTexture = Game.Content.Load<Texture2D>("spaceRocketParts_012");
-            _damage = Game.Content.Load<SoundEffect>("Jump");
+            _takeDamage = Game.Content.Load<SoundEffect>("Jump");
+            Obstacletexture = Game.Content.Load<Texture2D>("gameOverBackground");
 
-            Hitbox = new CircleHitBox(PlayerPosition, _playerTexture.Width / 2);
+            Hitbox.Box.Size = new Point(_playerTexture.Width / 2, _playerTexture.Width / 2);
             base.LoadContent();
         }
 
         public override void Update(GameTime gameTime)
         {
             var mouse = Mouse.GetState();
-            Hitbox.MiddlePoint = PlayerPosition;
+            Hitbox.UpdatePosition(PlayerPosition);
 
             _isShooting = false;
             UpdateMovement(gameTime);
@@ -93,33 +100,27 @@ namespace CursorAiming
             }
             else
             {
-                if (_isShooting && !_hasShot)
+                if (_isShooting)
                 {
                     Gun.Shoot();
                     _countDownTilNextAttack = _attackSpeed;
                 }
             }
 
-
-<<<<<<< HEAD
-            HasShot = IsShooting;
             if (Health <= 0)
             {
+                Waves.EnemyUnitsOnField.Clear();
                 SpaceHeadGame.ChangeCurrentGameState(GameState.GameOver);
-                Health = 1;
+                Health = 5;
             }
-=======
-            _hasShot = _isShooting;
 
             for (var i = 0; i < Gun.bulletsInAir.Count; i++)
             {
                 Gun.bulletsInAir[i].UpdatePosition(gameTime);
-                if (Gun.bulletsInAir[i].CheckForEnemyCollision(SpaceHeadGame.EnemyUnitsOnField))
+                if (Gun.bulletsInAir[i].CheckForEnemyCollision(Waves.EnemyUnitsOnField))
                     Gun.bulletsInAir.Remove(Gun.bulletsInAir[i]);
             }
 
-            if (Health <= 0) Game.Exit();
->>>>>>> Feature-enemies
             base.Update(gameTime);
         }
 
@@ -144,21 +145,14 @@ namespace CursorAiming
             base.Draw(gameTime);
         }
 
+        private void CheckForEnvironmentCollision(List<RectangleHitBox> Obstacles)
+        {
+        }
+
         #region OverrideMethods
 
         public void UpdateGraphics(SpriteBatch spriteBatch)
         {
-<<<<<<< HEAD
-            spriteBatch.Draw(Texture,
-                new Rectangle((int) Position.X, (int) Position.Y, Texture.Width, Texture.Height),
-                null, Color.White, Rotation, new Vector2(Texture.Width / 2, Texture.Height / 2), SpriteEffects.None, 0);
-
-            for (int i = 0; i < Health; i++)
-            {
-                SpriteBatch.Draw(LifeTexture, new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + (Globals.ScreenHeight * 0.01f)), Color.White);
-
-            }
-=======
             spriteBatch.Draw(_playerTexture,
                 new Rectangle((int) PlayerPosition.X, (int) PlayerPosition.Y, _playerTexture.Width,
                     _playerTexture.Height),
@@ -166,25 +160,69 @@ namespace CursorAiming
                 SpriteEffects.None, 0);
 
             for (var i = 0; i < Health; i++)
-                _spriteBatch.Draw(_lifeTexture, new Vector2(40 + i * 50, Globals.ScreenHeight - 100), Color.White);
->>>>>>> Feature-enemies
+                spriteBatch.Draw(_lifeTexture,
+                    new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + Globals.ScreenHeight * 0.01f), Color.White);
+
+            _spriteBatch.Draw(Obstacletexture, SpaceHeadGame.ObstaclesOnField[0], Color.White);
         }
 
         public void UpdateMovement(GameTime gameTime)
         {
-            _moveDirection = new Vector2(0, 0);
+            _moveDirection = Vector2.Zero;
+            _velocity = Vector2.Zero;
+
             if (Keyboard.GetState().IsKeyDown(Keys.A))
-                _moveDirection.X += -1;
+                _moveDirection.X -= 1;
             if (Keyboard.GetState().IsKeyDown(Keys.D))
                 _moveDirection.X += 1;
             if (Keyboard.GetState().IsKeyDown(Keys.W))
-                _moveDirection.Y += -1;
+                _moveDirection.Y -= 1;
             if (Keyboard.GetState().IsKeyDown(Keys.S))
                 _moveDirection.Y += 1;
 
             if ((int) _moveDirection.X != 0 && (int) _moveDirection.Y != 0) _moveDirection.Normalize();
 
-            _velocity = _moveDirection * (_moveSpeed * gameTime.ElapsedGameTime.Milliseconds / 1000);
+            float distanceToCollision;
+
+            if (_moveDirection.X > 0)
+            {
+                distanceToCollision = Math.Abs(Hitbox.CheckForRayCollision(Vector2.UnitX));
+                if (distanceToCollision < Math.Abs(_moveDirection.X *
+                                                   _moveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds))
+                    _velocity.X = distanceToCollision;
+                else
+                    _velocity.X = _moveDirection.X * _moveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            else if (_moveDirection.X < 0)
+            {
+                distanceToCollision = Math.Abs(Hitbox.CheckForRayCollision(-Vector2.UnitX));
+                if (distanceToCollision < Math.Abs(_moveDirection.X *
+                                                   _moveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds))
+                    _velocity.X = -distanceToCollision;
+                else
+                    _velocity.X = _moveDirection.X * _moveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds;
+            }
+
+            if (_moveDirection.Y > 0)
+            {
+                distanceToCollision = Math.Abs(Hitbox.CheckForRayCollision(Vector2.UnitY));
+                if (distanceToCollision < Math.Abs(_moveDirection.Y *
+                                                   _moveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds))
+                    _velocity.Y = distanceToCollision;
+                else
+                    _velocity.Y = _moveDirection.Y * _moveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            else if (_moveDirection.Y < 0)
+            {
+                distanceToCollision = Math.Abs(Hitbox.CheckForRayCollision(-Vector2.UnitY));
+                if (distanceToCollision < Math.Abs(_moveDirection.Y *
+                                                   _moveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds))
+                    _velocity.Y = -distanceToCollision;
+                else
+                    _velocity.Y = _moveDirection.Y * _moveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds;
+            }
+
+
             PlayerPosition += _velocity;
         }
 

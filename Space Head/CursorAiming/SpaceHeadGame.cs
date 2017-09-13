@@ -22,8 +22,10 @@ namespace CursorAiming
 
         private SpriteBatch _spriteBatch;
         private string _totalScore;
-        private Player player;
-
+        private Player _player;
+        private Enemy _enemy;
+        private Waves _wave;
+        
 
         public SpaceHeadGame()
         {
@@ -45,17 +47,16 @@ namespace CursorAiming
 
         protected override void Initialize()
         {
-            player = new Player(310, 5, 0.4f, new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Enemy, this), this);
-            Wave = new Waves(this);
+            _player = new Player(310, 5, 0.4f, new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Enemy, this), this);
 
             Components.Add(new UIComponent(this));
             Components.Add(new EnviornmentComponent(this));
             Components.Add(new MenuComponent(this));
             Components.Add(new ShopAndUpgradeComponent(this));
             Components.Add(new GameOverComponent(this));
-
-            Components.Add(player);
-            Components.Add(player.Gun);
+            _wave = new Waves(this);
+            Components.Add(_player);
+            Components.Add(_player.Gun);
 
 
             ObstaclesOnField.Add(new Rectangle(Globals.ScreenWidth / 2 - 100, Globals.ScreenHeight / 2 - 100, 100,
@@ -101,6 +102,8 @@ namespace CursorAiming
 
             var kbState = Keyboard.GetState();
 
+            if (kbState.IsKeyDown(Keys.V) && _previousKeyboardState.IsKeyUp(Keys.V))
+                _wave.SpawnEnemy();
 
             if (kbState.IsKeyDown(Keys.P) && _previousKeyboardState.IsKeyUp(Keys.P))
                 if (_gameState == GameState.Paused)
