@@ -42,16 +42,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Bullet.cs" />
+    <Compile Include="MenuChoice.cs" />
     <Compile Include="Components\EnvironmentComponent.cs" />
     <Compile Include="Components\GameOverComponent.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="EnemyWithGun.cs" />
     <Compile Include="GameStates.cs" />
     <Compile Include="Globals.cs" />
-    <Compile Include="Components\MenuComponent.cs" />
     <Compile Include="Gun.cs" />
     <Compile Include="Hitboxes.cs" />
+    <Compile Include="Components\MenuComponent.cs" />
+    <Compile Include="Components\MouseComponent.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="PlayerGun.cs" />
     <Compile Include="Points.cs" />
     <Compile Include="Components\SpaceHeadBaseComponent.cs" />
     <Compile Include="Components\ShopAndUpgradeComponent.cs" />

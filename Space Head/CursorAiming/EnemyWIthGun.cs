@@ -1,10 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace CursorAiming
 {
     internal class EnemyWithGun : Enemy
     {
+        private SoundEffect _damage;
         private readonly Gun Gun;
 
         public EnemyWithGun(Gun gun, int moveSpeed, int health, double attackSpeed, string texturePath, int pointValue,
@@ -26,6 +29,7 @@ namespace CursorAiming
 
         protected override void LoadContent()
         {
+            _damage = Game.Content.Load<SoundEffect>("STRONK");
             UnitTexture = Game.Content.Load<Texture2D>(TexturePath);
             base.LoadContent();
         }
@@ -52,6 +56,7 @@ namespace CursorAiming
             Gun.Position = Position + new Vector2(AimDirection.X * (UnitTexture.Width + 5),
                                AimDirection.Y * (UnitTexture.Width + 5));
 
+                Player.PlayerGoldAmount += 2;
             if (CountDownTilNextAttack > 0)
             {
                 CountDownTilNextAttack -= (float) gameTime.ElapsedGameTime.TotalSeconds;
@@ -66,7 +71,11 @@ namespace CursorAiming
             {
                 Gun.bulletsInAir[i].UpdatePosition(gameTime);
                 if (Gun.bulletsInAir[i].CheckForPlayerCollision())
+                {
                     Gun.bulletsInAir.Remove(Gun.bulletsInAir[i]);
+                    _damage.Play(1, -0.4f, 0);
+                    
+                }   
             }
 
 

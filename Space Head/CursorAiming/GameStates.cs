@@ -11,6 +11,7 @@ namespace CursorAiming
         Paused = 4,
         MainMenu = 8,
         ShopUpgradeMenu = 16,
-        GameOver = 32
+        GameOver = 32,
+        All = 32 | 16 | 8 | 4 | 2 | 1 | 0,
     }
 }

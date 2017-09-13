@@ -1,30 +1,44 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace CursorAiming
 {
-    internal class EnemyWIthGun : Enemy
+    internal class EnemyWithGun : Enemy
     {
+<<<<<<< HEAD
         private readonly Gun Gun;
 
-        public EnemyWIthGun(BasicEnemyWithGun template, Game game) : base(game)
-        {
-            Gun = template.Gun;
-            MoveSpeed = template.MoveSpeed;
-            Health = template.Health;
-            AttackSpeed = template.AttackSpeed;
-            CountDownTilNextAttack = AttackSpeed;
-            TexturePath = template.TexturePath;
-            Game.Components.Add(this);
-<<<<<<< HEAD
-            //Game.Components.Add(Gun);
+        public EnemyWithGun(Gun gun, int moveSpeed, int health, double attackSpeed, string texturePath, int pointValue,
+            int xpValue, int coinValue,
+            Game game) : base(game)
 =======
->>>>>>> origin/feature_Wave
+        private SoundEffect _damage;
+
+        public EnemyWIthGun(BasicEnemyWithGun template, Game game) : base(game)
+>>>>>>> origin/Feature-Upgrade
+        {
+            Gun = gun;
+            MoveSpeed = moveSpeed;
+            Health = health;
+            AttackSpeed = attackSpeed;
+            CountDownTilNextAttack = AttackSpeed;
+            TexturePath = texturePath;
+            PointValue = pointValue;
+            XpValue = xpValue;
+            CoinValue = coinValue;
+            Game.Components.Add(this);
+            Game.Components.Add(Gun);
         }
 
         protected override void LoadContent()
         {
+<<<<<<< HEAD
+=======
+            _damage = Game.Content.Load<SoundEffect>("STRONK");
             SpriteBatch = new SpriteBatch(Game.GraphicsDevice);
+>>>>>>> origin/Feature-Upgrade
             UnitTexture = Game.Content.Load<Texture2D>(TexturePath);
             base.LoadContent();
         }
@@ -41,16 +55,24 @@ namespace CursorAiming
 
         public override void Update(GameTime gameTime)
         {
+            if (Health <= 0)
+                Game.Components.Remove(Gun);
+
+            UpdateMovement(gameTime);
+
             Gun.AimDirection = AimDirection;
             Gun.Rotation = Rotation;
             Gun.Position = Position + new Vector2(AimDirection.X * (UnitTexture.Width + 5),
                                AimDirection.Y * (UnitTexture.Width + 5));
 
+<<<<<<< HEAD
+=======
             if (Health <= 0)
             {
-
+                Player.PlayerGoldAmount += 2;
             }
 
+>>>>>>> origin/Feature-Upgrade
             if (CountDownTilNextAttack > 0)
             {
                 CountDownTilNextAttack -= (float) gameTime.ElapsedGameTime.TotalSeconds;
@@ -65,25 +87,13 @@ namespace CursorAiming
             {
                 Gun.bulletsInAir[i].UpdatePosition(gameTime);
                 if (Gun.bulletsInAir[i].CheckForPlayerCollision())
+                {
                     Gun.bulletsInAir.Remove(Gun.bulletsInAir[i]);
+                    _damage.Play(1, -0.4f, 0);
+                    
+                }   
             }
 
-            if (DeltaDistance.Length() > 200)
-            {
-                MoveDirection = Player.PlayerPosition - Position;
-                MoveDirection.Normalize();
-
-                Velocity = MoveDirection * (int) (MoveSpeed * gameTime.ElapsedGameTime.TotalSeconds);
-                Position += Velocity;
-            }
-            else if (DeltaDistance.Length() < 190)
-            {
-                MoveDirection = Player.PlayerPosition - Position;
-                MoveDirection.Normalize();
-
-                Velocity = MoveDirection * (int) (MoveSpeed * gameTime.ElapsedGameTime.TotalSeconds);
-                Position -= Velocity;
-            }
 
             base.Update(gameTime);
         }
@@ -101,6 +111,22 @@ namespace CursorAiming
 
         public override void UpdateMovement(GameTime gameTime)
         {
+            if (DeltaDistance.Length() > 200)
+            {
+                MoveDirection = Player.PlayerPosition - Position;
+                MoveDirection.Normalize();
+
+                Velocity = MoveDirection * (int) (MoveSpeed * gameTime.ElapsedGameTime.TotalSeconds);
+                Position += Velocity;
+            }
+            else if (DeltaDistance.Length() < 190)
+            {
+                MoveDirection = Player.PlayerPosition - Position;
+                MoveDirection.Normalize();
+
+                Velocity = MoveDirection * (int) (MoveSpeed * gameTime.ElapsedGameTime.TotalSeconds);
+                Position -= Velocity;
+            }
             base.UpdateMovement(gameTime);
         }
     }

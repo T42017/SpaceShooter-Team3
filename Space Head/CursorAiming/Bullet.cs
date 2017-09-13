@@ -16,6 +16,8 @@ namespace CursorAiming
         public Bullet(int speed, int damage, Vector2 direction, Vector2 position, float rotation, Texture2D texture,
             UnitType typeToHit)
         {
+            
+
             Speed = speed;
             Damage = damage;
             Direction = direction;
@@ -38,6 +40,8 @@ namespace CursorAiming
             Position += Direction * (int) (Speed * gameTime.ElapsedGameTime.TotalSeconds);
         }
 
+        
+
         public bool CheckForEnemyCollision(List<Enemy> UnitsToCollideWith)
         {
             for (var i = 0; i < UnitsToCollideWith.Count; i++)
@@ -55,6 +59,7 @@ namespace CursorAiming
         {
             if (Player.Hitbox.CollidesWith(Position))
             {
+
                 //Player.Health--;
                 return true;
             }

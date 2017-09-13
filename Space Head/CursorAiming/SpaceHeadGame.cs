@@ -16,17 +16,15 @@ namespace CursorAiming
         private readonly GraphicsDeviceManager _graphics;
 
         private Song _backgroundMusic;
-        private Enemy _enemy;
-        private SpriteFont _font;
-        private GameState _gameState;
+
+        public GameState GameState { get; private set; }
         private Player _player;
         private KeyboardState _previousKeyboardState;
 
         private SpriteBatch _spriteBatch;
         private string _totalScore;
         private Waves _wave;
-
-
+        
         public SpaceHeadGame()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -36,12 +34,12 @@ namespace CursorAiming
 
         public void ChangeCurrentGameState(GameState wantedState)
         {
-            _gameState = wantedState;
+            GameState = wantedState;
 
             foreach (var component in Components.Cast<SpaceHeadBaseComponent>())
             {
-                component.Visible = component.DrawableStates.HasFlag(_gameState);
-                component.Enabled = component.UpdatableStates.HasFlag(_gameState);
+                component.Visible = component.DrawableStates.HasFlag(GameState);
+                component.Enabled = component.UpdatableStates.HasFlag(GameState);
             }
         }
 
@@ -50,15 +48,17 @@ namespace CursorAiming
             _player = new Player(310, 5, 0.4f, new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Enemy, this),
                 this);
 
+            
             Components.Add(new UIComponent(this));
             Components.Add(new EnviornmentComponent(this));
             Components.Add(new MenuComponent(this));
             Components.Add(new ShopAndUpgradeComponent(this));
             Components.Add(new GameOverComponent(this));
-            _wave = new Waves(this);
+            Components.Add(new MouseComponent(this));
             Components.Add(_player);
             Components.Add(_player.Gun);
-
+            
+            _wave = new Waves(this);            
 
             ObstaclesOnField.Add(new Rectangle(Globals.ScreenWidth / 2 - 100, Globals.ScreenHeight / 2 - 100, 100,
                 200));
@@ -69,7 +69,7 @@ namespace CursorAiming
             _graphics.PreferredBackBufferHeight = Globals.ScreenHeight;
             _graphics.ApplyChanges();
 
-            IsMouseVisible = true;
+            IsMouseVisible = false;
 
             #endregion
 
@@ -81,7 +81,7 @@ namespace CursorAiming
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _backgroundMusic = Content.Load<Song>("POL-flight-master-short");
+            _backgroundMusic = Content.Load<Song>("heman");
             MediaPlayer.Play(_backgroundMusic);
             MediaPlayer.Volume = 0.3f;
             MediaPlayer.IsRepeating = true;
@@ -97,6 +97,11 @@ namespace CursorAiming
         {
             base.Update(gameTime);
 
+            
+
+            //_mouseX = _mouseState.X;
+            //_mouseY = _mouseState.Y;
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
@@ -107,19 +112,19 @@ namespace CursorAiming
                 _wave.SpawnEnemy();
 
             if (kbState.IsKeyDown(Keys.P) && _previousKeyboardState.IsKeyUp(Keys.P))
-                if (_gameState == GameState.Paused)
+                if (GameState == GameState.Paused)
                     ChangeCurrentGameState(GameState.Playing);
-                else if (_gameState != GameState.Paused)
+                else if (GameState != GameState.Paused)
                     ChangeCurrentGameState(GameState.Paused);
 
             if (kbState.IsKeyDown(Keys.Space) && _previousKeyboardState.IsKeyUp(Keys.Space))
-                if (_gameState == GameState.GameOver)
+                if (GameState == GameState.GameOver)
                     ChangeCurrentGameState(GameState.MainMenu);
 
             if (kbState.IsKeyDown(Keys.B) && _previousKeyboardState.IsKeyUp(Keys.B))
-                if (_gameState == GameState.ShopUpgradeMenu)
+                if (GameState == GameState.ShopUpgradeMenu)
                     ChangeCurrentGameState(GameState.Playing);
-                else if (_gameState != GameState.ShopUpgradeMenu)
+                else if (GameState != GameState.ShopUpgradeMenu)
                     ChangeCurrentGameState(GameState.ShopUpgradeMenu);
 
 
@@ -135,6 +140,7 @@ namespace CursorAiming
 
             _spriteBatch.Begin();
 
+            
 
             _spriteBatch.End();
 

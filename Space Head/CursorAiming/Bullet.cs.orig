@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Xml.Schema;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -17,6 +16,8 @@ namespace CursorAiming
         public Bullet(int speed, int damage, Vector2 direction, Vector2 position, float rotation, Texture2D texture,
             UnitType typeToHit)
         {
+            
+
             Speed = speed;
             Damage = damage;
             Direction = direction;
@@ -39,21 +40,15 @@ namespace CursorAiming
             Position += Direction * (int) (Speed * gameTime.ElapsedGameTime.TotalSeconds);
         }
 
+        
+
         public bool CheckForEnemyCollision(List<Enemy> UnitsToCollideWith)
         {
-<<<<<<< HEAD
-            foreach (var unitToCollideWith in UnitsToCollideWith)
-                if (_typeToHit == unitToCollideWith.Type)
-                    if (unitToCollideWith.Hitbox.CollidesWith(Position))
-                    {
-                        unitToCollideWith.Health = Damage;
-=======
-            for (int i = 0; i<UnitsToCollideWith.Count; i++)
+            for (var i = 0; i < UnitsToCollideWith.Count; i++)
                 if (_typeToHit == UnitsToCollideWith[i].Type)
-                    if (UnitsToCollideWith[i].Hitbox.Contains(Position))
+                    if (UnitsToCollideWith[i].Hitbox.CollidesWith(Position))
                     {
                         UnitsToCollideWith[i].Health -= Damage;
->>>>>>> origin/feature_Wave
 
                         return true;
                     }
@@ -62,13 +57,15 @@ namespace CursorAiming
 
         public bool CheckForPlayerCollision()
         {
-            if (Player.Hitbox.Contains(Position))
+            if (Player.Hitbox.CollidesWith(Position))
+            {
 <<<<<<< HEAD
 =======
-            {
+
+>>>>>>> origin/Feature-Upgrade
                 //Player.Health--;
->>>>>>> origin/feature_Wave
                 return true;
+            }
             return false;
         }
     }

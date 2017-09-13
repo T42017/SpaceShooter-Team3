@@ -11,12 +11,20 @@ namespace CursorAiming
     {
         public static Vector2 PlayerPosition;
         public static int Health;
+<<<<<<< HEAD
         public static RectangleHitBox Hitbox;
+=======
+        public static int PlayerGoldAmount = 999999;
+>>>>>>> origin/Feature-Upgrade
 
         private readonly double _attackSpeed;
         private readonly int _moveSpeed;
+<<<<<<< HEAD
 
         public readonly Gun Gun;
+=======
+        public static Gun Gun;
+>>>>>>> origin/Feature-Upgrade
         private Vector2 _aimDirection;
         private double _countDownTilNextAttack;
         private Vector2 _deltaDistance;
@@ -36,12 +44,7 @@ namespace CursorAiming
 
         public UnitType Type = UnitType.Player;
 
-<<<<<<< HEAD
-=======
-        public static int XP;
-        public static int Points { get; set; }
-        public static int Coins { get; set; }
->>>>>>> feature_Wave
+
 
         public Player(int moveSpeed, int health, float attackSpeed, Gun gun, Game game) : base(game)
         {
@@ -52,7 +55,7 @@ namespace CursorAiming
             Gun = gun;
 
             DrawOrder = 1;
-            DrawableStates = GameState.Playing | GameState.Paused | GameState.ShopUpgradeMenu;
+            DrawableStates = GameState.Playing | GameState.Paused;
 
             PlayerPosition = new Vector2(Globals.ScreenWidth, Globals.ScreenHeight);
             UpdatableStates = GameState.Playing;

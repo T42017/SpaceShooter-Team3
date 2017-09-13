@@ -12,11 +12,11 @@ namespace CursorAiming
         public static Vector2 PlayerPosition;
         public static int Health;
         public static RectangleHitBox Hitbox;
+        public static int PlayerGoldAmount = 999999;
 
         private readonly double _attackSpeed;
         private readonly int _moveSpeed;
-
-        public readonly Gun Gun;
+        public static Gun Gun;
         private Vector2 _aimDirection;
         private double _countDownTilNextAttack;
         private Vector2 _deltaDistance;
@@ -47,7 +47,7 @@ namespace CursorAiming
             Gun = gun;
 
             DrawOrder = 1;
-            DrawableStates = GameState.Playing | GameState.Paused | GameState.ShopUpgradeMenu;
+            DrawableStates = GameState.Playing | GameState.Paused;
 
             PlayerPosition = new Vector2(Globals.ScreenWidth, Globals.ScreenHeight);
             UpdatableStates = GameState.Playing;

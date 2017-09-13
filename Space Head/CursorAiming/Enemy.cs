@@ -29,7 +29,7 @@ namespace CursorAiming
             DrawOrder = 1;
             Hitbox = new RectangleHitBox(3);
 
-            DrawableStates = GameState.Playing | GameState.Paused | GameState.ShopUpgradeMenu;
+            DrawableStates = GameState.Playing | GameState.Paused;
 
             UpdatableStates = GameState.Playing;
         }
