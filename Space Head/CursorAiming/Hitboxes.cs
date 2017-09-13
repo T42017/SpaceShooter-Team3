@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
 namespace CursorAiming
 {
@@ -22,64 +21,63 @@ namespace CursorAiming
 
     public class RectangleHitBox
     {
+        private readonly int _amountOfRays;
         public Rectangle Box;
         public Ray2D Ray = new Ray2D();
-        private int _amountOfRays;
+
         public RectangleHitBox(int amountOfRays)
         {
             _amountOfRays = amountOfRays;
         }
-        
+
 
         public void UpdatePosition(Vector2 pos)
         {
-            
             Box.Location = new Point((int) pos.X - Box.Width / 2, (int) pos.Y - Box.Height / 2);
         }
 
 
         public float CheckForRayCollision(Vector2 direction)
         {
-
             bool collision;
 
             float spaceBetweenRays;
-            for (int i = 0; i < _amountOfRays; i++)
+            for (var i = 0; i < _amountOfRays; i++)
             {
                 if (direction == Vector2.UnitX)
                 {
                     spaceBetweenRays = (Box.Height - 2) / (_amountOfRays - 1);
 
                     Ray.StartPos.X = Box.Right;
-                    Ray.StartPos.Y = Box.Bottom - (spaceBetweenRays * i) - 1;
+                    Ray.StartPos.Y = Box.Bottom - spaceBetweenRays * i - 1;
                     Ray.EndPos.X = Globals.ScreenWidth;
-                    Ray.EndPos.Y = Box.Bottom - (spaceBetweenRays * i) - 1;
+                    Ray.EndPos.Y = Box.Bottom - spaceBetweenRays * i - 1;
                 }
                 else if (direction == -Vector2.UnitX)
                 {
-                    spaceBetweenRays = (Box.Height - 2) / (_amountOfRays-1);
+                    spaceBetweenRays = (Box.Height - 2) / (_amountOfRays - 1);
 
                     Ray.StartPos.X = Box.Left;
-                    Ray.StartPos.Y = Box.Bottom - (spaceBetweenRays * i) - 1;
+                    Ray.StartPos.Y = Box.Bottom - spaceBetweenRays * i - 1;
                     Ray.EndPos.X = 0;
-                    Ray.EndPos.Y = Box.Bottom - (spaceBetweenRays * i) - 1;
+                    Ray.EndPos.Y = Box.Bottom - spaceBetweenRays * i - 1;
                 }
                 else if (direction == Vector2.UnitY)
                 {
                     spaceBetweenRays = (Box.Width - 2) / (_amountOfRays - 1);
 
-                    Ray.StartPos.X = Box.Right - (spaceBetweenRays * i) - 1;
+                    Ray.StartPos.X = Box.Right - spaceBetweenRays * i - 1;
                     Ray.StartPos.Y = Box.Bottom;
-                    Ray.EndPos.X = Box.Right - (spaceBetweenRays * i) - 1;
+                    Ray.EndPos.X = Box.Right - spaceBetweenRays * i - 1;
                     Ray.EndPos.Y = Globals.ScreenHeight;
                 }
                 else if (direction == -Vector2.UnitY)
                 {
                     spaceBetweenRays = (Box.Width - 2) / (_amountOfRays - 1);
 
-                    Ray.StartPos.X = Box.Left - (spaceBetweenRays * i) - 1;
+                    Ray.StartPos.X = Box.Left - spaceBetweenRays * i - 1;
                     Ray.StartPos.Y = Box.Top;
-                    Ray.EndPos.X = Box.Left - (spaceBetweenRays * i) - 1;
+                    Ray.EndPos.X = Box.Left - spaceBetweenRays * i - 1;
                     Ray.EndPos.Y = 0;
                 }
 
@@ -87,12 +85,11 @@ namespace CursorAiming
 
                 foreach (var rectangle in SpaceHeadGame.ObstaclesOnField)
                 {
-                    Vector2 hit = Ray.Intersects(rectangle);
+                    var hit = Ray.Intersects(rectangle);
                     collision = hit != Vector2.Zero;
 
-                    if(collision) return Vector2.Distance(edgePosition, hit);
+                    if (collision) return Vector2.Distance(edgePosition, hit);
                 }
-
             }
             return float.PositiveInfinity;
         }

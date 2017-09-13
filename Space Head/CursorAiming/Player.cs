@@ -9,8 +9,6 @@ namespace CursorAiming
 {
     public class Player : SpaceHeadBaseComponent
     {
-        Texture2D Obstacletexture;
-
         public static Vector2 PlayerPosition;
         public static int Health;
         public static RectangleHitBox Hitbox;
@@ -34,6 +32,7 @@ namespace CursorAiming
         private SpriteBatch _spriteBatch;
         private SoundEffect _takeDamage;
         private Vector2 _velocity;
+        private Texture2D Obstacletexture;
 
         public UnitType Type = UnitType.Player;
 
@@ -52,7 +51,7 @@ namespace CursorAiming
             PlayerPosition = new Vector2(Globals.ScreenWidth, Globals.ScreenHeight);
             UpdatableStates = GameState.Playing;
 
-            Hitbox = new RectangleHitBox(5);
+            Hitbox = new RectangleHitBox(2);
         }
 
         public static int Xp { get; set; }
@@ -153,13 +152,12 @@ namespace CursorAiming
                     _playerTexture.Height),
                 null, Color.White, _rotation, new Vector2(_playerTexture.Width / 2, _playerTexture.Height / 2),
                 SpriteEffects.None, 0);
-            
+
             for (var i = 0; i < Health; i++)
                 spriteBatch.Draw(_lifeTexture,
                     new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + Globals.ScreenHeight * 0.01f), Color.White);
 
             _spriteBatch.Draw(Obstacletexture, SpaceHeadGame.ObstaclesOnField[0], Color.White);
-
         }
 
         public void UpdateMovement(GameTime gameTime)
