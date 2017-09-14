@@ -54,18 +54,17 @@ namespace CursorAiming
                 Components.Add(unitWithGun);
                 Components.Add(unitWithGun.Gun);
             }
-            
+
+            #region Components
             Components.Add(new UIComponent(this));
             Components.Add(new EnviornmentComponent(this));
             Components.Add(new MenuComponent(this));
             Components.Add(new ShopAndUpgradeComponent(this));
             Components.Add(new GameOverComponent(this));
             Components.Add(new MouseComponent(this));
-
-
             Components.Add(player);
             Components.Add(Player.Gun);
-
+            #endregion
 
             #region windowSettings
 
@@ -101,10 +100,7 @@ namespace CursorAiming
             base.Update(gameTime);
 
             
-
-            //_mouseX = _mouseState.X;
-            //_mouseY = _mouseState.Y;
-
+            
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
@@ -113,21 +109,20 @@ namespace CursorAiming
 
 
             if (kbState.IsKeyDown(Keys.P) && _previousKeyboardState.IsKeyUp(Keys.P))
-                if (GameState == GameState.Paused)
-                    ChangeCurrentGameState(GameState.Playing);
-                else if (GameState != GameState.Paused)
+                if (GameState == GameState.Playing)
                     ChangeCurrentGameState(GameState.Paused);
+                else if (GameState == GameState.Paused)
+                    ChangeCurrentGameState(GameState.Playing);
 
             if (kbState.IsKeyDown(Keys.Space) && _previousKeyboardState.IsKeyUp(Keys.Space))
                 if (GameState == GameState.GameOver)
                     ChangeCurrentGameState(GameState.MainMenu);
 
             if (kbState.IsKeyDown(Keys.B) && _previousKeyboardState.IsKeyUp(Keys.B))
-                if (GameState == GameState.ShopUpgradeMenu)
-                    ChangeCurrentGameState(GameState.Playing);
-                else if (GameState != GameState.ShopUpgradeMenu)
+                if (GameState == GameState.Playing)
                     ChangeCurrentGameState(GameState.ShopUpgradeMenu);
-
+                else if (GameState == GameState.ShopUpgradeMenu)
+                    ChangeCurrentGameState(GameState.Playing);
 
             _previousKeyboardState = kbState;
 
@@ -138,10 +133,9 @@ namespace CursorAiming
         {
             GraphicsDevice.Clear(Color.Black);
 
-
             _spriteBatch.Begin();
 
-            
+
 
             _spriteBatch.End();
 

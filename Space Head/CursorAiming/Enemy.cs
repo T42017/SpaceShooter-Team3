@@ -18,6 +18,7 @@ namespace CursorAiming
         protected int MoveSpeed;
         protected Vector2 Position, MoveDirection, Velocity, AimDirection;
         protected float Rotation;
+        
 
         protected SpriteBatch SpriteBatch;
         protected string TexturePath;
@@ -52,8 +53,15 @@ namespace CursorAiming
 
 
             CalculateRotation(Player.PlayerPosition);
+
             if (Health <= 0)
+            {
                 SpaceHeadGame.EnemyUnitsOnField.Remove(this);
+
+
+
+            }
+                
 
 
             base.Update(gameTime);
