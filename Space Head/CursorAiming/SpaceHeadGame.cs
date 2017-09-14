@@ -61,7 +61,6 @@ namespace CursorAiming
 
             ObstaclesOnField.Add(new Rectangle(Globals.ScreenWidth / 2 - 100, Globals.ScreenHeight / 2 - 100, 100,
                 200));
-
             #region windowSettings
 
             _graphics.PreferredBackBufferWidth = Globals.ScreenWidth;
@@ -73,7 +72,6 @@ namespace CursorAiming
             #endregion
 
             ChangeCurrentGameState(GameState.MainMenu);
-
             base.Initialize();
         }
 
@@ -101,9 +99,6 @@ namespace CursorAiming
                 Exit();
 
             var kbState = Keyboard.GetState();
-
-            if (kbState.IsKeyDown(Keys.V) && _previousKeyboardState.IsKeyUp(Keys.V))
-                _wave.SpawnEnemy();
 
             if (kbState.IsKeyDown(Keys.P) && _previousKeyboardState.IsKeyUp(Keys.P))
                 if (GameState == GameState.Paused)
