@@ -12,7 +12,7 @@ namespace CursorAiming
         SpriteFont _normalFont;
         List<MenuChoice> _choices;
         MouseState _previousMouseState;
-        private Waves _wave;
+        Waves _wave;
         
         public MenuComponent(Game game)
             : base(game)
@@ -24,6 +24,7 @@ namespace CursorAiming
 
         public override void Initialize()
         {
+            _wave = new Waves(Game);
             _choices = new List<MenuChoice>();
             _choices.Add(new MenuChoice() { Text = "START", Selected = true, ClickAction = MenuStartClicked });
             _choices.Add(new MenuChoice() { Text = "QUIT", ClickAction = MenuQuitClicked });
@@ -36,6 +37,7 @@ namespace CursorAiming
         private void MenuStartClicked()
         {
             SpaceHeadGame.ChangeCurrentGameState(GameState.Playing);
+            _wave.SetTimer();
         }
 
         private void MenuQuitClicked()
@@ -114,7 +116,6 @@ namespace CursorAiming
         public override void Draw(GameTime gameTime)
         {
             _spriteBatch.Begin();
-                        _wave.SetTimer();
 
             foreach (var choice in _choices)
             {

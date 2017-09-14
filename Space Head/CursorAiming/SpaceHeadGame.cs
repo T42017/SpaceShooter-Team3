@@ -47,7 +47,6 @@ namespace CursorAiming
         {
             _player = new Player(310, 5, 0.4f, new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Enemy, this),
                 this);
-
             
             Components.Add(new UIComponent(this));
             Components.Add(new EnviornmentComponent(this));
@@ -55,8 +54,6 @@ namespace CursorAiming
             Components.Add(new ShopAndUpgradeComponent(this));
             Components.Add(new GameOverComponent(this));
             Components.Add(new MouseComponent(this));
-            
-            
             _wave = new Waves(this);            
 
             ObstaclesOnField.Add(new Rectangle(Globals.ScreenWidth / 2 - 100, Globals.ScreenHeight / 2 - 100, 100,
