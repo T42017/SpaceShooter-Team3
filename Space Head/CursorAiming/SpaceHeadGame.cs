@@ -46,7 +46,7 @@ namespace CursorAiming
         {
             new Player(310, 5, 0.4f, new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Enemy, this),
                 this);
-
+            
 
             Components.Add(new UIComponent(this));
             Components.Add(new EnviornmentComponent(this));
@@ -60,7 +60,6 @@ namespace CursorAiming
 
             ObstaclesOnField.Add(new Rectangle(Globals.ScreenWidth / 2 - 100, Globals.ScreenHeight / 2 - 100, 100,
                 200));
-
             #region windowSettings
 
             _graphics.PreferredBackBufferWidth = Globals.ScreenWidth;
@@ -72,7 +71,6 @@ namespace CursorAiming
             #endregion
 
             ChangeCurrentGameState(GameState.MainMenu);
-
             base.Initialize();
         }
 
@@ -100,9 +98,6 @@ namespace CursorAiming
                 Exit();
 
             var kbState = Keyboard.GetState();
-
-            if (kbState.IsKeyDown(Keys.V) && _previousKeyboardState.IsKeyUp(Keys.V))
-                _wave.SpawnEnemy();
 
             if (kbState.IsKeyDown(Keys.P) && _previousKeyboardState.IsKeyUp(Keys.P))
                 if (GameState == GameState.Paused)

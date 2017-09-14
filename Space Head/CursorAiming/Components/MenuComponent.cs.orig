@@ -12,8 +12,8 @@ namespace CursorAiming
         SpriteFont _normalFont;
         List<MenuChoice> _choices;
         MouseState _previousMouseState;
-        Waves _wave;
-        
+
+<<<<<<< HEAD
         public MenuComponent(Game game)
             : base(game)
         {
@@ -21,10 +21,15 @@ namespace CursorAiming
             DrawableStates = GameState.MainMenu;
             UpdatableStates = GameState.MainMenu;
         }
+=======
+        private Texture2D _survivalModeButton, _exitGameButton;
+        private Waves _wave;
+        private Vector2 _survivalModeButtonPos = Vector2.Zero;
+        private Vector2 _exitGameButtonPos = Vector2.Zero;
+>>>>>>> origin/feature_Wave
 
         public override void Initialize()
         {
-            _wave = new Waves(Game);
             _choices = new List<MenuChoice>();
             _choices.Add(new MenuChoice() { Text = "START", Selected = true, ClickAction = MenuStartClicked });
             _choices.Add(new MenuChoice() { Text = "QUIT", ClickAction = MenuQuitClicked });
@@ -36,8 +41,14 @@ namespace CursorAiming
 
         private void MenuStartClicked()
         {
+<<<<<<< HEAD
             SpaceHeadGame.ChangeCurrentGameState(GameState.Playing);
-            _wave.SetTimer();
+=======
+            _wave = new Waves(Game);
+            DrawOrder = 10;
+            UpdatableStates = GameState.MainMenu;
+            DrawableStates = GameState.MainMenu;
+>>>>>>> origin/feature_Wave
         }
 
         private void MenuQuitClicked()
@@ -119,7 +130,23 @@ namespace CursorAiming
 
             foreach (var choice in _choices)
             {
+<<<<<<< HEAD
                 _spriteBatch.DrawString(_normalFont, choice.Text, new Vector2(choice.X, choice.Y), Color.White);
+=======
+                if (_mouseState.LeftButton == ButtonState.Pressed && _previousMouseState.LeftButton != ButtonState.Pressed)
+                {
+                    if (new Rectangle((int) _survivalModeButtonPos.X, (int) _survivalModeButtonPos.Y, _survivalModeButton.Width, _survivalModeButton.Height).Contains(_mouseX, _mouseY))
+                    {
+                        SpaceHeadGame.ChangeCurrentGameState(GameState.Playing);
+                        _wave.SetTimer();
+                    }
+
+                    if (new Rectangle((int)_exitGameButtonPos.X, (int)_exitGameButtonPos.Y, _exitGameButton.Width, _exitGameButton.Height).Contains(_mouseX, _mouseY))
+                    {
+                        Game.Exit();
+                    }
+                }
+>>>>>>> origin/feature_Wave
             }
 
             _spriteBatch.End();

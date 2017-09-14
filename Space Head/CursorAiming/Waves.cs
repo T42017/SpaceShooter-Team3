@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Timers;
 using Microsoft.Xna.Framework;
 
 namespace CursorAiming
@@ -10,10 +11,11 @@ namespace CursorAiming
         public static List<Enemy> EnemyUnitsOnField = new List<Enemy>();
         private readonly double _tempTimer = 1d;
         public static int _enemyCount;
-        private Random _rng = new Random();
+        private static Random _rng = new Random();
         private double _tempTimeLeft;
         private int _numberOfEnemiesToSpawn;
         public static int _waveRound = 1;
+        
 
         public enum EnemyLevels
         {
@@ -25,8 +27,6 @@ namespace CursorAiming
         public Waves(Game game) : base(game)
         {
             Game.Components.Add(this);
-            UpdatableStates = GameState.Playing;
-            _tempTimeLeft = _tempTimer;
             EnemyUnitsOnField.Clear();
         }
 
@@ -42,28 +42,26 @@ namespace CursorAiming
             EnemyUnitsOnField.Add(spawnedEnemy);
         }
 
+        public void SetTimer()
+        {
+            var aTimer = new System.Timers.Timer(2000);
+            aTimer.Elapsed += OnTimedEvent;
+            aTimer.Enabled = true;
+        }
+
+        private void OnTimedEvent(object sender, ElapsedEventArgs e)
+        {
+            _numberOfEnemiesToSpawn = _waveRound * 2 + 1;
+
+            while (_enemyCount < _numberOfEnemiesToSpawn)
+            {
+                SpawnEnemy();
+                _enemyCount++;
+            }
+        }
+
         public override void Update(GameTime gameTime)
         {
-            _numberOfEnemiesToSpawn = _waveRound * 2 + 3;
-
-            if (_enemyCount < _numberOfEnemiesToSpawn)
-                if (_tempTimeLeft <= 0)
-                {
-                    SpawnEnemy();
-                    _tempTimeLeft = _tempTimer;
-                    _enemyCount++;                    
-                }
-                else
-                {
-                    _tempTimeLeft -= gameTime.ElapsedGameTime.TotalSeconds;
-                }
-            if (Player.Health == 0)
-            {
-                _enemyCount = 0;
-                EnemyUnitsOnField.Clear();
-            }
-            
-
             base.Update(gameTime);
         }
     }
