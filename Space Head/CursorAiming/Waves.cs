@@ -9,13 +9,13 @@ namespace CursorAiming
     public class Waves : SpaceHeadBaseComponent
     {
         public static List<Enemy> EnemyUnitsOnField = new List<Enemy>();
-        private readonly double _tempTimer = 1d;
         public static int _enemyCount;
         private static Random _rng = new Random();
         private double _tempTimeLeft;
         private int _numberOfEnemiesToSpawn;
         public static int _waveRound = 1;
-        
+        private int _enemiesCantSpawnSquared;
+
 
         public enum EnemyLevels
         {
@@ -24,11 +24,13 @@ namespace CursorAiming
             Hard
         }
 
+        
         public Waves(Game game) : base(game)
         {
             Game.Components.Add(this);
             EnemyUnitsOnField.Clear();
         }
+
 
         public void SpawnEnemy()
         {
@@ -38,13 +40,13 @@ namespace CursorAiming
 
             var spawnedEnemy = new EnemyWithGun(new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Player, Game),
                 200, 2, 1d, "BasicEnemy", 100, 100, 100, Game) {Position = newEnemyPosition};
-
-            EnemyUnitsOnField.Add(spawnedEnemy);
         }
 
-        public void SetTimer()
+        public void SetTimer(int intervalInMilli)
         {
-            var aTimer = new System.Timers.Timer(2000);
+            var aTimer = new System.Timers.Timer(intervalInMilli);
+            if (SpaceHeadGame.Instance.GameState != GameState.Playing)
+                aTimer.Stop();
             aTimer.Elapsed += OnTimedEvent;
             aTimer.Enabled = true;
         }

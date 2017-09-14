@@ -24,7 +24,9 @@ namespace CursorAiming
         private SpriteBatch _spriteBatch;
         private string _totalScore;
         private Waves _wave;
-        
+
+        public SpaceHeadGame Instance { get { return this; } }
+
         public SpaceHeadGame()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -112,7 +114,6 @@ namespace CursorAiming
                     ChangeCurrentGameState(GameState.Playing);
                 else if (GameState != GameState.ShopUpgradeMenu)
                     ChangeCurrentGameState(GameState.ShopUpgradeMenu);
-
 
             _previousKeyboardState = kbState;
 
