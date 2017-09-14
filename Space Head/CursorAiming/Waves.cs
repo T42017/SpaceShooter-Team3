@@ -9,11 +9,10 @@ namespace CursorAiming
     public class Waves : SpaceHeadBaseComponent
     {
         public static List<Enemy> EnemyUnitsOnField = new List<Enemy>();
-        public static int _enemyCount;
-        private static Random _rng = new Random();
-        private double _tempTimeLeft;
+        public static int EnemyCount;
+        private static readonly Random _rng = new Random();
         private int _numberOfEnemiesToSpawn;
-        public static int _waveRound = 1;
+        public static int WaveRound = 1;
         private int _enemiesCantSpawnSquared;
 
 
@@ -38,7 +37,7 @@ namespace CursorAiming
             newEnemyPosition.X = _rng.Next(0, Globals.ScreenWidth);
             newEnemyPosition.Y = _rng.Next(0, Globals.ScreenHeight);
 
-            var spawnedEnemy = new EnemyWithGun(new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Player, Game),
+            new EnemyWithGun(new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Player, Game),
                 200, 2, 1d, "BasicEnemy", 100, 100, 100, Game) {Position = newEnemyPosition};
         }
 
@@ -46,19 +45,19 @@ namespace CursorAiming
         {
             var aTimer = new System.Timers.Timer(intervalInMilli);
             if (SpaceHeadGame.Instance.GameState != GameState.Playing)
-                aTimer.Stop();
+                aTimer.Enabled = false;
             aTimer.Elapsed += OnTimedEvent;
             aTimer.Enabled = true;
         }
 
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
-            _numberOfEnemiesToSpawn = _waveRound * 2 + 1;
+            _numberOfEnemiesToSpawn = WaveRound * 2 + 1;
 
-            while (_enemyCount < _numberOfEnemiesToSpawn)
+            while (EnemyCount < _numberOfEnemiesToSpawn)
             {
                 SpawnEnemy();
-                _enemyCount++;
+                EnemyCount++;
             }
         }
 

@@ -57,8 +57,8 @@ namespace CursorAiming
                 Die();
                 if (Waves.EnemyUnitsOnField.Count == 0)
                 {
-                    Waves._waveRound++;
-                    Waves._enemyCount = 0;
+                    Waves.WaveRound++;
+                    Waves.EnemyCount = 0;
                 }
             }
             base.Update(gameTime);
