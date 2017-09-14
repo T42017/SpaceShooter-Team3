@@ -11,11 +11,18 @@ namespace CursorAiming
     {
         public static Vector2 PlayerPosition;
         public static int Health;
+        public static int HealthLevel;
+        public static int PlayerSkillPoints = 0;
         public static RectangleHitBox Hitbox;
         public static int PlayerGoldAmount = 999999;
+        private int _playerLevel;
+        public static int ExpRequiredToLevel { get; private set; }
+
 
         private readonly double _attackSpeed;
-        private readonly int _moveSpeed;
+        public static int AttackSpeedLevel = 0;
+        public static int MoveSpeed { get; set; }
+        public static int MoveSpeedLevel = 0;
         public static Gun Gun;
         private Vector2 _aimDirection;
         private double _countDownTilNextAttack;
@@ -40,7 +47,7 @@ namespace CursorAiming
 
         public Player(int moveSpeed, int health, float attackSpeed, Gun gun, Game game) : base(game)
         {
-            _moveSpeed = moveSpeed;
+            MoveSpeed = moveSpeed;
             Health = health;
             _attackSpeed = attackSpeed;
             _countDownTilNextAttack = _attackSpeed;
@@ -79,6 +86,8 @@ namespace CursorAiming
         {
             var mouse = Mouse.GetState();
             Hitbox.UpdatePosition(PlayerPosition);
+
+            ExpRequiredToLevel = CalculateRequiredExpToLevel(_playerLevel);
 
             _isShooting = false;
             UpdateMovement(gameTime);
@@ -129,6 +138,31 @@ namespace CursorAiming
             var tempDeltaDistance = _deltaDistance;
             tempDeltaDistance.Normalize();
             _aimDirection = tempDeltaDistance;
+        }
+
+        private int CalculateRequiredExpToLevel(int playerLevel)
+        {
+            float requiredExp = 0;
+            int wholeNumber = 0;
+
+            if (playerLevel == 1 && playerLevel <= 10)
+            {
+                requiredExp = 40 * playerLevel ^ 2 + 360 * playerLevel;
+            }
+            if (playerLevel == 11 && playerLevel <= 31)
+            {
+                requiredExp = (float) (-.4 * (playerLevel^3) + 40.4 * (playerLevel^2) + 396 * playerLevel);
+
+            }
+            if (playerLevel == 33 && playerLevel <= 54)
+            {
+                requiredExp = (65 * playerLevel ^ 2 - 165 * playerLevel - 6750) * playerLevel * .82f;
+            }
+
+            wholeNumber =  (int)Math.Ceiling(requiredExp);
+            
+
+            return wholeNumber;
         }
 
 
@@ -186,38 +220,38 @@ namespace CursorAiming
             {
                 distanceToCollision = Math.Abs(Hitbox.CheckForRayCollision(Vector2.UnitX));
                 if (distanceToCollision < Math.Abs(_moveDirection.X *
-                                                   _moveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds))
+                                                   MoveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds))
                     _velocity.X = distanceToCollision;
                 else
-                    _velocity.X = _moveDirection.X * _moveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds;
+                    _velocity.X = _moveDirection.X * MoveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds;
             }
             else if (_moveDirection.X < 0)
             {
                 distanceToCollision = Math.Abs(Hitbox.CheckForRayCollision(-Vector2.UnitX));
                 if (distanceToCollision < Math.Abs(_moveDirection.X *
-                                                   _moveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds))
+                                                   MoveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds))
                     _velocity.X = -distanceToCollision;
                 else
-                    _velocity.X = _moveDirection.X * _moveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds;
+                    _velocity.X = _moveDirection.X * MoveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds;
             }
 
             if (_moveDirection.Y > 0)
             {
                 distanceToCollision = Math.Abs(Hitbox.CheckForRayCollision(Vector2.UnitY));
                 if (distanceToCollision < Math.Abs(_moveDirection.Y *
-                                                   _moveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds))
+                                                   MoveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds))
                     _velocity.Y = distanceToCollision;
                 else
-                    _velocity.Y = _moveDirection.Y * _moveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds;
+                    _velocity.Y = _moveDirection.Y * MoveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds;
             }
             else if (_moveDirection.Y < 0)
             {
                 distanceToCollision = Math.Abs(Hitbox.CheckForRayCollision(-Vector2.UnitY));
                 if (distanceToCollision < Math.Abs(_moveDirection.Y *
-                                                   _moveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds))
+                                                   MoveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds))
                     _velocity.Y = -distanceToCollision;
                 else
-                    _velocity.Y = _moveDirection.Y * _moveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds;
+                    _velocity.Y = _moveDirection.Y * MoveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds;
             }
 
 
