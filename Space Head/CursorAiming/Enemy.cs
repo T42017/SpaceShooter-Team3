@@ -85,6 +85,9 @@ namespace CursorAiming
 
         public virtual void UpdateMovement(GameTime gameTime)
         {
+
+            Velocity = Hitbox.CheckMoveDistance(MoveSpeed, MoveDirection,
+                (float) gameTime.ElapsedGameTime.TotalSeconds);
         }
 
         public void Die()

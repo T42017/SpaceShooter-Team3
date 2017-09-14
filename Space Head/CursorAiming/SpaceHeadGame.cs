@@ -16,21 +16,20 @@ namespace CursorAiming
         private readonly GraphicsDeviceManager _graphics;
 
         private Song _backgroundMusic;
-
-        public GameState GameState { get; private set; }
-        private Player _player;
         private KeyboardState _previousKeyboardState;
 
         private SpriteBatch _spriteBatch;
         private string _totalScore;
         private Waves _wave;
-        
+
         public SpaceHeadGame()
         {
             _graphics = new GraphicsDeviceManager(this);
 
             Content.RootDirectory = "Content";
         }
+
+        public GameState GameState { get; private set; }
 
         public void ChangeCurrentGameState(GameState wantedState)
         {
@@ -45,19 +44,19 @@ namespace CursorAiming
 
         protected override void Initialize()
         {
-            _player = new Player(310, 5, 0.4f, new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Enemy, this),
+            new Player(310, 5, 0.4f, new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Enemy, this),
                 this);
 
-            
+
             Components.Add(new UIComponent(this));
             Components.Add(new EnviornmentComponent(this));
             Components.Add(new MenuComponent(this));
             Components.Add(new ShopAndUpgradeComponent(this));
             Components.Add(new GameOverComponent(this));
             Components.Add(new MouseComponent(this));
-            
-            
-            _wave = new Waves(this);            
+
+
+            _wave = new Waves(this);
 
             ObstaclesOnField.Add(new Rectangle(Globals.ScreenWidth / 2 - 100, Globals.ScreenHeight / 2 - 100, 100,
                 200));
@@ -80,7 +79,7 @@ namespace CursorAiming
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _backgroundMusic = Content.Load<Song>("heman");
+            _backgroundMusic = Content.Load<Song>("yeahBoy");
             MediaPlayer.Play(_backgroundMusic);
             MediaPlayer.Volume = 0.3f;
             MediaPlayer.IsRepeating = true;
@@ -94,7 +93,7 @@ namespace CursorAiming
 
         protected override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);           
+            base.Update(gameTime);
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -134,7 +133,6 @@ namespace CursorAiming
 
             _spriteBatch.Begin();
 
-            
 
             _spriteBatch.End();
 

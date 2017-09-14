@@ -7,6 +7,7 @@ namespace CursorAiming
     public class Bullet
     {
         private readonly UnitType _typeToHit;
+        private RectangleHitBox _hitbox;
         public int Damage, Speed;
         public Vector2 Direction, Position;
         public float Rotation;
@@ -16,8 +17,6 @@ namespace CursorAiming
         public Bullet(int speed, int damage, Vector2 direction, Vector2 position, float rotation, Texture2D texture,
             UnitType typeToHit)
         {
-            
-
             Speed = speed;
             Damage = damage;
             Direction = direction;
@@ -40,29 +39,35 @@ namespace CursorAiming
             Position += Direction * (int) (Speed * gameTime.ElapsedGameTime.TotalSeconds);
         }
 
-        
 
-        public bool CheckForEnemyCollision(List<Enemy> UnitsToCollideWith)
+        public bool CheckForEnemyCollision(List<Enemy> unitsToCollideWith)
         {
-            for (var i = 0; i < UnitsToCollideWith.Count; i++)
-                if (_typeToHit == UnitsToCollideWith[i].Type)
-                    if (UnitsToCollideWith[i].Hitbox.CollidesWith(Position))
+            for (var i = 0; i < unitsToCollideWith.Count; i++)
+                if (_typeToHit == unitsToCollideWith[i].Type)
+                {
+                    if (unitsToCollideWith[i].Hitbox.CollidesWith(Position))
                     {
-                        UnitsToCollideWith[i].Health -= Damage;
+                        unitsToCollideWith[i].Health -= Damage;
 
                         return true;
                     }
+
+                    foreach (var rectangle in SpaceHeadGame.ObstaclesOnField)
+                        if (rectangle.Contains(Position)) return true;
+                }
+
+
             return false;
         }
 
         public bool CheckForPlayerCollision()
         {
             if (Player.Hitbox.CollidesWith(Position))
-            {
-
-                //Player.Health--;
                 return true;
-            }
+
+            foreach (var rectangle in SpaceHeadGame.ObstaclesOnField)
+                if (rectangle.Contains(Position)) return true;
+
             return false;
         }
     }

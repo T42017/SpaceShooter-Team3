@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 
 namespace CursorAiming
 {
@@ -37,10 +38,56 @@ namespace CursorAiming
         }
 
 
+        public Vector2 CheckMoveDistance (int movespeed, Vector2 direction, float deltaTime)
+        {
+            float distanceToCollision;
+            float x = 0, y = 0;
+
+            if (direction.X > 0)
+            {
+                distanceToCollision = Math.Abs(CheckForRayCollision(Vector2.UnitX));
+                if (distanceToCollision < Math.Abs(direction.X *
+                                                   movespeed * deltaTime))
+                {
+                    x = distanceToCollision;
+                }
+                else
+                    x = direction.X *movespeed * deltaTime;
+            }
+            else if (direction.X < 0)
+            {
+                distanceToCollision = Math.Abs(CheckForRayCollision(-Vector2.UnitX));
+                if (distanceToCollision < Math.Abs(direction.X *
+                                                   movespeed * deltaTime))
+                    x = -distanceToCollision;
+                else
+                    x = direction.X * movespeed * deltaTime;
+            }
+
+            if (direction.Y > 0)
+            {
+                distanceToCollision = Math.Abs(CheckForRayCollision(Vector2.UnitY));
+                if (distanceToCollision < Math.Abs(direction.Y *
+                                                   movespeed * deltaTime))
+                    y = distanceToCollision;
+                else
+                    y = direction.Y * movespeed * deltaTime;
+            }
+            else if (direction.Y < 0)
+            {
+                distanceToCollision = Math.Abs(CheckForRayCollision(-Vector2.UnitY));
+                if (distanceToCollision < Math.Abs(direction.Y *
+                                                   movespeed * deltaTime))
+                    y = -distanceToCollision;
+                else
+                    y= direction.Y * movespeed * deltaTime;
+            }
+
+            return new Vector2(x,y);
+        }
+
         public float CheckForRayCollision(Vector2 direction)
         {
-            bool collision;
-
             float spaceBetweenRays;
             for (var i = 0; i < _amountOfRays; i++)
             {
@@ -86,7 +133,7 @@ namespace CursorAiming
                 foreach (var rectangle in SpaceHeadGame.ObstaclesOnField)
                 {
                     var hit = Ray.Intersects(rectangle);
-                    collision = hit != Vector2.Zero;
+                    var collision = hit != Vector2.Zero;
 
                     if (collision) return Vector2.Distance(edgePosition, hit);
                 }

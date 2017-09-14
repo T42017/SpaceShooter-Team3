@@ -12,17 +12,12 @@ namespace CursorAiming
     {
         private SpriteFont _font;
 
-        private string _currentLevel, _currentGoldAmount, _currentScore;
 
         public UIComponent(Game game) : base(game)
         {
-            _currentLevel = "9000";
-            _currentGoldAmount = "2";
-            _currentScore = "1000000";
             
             DrawOrder = 2;
-            //UpdatableStates = GameState.Playing | GameState.ShopUpgradeMenu;
-            //DrawableStates = GameState.Playing | GameState.ShopUpgradeMenu | GameState.Paused;
+            
         }
 
         protected override void LoadContent()
@@ -34,7 +29,6 @@ namespace CursorAiming
 
         public override void Update(GameTime gameTime)
         {
-            _currentScore = Points.Score.ToString();
             base.Update(gameTime);
         }
 
@@ -42,10 +36,6 @@ namespace CursorAiming
         {
             SpriteBatch.Begin();
             
-            SpriteBatch.DrawString(_font, "Score: " + _currentScore, new Vector2(Globals.ScreenHeight * 0.01f, Globals.ScreenHeight - (Globals.ScreenHeight * 0.05f)), Color.MidnightBlue);
-            SpriteBatch.DrawString(_font, "Gold: " + _currentGoldAmount, new Vector2(Globals.ScreenHeight * 0.01f, Globals.ScreenHeight - (Globals.ScreenHeight * 0.10f)), Color.MidnightBlue);
-            SpriteBatch.DrawString(_font, "Level: " + _currentLevel, new Vector2(Globals.ScreenHeight * 0.01f, Globals.ScreenHeight - (Globals.ScreenHeight * 0.15f)), Color.MidnightBlue);
-
             SpriteBatch.End();
 
             base.Draw(gameTime);

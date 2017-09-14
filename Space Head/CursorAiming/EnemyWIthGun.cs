@@ -1,14 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace CursorAiming
 {
     internal class EnemyWithGun : Enemy
     {
-        private SoundEffect _damage;
         private readonly Gun Gun;
+        private SoundEffect _damage;
 
         public EnemyWithGun(Gun gun, int moveSpeed, int health, double attackSpeed, string texturePath, int pointValue,
             int xpValue, int coinValue,
@@ -56,12 +55,12 @@ namespace CursorAiming
             Gun.Position = Position + new Vector2(AimDirection.X * (UnitTexture.Width + 5),
                                AimDirection.Y * (UnitTexture.Width + 5));
 
-                Player.PlayerGoldAmount += 2;
+            Player.PlayerGoldAmount += 2;
             if (CountDownTilNextAttack > 0)
             {
                 CountDownTilNextAttack -= (float) gameTime.ElapsedGameTime.TotalSeconds;
             }
-            else if (DeltaDistance.Length() < 300)
+            else if (DeltaDistance.Length() < 420)
             {
                 Gun.Shoot();
                 CountDownTilNextAttack = AttackSpeed;
@@ -74,8 +73,7 @@ namespace CursorAiming
                 {
                     Gun.bulletsInAir.Remove(Gun.bulletsInAir[i]);
                     _damage.Play(1, -0.4f, 0);
-                    
-                }   
+                }
             }
 
 
@@ -95,21 +93,24 @@ namespace CursorAiming
 
         public override void UpdateMovement(GameTime gameTime)
         {
-            if (DeltaDistance.Length() > 200)
+            if (DeltaDistance.Length() > 400)
             {
                 MoveDirection = Player.PlayerPosition - Position;
                 MoveDirection.Normalize();
 
-                Velocity = MoveDirection * (int) (MoveSpeed * gameTime.ElapsedGameTime.TotalSeconds);
+                Velocity = Hitbox.CheckMoveDistance(MoveSpeed, MoveDirection,
+                    (float)gameTime.ElapsedGameTime.TotalSeconds);
+
                 Position += Velocity;
             }
-            else if (DeltaDistance.Length() < 190)
+            
+            else if (DeltaDistance.Length() < 300)
             {
                 MoveDirection = Player.PlayerPosition - Position;
                 MoveDirection.Normalize();
-
-                Velocity = MoveDirection * (int) (MoveSpeed * gameTime.ElapsedGameTime.TotalSeconds);
-                Position -= Velocity;
+                Velocity = Hitbox.CheckMoveDistance(MoveSpeed, -MoveDirection,
+                    (float) gameTime.ElapsedGameTime.TotalSeconds);
+                Position += Velocity;
             }
             base.UpdateMovement(gameTime);
         }

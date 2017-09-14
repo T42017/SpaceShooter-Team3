@@ -13,10 +13,10 @@ namespace CursorAiming
         public static int Health;
         public static RectangleHitBox Hitbox;
         public static int PlayerGoldAmount = 999999;
+        public static Gun Gun;
 
         private readonly double _attackSpeed;
         private readonly int _moveSpeed;
-        public static Gun Gun;
         private Vector2 _aimDirection;
         private double _countDownTilNextAttack;
         private Vector2 _deltaDistance;
@@ -35,7 +35,6 @@ namespace CursorAiming
         private Texture2D Obstacletexture;
 
         public UnitType Type = UnitType.Player;
-
 
 
         public Player(int moveSpeed, int health, float attackSpeed, Gun gun, Game game) : base(game)
@@ -180,45 +179,9 @@ namespace CursorAiming
 
             if ((int) _moveDirection.X != 0 && (int) _moveDirection.Y != 0) _moveDirection.Normalize();
 
-            float distanceToCollision;
 
-            if (_moveDirection.X > 0)
-            {
-                distanceToCollision = Math.Abs(Hitbox.CheckForRayCollision(Vector2.UnitX));
-                if (distanceToCollision < Math.Abs(_moveDirection.X *
-                                                   _moveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds))
-                    _velocity.X = distanceToCollision;
-                else
-                    _velocity.X = _moveDirection.X * _moveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds;
-            }
-            else if (_moveDirection.X < 0)
-            {
-                distanceToCollision = Math.Abs(Hitbox.CheckForRayCollision(-Vector2.UnitX));
-                if (distanceToCollision < Math.Abs(_moveDirection.X *
-                                                   _moveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds))
-                    _velocity.X = -distanceToCollision;
-                else
-                    _velocity.X = _moveDirection.X * _moveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds;
-            }
-
-            if (_moveDirection.Y > 0)
-            {
-                distanceToCollision = Math.Abs(Hitbox.CheckForRayCollision(Vector2.UnitY));
-                if (distanceToCollision < Math.Abs(_moveDirection.Y *
-                                                   _moveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds))
-                    _velocity.Y = distanceToCollision;
-                else
-                    _velocity.Y = _moveDirection.Y * _moveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds;
-            }
-            else if (_moveDirection.Y < 0)
-            {
-                distanceToCollision = Math.Abs(Hitbox.CheckForRayCollision(-Vector2.UnitY));
-                if (distanceToCollision < Math.Abs(_moveDirection.Y *
-                                                   _moveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds))
-                    _velocity.Y = -distanceToCollision;
-                else
-                    _velocity.Y = _moveDirection.Y * _moveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds;
-            }
+            _velocity = Hitbox.CheckMoveDistance(_moveSpeed, _moveDirection,
+                (float) gameTime.ElapsedGameTime.TotalSeconds);
 
 
             PlayerPosition += _velocity;
