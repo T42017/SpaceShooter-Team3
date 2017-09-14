@@ -11,9 +11,6 @@ namespace CursorAiming
         public static Vector2 PlayerPosition;
         public static int Health;
         public static int PlayerGoldAmount = 999999;
-        public static int PlayerLevel = 1;
-        public static float ExpNeededToLevel;
-        public static int PlayerSkillPoints = 10;
 
         public static CircleHitBox Hitbox;
         private readonly double _attackSpeed;
@@ -67,8 +64,6 @@ namespace CursorAiming
             var mouse = Mouse.GetState();
             Hitbox.MiddlePoint = PlayerPosition;
 
-            ExpNeededToLevel = CalculateExpNeededToLevel(PlayerLevel);
-
             _isShooting = false;
             UpdateMovement(gameTime);
             CalculateRotation(new Vector2(mouse.X, mouse.Y));
@@ -94,7 +89,6 @@ namespace CursorAiming
                 }
             }
 
-
             _hasShot = _isShooting;
             if (Health <= 0)
             {
@@ -119,31 +113,6 @@ namespace CursorAiming
             var tempDeltaDistance = _deltaDistance;
             tempDeltaDistance.Normalize();
             _aimDirection = tempDeltaDistance;
-        }
-
-        private float CalculateExpNeededToLevel(int playerLevel)
-        {
-            float requiredExp = 0;
-
-            if (playerLevel == 1 && playerLevel <= 10)
-            {
-                requiredExp = 40 * playerLevel ^ 2 + 360 * playerLevel;
-            }
-
-            if (playerLevel == 11 && playerLevel <= 31)
-            {
-                requiredExp = 40 * playerLevel ^ 2 + 360 * playerLevel;
-            }
-
-            if (playerLevel == 32 && playerLevel <= 54)
-            {
-                requiredExp = (65 * playerLevel^2 - 165 * 2 - 6750) * 2 * .82f;
-            }
-
-            var wholeNumber = (int)Math.Ceiling(requiredExp);
-            requiredExp = wholeNumber;
-
-            return requiredExp;
         }
 
         public override void Draw(GameTime gameTime)
