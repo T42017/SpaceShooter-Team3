@@ -59,25 +59,13 @@ namespace CursorAiming
         {
             SpaceHeadGame.ChangeCurrentGameState(GameState.GameOver);
 
-            Game.Components.Remove(SpaceHeadGame.player);
+            SpaceHeadGame.player.Remove();
             SpaceHeadGame.player = new Player(310, 5, 0.4f,
                 new Gun("PlayerGun1", "laserBlue01", 20, 1500, UnitType.Enemy, Game),
                 Game);
-            foreach (Gun gun in Game.Components)
-            {
-                gun.bulletsInAir.Clear();
-                Game.Components.Remove(gun);
-            }
 
-            foreach (var enemy in Waves.EnemyUnitsOnField)
-            {
-                
-                Game.Components.Remove(enemy);
-            }
 
-            Waves.EnemyUnitsOnField.Clear();
-            Waves._enemyCount = 0;
-            Waves._waveRound = 0;
+            Waves.Reset(Game);
         }
     }
 }

@@ -80,6 +80,12 @@ namespace CursorAiming
             base.Update(gameTime);
         }
 
+        public override void Remove()
+        {
+            Game.Components.Remove(Gun);
+            base.Remove();
+        }
+
         public override void UpdateGraphics(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(UnitTexture,
@@ -93,17 +99,19 @@ namespace CursorAiming
 
         public override void UpdateMovement(GameTime gameTime)
         {
+            base.UpdateMovement(gameTime);
+
             if (DeltaDistance.Length() > 400)
             {
                 MoveDirection = Player.PlayerPosition - Position;
                 MoveDirection.Normalize();
 
                 Velocity = Hitbox.CheckMoveDistance(MoveSpeed, MoveDirection,
-                    (float)gameTime.ElapsedGameTime.TotalSeconds);
+                    (float) gameTime.ElapsedGameTime.TotalSeconds);
 
                 Position += Velocity;
             }
-            
+
             else if (DeltaDistance.Length() < 300)
             {
                 MoveDirection = Player.PlayerPosition - Position;
@@ -112,7 +120,6 @@ namespace CursorAiming
                     (float) gameTime.ElapsedGameTime.TotalSeconds);
                 Position += Velocity;
             }
-            base.UpdateMovement(gameTime);
         }
     }
 }

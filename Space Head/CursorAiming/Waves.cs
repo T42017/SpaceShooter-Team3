@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Timers;
 using Microsoft.Xna.Framework;
 
@@ -8,21 +7,20 @@ namespace CursorAiming
 {
     public class Waves : SpaceHeadBaseComponent
     {
-        public static List<Enemy> EnemyUnitsOnField = new List<Enemy>();
-        private readonly double _tempTimer = 1d;
-        public static int _enemyCount;
-        private static Random _rng = new Random();
-        private double _tempTimeLeft;
-        private int _numberOfEnemiesToSpawn;
-        public static int _waveRound = 1;
-        
-
         public enum EnemyLevels
         {
             Easy,
             Medium,
             Hard
         }
+
+        public static List<Enemy> EnemyUnitsOnField = new List<Enemy>();
+        public static int _enemyCount;
+        private static readonly Random _rng = new Random();
+        public static int _waveRound = 1;
+        private readonly double _tempTimer = 1d;
+        private int _numberOfEnemiesToSpawn;
+        private double _tempTimeLeft;
 
         public Waves(Game game) : base(game)
         {
@@ -44,7 +42,7 @@ namespace CursorAiming
 
         public void SetTimer()
         {
-            var aTimer = new System.Timers.Timer(2000);
+            var aTimer = new Timer(2000);
             aTimer.Elapsed += OnTimedEvent;
             aTimer.Enabled = true;
         }
@@ -64,15 +62,15 @@ namespace CursorAiming
         {
             base.Update(gameTime);
         }
-    }
 
-
-    public class EnemySpawn : Enemy
-    {
-        public EnemySpawn(Vector2 enemyPosistion, Vector2 enemyDirection, Game game) : base(game)
+        public static void Reset(Game game)
         {
-            Position = enemyPosistion;
-            AimDirection = enemyDirection;
+            foreach (var enemy in EnemyUnitsOnField)
+                enemy.Remove();
+
+            EnemyUnitsOnField.Clear();
+            _enemyCount = 0;
+            _waveRound = 1;
         }
     }
 }

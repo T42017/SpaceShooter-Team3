@@ -61,6 +61,11 @@ namespace CursorAiming
         public static int Points { get; set; }
         public static int Coins { get; set; }
 
+        public override void Remove()
+        {
+            Game.Components.Remove(Gun);
+            base.Remove();
+        }
 
         protected override void LoadContent()
         {
@@ -103,9 +108,6 @@ namespace CursorAiming
                     _countDownTilNextAttack = _attackSpeed;
                 }
             }
-
-            if (Health <= 0)
-                SpaceHeadGame.ChangeCurrentGameState(GameState.GameOver);
 
             for (var i = 0; i < Gun.bulletsInAir.Count; i++)
             {
