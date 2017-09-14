@@ -34,6 +34,10 @@ namespace CursorAiming
             UpdatableStates = GameState.Playing;
         }
 
+        ~Enemy()
+        {
+        }
+
         protected override void LoadContent()
         {
             Hitbox.Box.Size = new Point(UnitTexture.Width / 2, UnitTexture.Width / 2);
@@ -85,7 +89,6 @@ namespace CursorAiming
 
         public virtual void UpdateMovement(GameTime gameTime)
         {
-
             Velocity = Hitbox.CheckMoveDistance(MoveSpeed, MoveDirection,
                 (float) gameTime.ElapsedGameTime.TotalSeconds);
         }

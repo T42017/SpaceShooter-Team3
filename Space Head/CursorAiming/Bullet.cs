@@ -7,7 +7,6 @@ namespace CursorAiming
     public class Bullet
     {
         private readonly UnitType _typeToHit;
-        private RectangleHitBox _hitbox;
         public int Damage, Speed;
         public Vector2 Direction, Position;
         public float Rotation;
@@ -59,11 +58,14 @@ namespace CursorAiming
 
             return false;
         }
-
+        
         public bool CheckForPlayerCollision()
         {
             if (Player.Hitbox.CollidesWith(Position))
+            {
+                Player.Health--;          
                 return true;
+            }
 
             foreach (var rectangle in SpaceHeadGame.ObstaclesOnField)
                 if (rectangle.Contains(Position)) return true;

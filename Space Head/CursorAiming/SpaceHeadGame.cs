@@ -10,6 +10,7 @@ namespace CursorAiming
     public class SpaceHeadGame : Game
     {
         public static Waves Wave;
+        public static Player player;
 
         public static List<Rectangle> ObstaclesOnField = new List<Rectangle>();
 
@@ -44,9 +45,9 @@ namespace CursorAiming
 
         protected override void Initialize()
         {
-            new Player(310, 5, 0.4f, new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Enemy, this),
+            player = new Player(310, 5, 0.4f, new Gun("PlayerGun1", "laserBlue01", 20, 1500, UnitType.Enemy, this),
                 this);
-            
+
 
             Components.Add(new UIComponent(this));
             Components.Add(new EnviornmentComponent(this));
@@ -60,6 +61,7 @@ namespace CursorAiming
 
             ObstaclesOnField.Add(new Rectangle(Globals.ScreenWidth / 2 - 100, Globals.ScreenHeight / 2 - 100, 100,
                 200));
+
             #region windowSettings
 
             _graphics.PreferredBackBufferWidth = Globals.ScreenWidth;

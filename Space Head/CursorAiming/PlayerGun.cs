@@ -40,8 +40,6 @@ namespace CursorAiming
         {
             SpriteBatch.Begin();
 
-            //SpriteBatch.DrawString(_font, Damage.ToString(), new Vector2(420, 420), Color.White );
-
             SpriteBatch.End();
 
             base.Draw(gameTime);

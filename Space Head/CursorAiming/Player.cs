@@ -105,11 +105,7 @@ namespace CursorAiming
             }
 
             if (Health <= 0)
-            {
-                Waves.EnemyUnitsOnField.Clear();
                 SpaceHeadGame.ChangeCurrentGameState(GameState.GameOver);
-                Health = 5;
-            }
 
             for (var i = 0; i < Gun.bulletsInAir.Count; i++)
             {
