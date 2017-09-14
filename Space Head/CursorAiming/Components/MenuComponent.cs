@@ -14,8 +14,7 @@ namespace CursorAiming
         private Random rnd = new Random();
 
         private Texture2D _survivalModeButton, _exitGameButton;
-        
-        
+        private Waves _wave;
         private Vector2 _survivalModeButtonPos = Vector2.Zero;
         private Vector2 _exitGameButtonPos = Vector2.Zero;
 
@@ -31,6 +30,7 @@ namespace CursorAiming
         
         public MenuComponent(Game game) : base(game)
         {
+            _wave = new Waves(Game);
             DrawOrder = 10;
             UpdatableStates = GameState.MainMenu;
             DrawableStates = GameState.MainMenu;
@@ -84,6 +84,7 @@ namespace CursorAiming
                     if (new Rectangle((int) _survivalModeButtonPos.X, (int) _survivalModeButtonPos.Y, _survivalModeButton.Width, _survivalModeButton.Height).Contains(_mouseX, _mouseY))
                     {
                         SpaceHeadGame.ChangeCurrentGameState(GameState.Playing);
+                        _wave.SetTimer();
                     }
 
                     if (new Rectangle((int)_exitGameButtonPos.X, (int)_exitGameButtonPos.Y, _exitGameButton.Width, _exitGameButton.Height).Contains(_mouseX, _mouseY))

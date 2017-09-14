@@ -51,10 +51,8 @@ namespace CursorAiming
             Components.Add(new MenuComponent(this));
             Components.Add(new ShopAndUpgradeComponent(this));
             Components.Add(new GameOverComponent(this));
-            _wave = new Waves(this);
             Components.Add(_player);
             Components.Add(_player.Gun);
-
 
             #region windowSettings
 
@@ -67,7 +65,6 @@ namespace CursorAiming
             #endregion
 
             ChangeCurrentGameState(GameState.MainMenu);
-
             base.Initialize();
         }
 
@@ -94,9 +91,6 @@ namespace CursorAiming
                 Exit();
 
             var kbState = Keyboard.GetState();
-
-            if (kbState.IsKeyDown(Keys.V) && _previousKeyboardState.IsKeyUp(Keys.V))
-                _wave.SpawnEnemy();
 
             if (kbState.IsKeyDown(Keys.P) && _previousKeyboardState.IsKeyUp(Keys.P))
                 if (_gameState == GameState.Paused)

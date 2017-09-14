@@ -52,14 +52,14 @@ namespace CursorAiming
             CalculateRotation(Player.PlayerPosition);
             if (Health <= 0)
             {
+                Game.Components.Remove(this);
+                Waves.EnemyUnitsOnField.Remove(this);
+                Die();
                 if (Waves.EnemyUnitsOnField.Count == 0)
                 {
                     Waves._waveRound++;
                     Waves._enemyCount = 0;
                 }
-                Game.Components.Remove(this);
-                Waves.EnemyUnitsOnField.Remove(this);
-                Die();
             }
             base.Update(gameTime);
         }
