@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CursorAiming
+﻿namespace CursorAiming
 {
-    class Globals
+    internal class Globals
     {
         public static int ScreenWidth = 1500;
         public static int ScreenHeight = 1100;
