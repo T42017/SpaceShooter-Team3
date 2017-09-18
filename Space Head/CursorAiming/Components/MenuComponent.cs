@@ -12,7 +12,6 @@ namespace CursorAiming
         List<MenuChoice> _choices;
         MouseState _previousMouseState;
         private string _title;
-        Waves _wave;
         
         public MenuComponent(Game game)
             : base(game)
@@ -24,7 +23,6 @@ namespace CursorAiming
 
         public override void Initialize()
         {
-            _wave = new Waves(Game);
             _choices = new List<MenuChoice>
             {
                 new MenuChoice {Text = "START", Selected = true, ClickAction = MenuStartClicked},

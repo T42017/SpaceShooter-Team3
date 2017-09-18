@@ -19,7 +19,6 @@ namespace CursorAiming
 
         private SpriteBatch _spriteBatch;
         private string _totalScore;
-        private Waves _wave;
 
 
         public SpaceHeadGame()
@@ -56,7 +55,6 @@ namespace CursorAiming
             Components.Add(new ShopAndUpgradeComponent(this));
             Components.Add(new GameOverComponent(this));
             Components.Add(new MouseComponent(this));
-            _wave = new Waves(this);
 
             #endregion
 
@@ -117,14 +115,12 @@ namespace CursorAiming
                 else if (GameState == GameState.Paused)
                 {
                     ChangeCurrentGameState(GameState.Playing);
-                    _wave.SetTimer(GameState);
                 }
 
             if (kbState.IsKeyDown(Keys.Space) && _previousKeyboardState.IsKeyUp(Keys.Space))
                 if (GameState == GameState.GameOver)
                 {
                     ChangeCurrentGameState(GameState.MainMenu);
-                    _wave.SetTimer(GameState);
                 }
 
             if (kbState.IsKeyDown(Keys.B) && _previousKeyboardState.IsKeyUp(Keys.B))
@@ -135,7 +131,6 @@ namespace CursorAiming
                 else if (GameState == GameState.ShopUpgradeMenu)
                 {
                     ChangeCurrentGameState(GameState.Playing);
-                    _wave.SetTimer(GameState);
                 }
 
             _previousKeyboardState = kbState;
