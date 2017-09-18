@@ -31,6 +31,13 @@ namespace CursorAiming
             AS = new MenuChoice() { Text = "UPGRADE ATTACK SPEED || LEVEL: " + Player.Gun.GunAtkSpeedLevel, Selected = true, ClickAction = UpgradeAtkSpeedClicked };
             _upgradeWeapon.Add(AS);
 
+<<<<<<< HEAD
+            _upgradeWeapon.Add(new MenuChoice { Text = "UPGRADE ATTACK SPEED", Selected = true, ClickAction = UpgradeAtkSpeedClicked });
+            _upgradeWeapon.Add(new MenuChoice { Text = "UPGRADE WEAPON DAMAGE", ClickAction = UpgradeWeaponDamageClicked });
+
+            _upgradePlayer.Add(new MenuChoice { Text = "UPGRADE HIT POINTS", Selected = true, ClickAction = UpgradeHitPointsClicked });
+            _upgradePlayer.Add(new MenuChoice { Text = "UPGRADE MOVEMENT SPEED", ClickAction = UpgradeMovementSpdClicked });
+=======
             Health = new MenuChoice() { Text = "UPGRADE HIT POINTS || LEVEL: " + Player.HealthLevel, Selected = true, ClickAction = UpgradeHitPointsClicked };
             _upgradePlayer.Add(Health);
 
@@ -39,6 +46,7 @@ namespace CursorAiming
 
             MoveSpeed = new MenuChoice() {Text = "UPGRADE MOVEMENT SPEED || LEVEL: " + Player.MoveSpeedLevel, ClickAction = UpgradeMovementSpdClicked};
             _upgradePlayer.Add(MoveSpeed);
+>>>>>>> origin/Feature-LevelUp
 
             base.Initialize();
         }
@@ -58,14 +66,21 @@ namespace CursorAiming
 
         private void UpgradeHitPointsClicked()
         {
+<<<<<<< HEAD
+            UpgradePlayerHealth();
+=======
             UpgradePlayerHitPoints();
             Health.Text = "UPGRADE HIT POINTS || LEVEL: " + Player.HealthLevel;
+>>>>>>> origin/Feature-LevelUp
         }
 
         private void UpgradeMovementSpdClicked()
         {
             UpgradePlayerMovementSpeed();
+<<<<<<< HEAD
+=======
             MoveSpeed.Text = "UPGRADE MOVEMENT SPEED || LEVEL: " + Player.MoveSpeedLevel;
+>>>>>>> origin/Feature-LevelUp
         }
         #endregion
 
@@ -153,7 +168,11 @@ namespace CursorAiming
 
             base.Draw(gameTime);
         }
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> origin/Feature-LevelUp
         public void UpgradeGunDamage(Gun gunType)
         {
             int cost = gunType.GunAtkLevel * 100;
@@ -184,6 +203,16 @@ namespace CursorAiming
             }
         }
 
+<<<<<<< HEAD
+        public void UpgradePlayerHealth()
+        {
+            if (SpaceHeadGame.GameState == GameState.ShopUpgradeMenu)
+            {
+                if (Player.PlayerSkillPoints > 0)
+                {
+                    Player.Health++;
+                    Player.PlayerSkillPoints -= 1;
+=======
         public void UpgradePlayerHitPoints()
         {
             if (SpaceHeadGame.GameState == GameState.ShopUpgradeMenu)
@@ -193,6 +222,7 @@ namespace CursorAiming
                     Player.Health++;
                     Player.HealthLevel++;
                     Player.PlayerSkillPoints--;
+>>>>>>> origin/Feature-LevelUp
                 }
             }
         }
@@ -201,6 +231,17 @@ namespace CursorAiming
         {
             if (SpaceHeadGame.GameState == GameState.ShopUpgradeMenu)
             {
+<<<<<<< HEAD
+                if (Player.PlayerSkillPoints > 0)
+                {
+                    Player.MoveSpeed += 10;
+                    Player.PlayerSkillPoints -= 1;
+                }
+            }
+        }
+
+
+=======
                 if (Player.PlayerSkillPoints >= 1)
                 {
                     Player.MoveSpeed += 10;
@@ -209,31 +250,6 @@ namespace CursorAiming
                 }
             }
         }
-
-        public void UpgradePlayerHealth()
-        {
-            if (SpaceHeadGame.GameState == GameState.ShopUpgradeMenu)
-            {
-                if (Player.PlayerSkillPoints > 0)
-                {
-                    Player.Health++;
-                    Player.PlayerSkillPoints -= 1;
-                }
-            }
-        }
-
-        public void UpgradePlayerMovementSpeed()
-        {
-            if (SpaceHeadGame.GameState == GameState.ShopUpgradeMenu)
-            {
-                if (Player.PlayerSkillPoints > 0)
-                {
-                    Player.MoveSpeed += 10;
-                    Player.PlayerSkillPoints -= 1;
-                }
-            }
-        }
-
-
+>>>>>>> origin/Feature-LevelUp
     }
 }

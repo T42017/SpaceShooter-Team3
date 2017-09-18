@@ -21,6 +21,8 @@ namespace CursorAiming
         private string _totalScore;
 
 
+        public SpaceHeadGame Instance { get { return this; } }
+
         public SpaceHeadGame()
         {
             _graphics = new GraphicsDeviceManager(this);

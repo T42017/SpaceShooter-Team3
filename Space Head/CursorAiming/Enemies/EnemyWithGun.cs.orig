@@ -1,5 +1,10 @@
+<<<<<<< HEAD:Space Head/CursorAiming/Enemies/EnemyWithGun.cs
+﻿using Microsoft.Xna.Framework;
+=======
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+>>>>>>> origin/Feature-LevelUp:Space Head/CursorAiming/EnemyWIthGun.cs
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -7,8 +12,12 @@ namespace CursorAiming
 {
     internal class EnemyWithGun : Enemy
     {
+<<<<<<< HEAD:Space Head/CursorAiming/Enemies/EnemyWithGun.cs
+=======
         
 
+        private SoundEffect _damage;
+>>>>>>> origin/Feature-LevelUp:Space Head/CursorAiming/EnemyWIthGun.cs
         private readonly Gun Gun;
 
         private SoundEffect _damage;
@@ -68,10 +77,15 @@ namespace CursorAiming
         public override void Update(GameTime gameTime)
         {
             if (Health <= 0)
+<<<<<<< HEAD:Space Head/CursorAiming/Enemies/EnemyWithGun.cs
                 Remove();
+=======
+            {
+                Game.Components.Remove(Gun);
             }
                 
 
+>>>>>>> origin/Feature-LevelUp:Space Head/CursorAiming/EnemyWIthGun.cs
 
             UpdateMovement(gameTime);
 
@@ -96,8 +110,14 @@ namespace CursorAiming
                 if (Gun.bulletsInAir[i].CheckForPlayerCollision())
                 {
                     Gun.bulletsInAir.Remove(Gun.bulletsInAir[i]);
-
+<<<<<<< HEAD:Space Head/CursorAiming/Enemies/EnemyWithGun.cs
                 }
+=======
+                    _damage.Play(1, -0.4f, 0);
+                    
+
+                }   
+>>>>>>> origin/Feature-LevelUp:Space Head/CursorAiming/EnemyWIthGun.cs
             }
 
 

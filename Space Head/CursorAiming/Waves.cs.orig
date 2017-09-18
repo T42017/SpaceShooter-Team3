@@ -9,6 +9,7 @@ namespace CursorAiming
 {
     public class Waves : SpaceHeadBaseComponent
     {
+        private int _enemiesCantSpawnSquared;
         public enum EnemyLevels
         {
             Easy,
@@ -28,6 +29,7 @@ namespace CursorAiming
             EnemyUnitsOnField.Clear();
         }
 
+
         public void SpawnEnemy()
         {
             var newEnemyPosition = Vector2.Zero;
@@ -40,14 +42,13 @@ namespace CursorAiming
 =======
                 100, 100, 1d, "BasicEnemy", 100, 100, 100, Game) {Position = newEnemyPosition};
 >>>>>>> 88f1202329b795d6440d4f7cc1708ac934c15c55
-
-            EnemyUnitsOnField.Add(spawnedEnemy);
         }
 
         public void SetTimer(GameState gameState)
         {
             SpaceHeadGame.ChangeCurrentGameState(gameState);
             var aTimer = new Timer(3000);
+                aTimer.Stop();
             aTimer.Elapsed += OnTimedEvent;
             aTimer.Enabled = true;
         }

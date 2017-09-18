@@ -9,7 +9,6 @@ namespace CursorAiming
 {
     public class SpaceHeadGame : Game
     {
-        public static Waves Wave;
         public static Player player;
 
         public static List<Rectangle> ObstaclesOnField = new List<Rectangle>();
@@ -20,12 +19,18 @@ namespace CursorAiming
 
         private SpriteBatch _spriteBatch;
         private string _totalScore;
+<<<<<<< HEAD
+
+=======
         private Waves _wave;
+
+        public SpaceHeadGame Instance { get { return this; } }
+>>>>>>> origin/Feature-LevelUp
 
         public SpaceHeadGame()
         {
             _graphics = new GraphicsDeviceManager(this);
-
+            Wave Wave = new Wave(this);
             Content.RootDirectory = "Content";
         }
 
@@ -44,21 +49,30 @@ namespace CursorAiming
 
         protected override void Initialize()
         {
-            player = new Player(310, 5, 0.4f, new Gun("PlayerGun1", "laserBlue01", 20, 1500, UnitType.Enemy, this),
+            player = new Player(310, 5, 0.4f, new Gun("PlayerGun1", "laserBlue01", 1, 1500, UnitType.Enemy, this),
                 this);
 
 
             #region Components
+
             Components.Add(new UIComponent(this));
             Components.Add(new EnviornmentComponent(this));
             Components.Add(new MenuComponent(this));
             Components.Add(new ShopAndUpgradeComponent(this));
             Components.Add(new GameOverComponent(this));
             Components.Add(new MouseComponent(this));
-            _wave = new Waves(this);
+
             #endregion
-            ObstaclesOnField.Add(new Rectangle(Globals.ScreenWidth / 2 - 100, Globals.ScreenHeight / 2 - 100, 100,
-                200));
+
+            ObstaclesOnField.Add(new Rectangle(0, Globals.ScreenHeight - 50, Globals.ScreenWidth,
+                100));
+            ObstaclesOnField.Add(new Rectangle(Globals.ScreenWidth - 50, 0, 100,
+                Globals.ScreenHeight));
+            ObstaclesOnField.Add(new Rectangle(0, 0, Globals.ScreenWidth,
+                100));
+
+            ObstaclesOnField.Add(new Rectangle(0, 0, 100,
+                Globals.ScreenHeight));
 
             #region windowSettings
 
@@ -100,44 +114,33 @@ namespace CursorAiming
             var kbState = Keyboard.GetState();
 
             if (kbState.IsKeyDown(Keys.P) && _previousKeyboardState.IsKeyUp(Keys.P))
-<<<<<<< HEAD
-                if (GameState == GameState.Paused)
-                    ChangeCurrentGameState(GameState.Playing);
-                else if (GameState != GameState.Paused)
+                if (GameState == GameState.Playing)
                 {
                     ChangeCurrentGameState(GameState.Paused);
-                    _wave.SetTimer(GameState);
                 }
-=======
-                if (GameState == GameState.Playing)
-                    ChangeCurrentGameState(GameState.Paused);
                 else if (GameState == GameState.Paused)
+                {
                     ChangeCurrentGameState(GameState.Playing);
->>>>>>> 88f1202329b795d6440d4f7cc1708ac934c15c55
+                }
 
             if (kbState.IsKeyDown(Keys.Space) && _previousKeyboardState.IsKeyUp(Keys.Space))
                 if (GameState == GameState.GameOver)
                 {
                     ChangeCurrentGameState(GameState.MainMenu);
-                    _wave.SetTimer(GameState);
                 }
 
             if (kbState.IsKeyDown(Keys.B) && _previousKeyboardState.IsKeyUp(Keys.B))
-<<<<<<< HEAD
-                if (GameState == GameState.ShopUpgradeMenu)
-                    ChangeCurrentGameState(GameState.Playing);
-                else if (GameState != GameState.ShopUpgradeMenu)
+                if (GameState == GameState.Playing)
                 {
                     ChangeCurrentGameState(GameState.ShopUpgradeMenu);
-                    _wave.SetTimer(GameState);
+<<<<<<< HEAD
                 }
-
-=======
-                if (GameState == GameState.Playing)
-                    ChangeCurrentGameState(GameState.ShopUpgradeMenu);
                 else if (GameState == GameState.ShopUpgradeMenu)
+                {
                     ChangeCurrentGameState(GameState.Playing);
->>>>>>> 88f1202329b795d6440d4f7cc1708ac934c15c55
+                }
+=======
+>>>>>>> origin/Feature-LevelUp
 
             _previousKeyboardState = kbState;
 
