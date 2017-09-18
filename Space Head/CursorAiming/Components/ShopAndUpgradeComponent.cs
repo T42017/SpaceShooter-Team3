@@ -188,7 +188,7 @@ namespace CursorAiming
         {
             if (SpaceHeadGame.GameState == GameState.ShopUpgradeMenu)
             {
-                if (Player.PlayerSkillPoints <= 1)
+                if (Player.PlayerSkillPoints >= 1)
                 {
                     Player.Health++;
                     Player.HealthLevel++;
@@ -201,7 +201,7 @@ namespace CursorAiming
         {
             if (SpaceHeadGame.GameState == GameState.ShopUpgradeMenu)
             {
-                if (Player.PlayerSkillPoints <= 1)
+                if (Player.PlayerSkillPoints >= 1)
                 {
                     Player.MoveSpeed += 10;
                     Player.MoveSpeedLevel++;

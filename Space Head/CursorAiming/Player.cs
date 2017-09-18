@@ -9,20 +9,29 @@ namespace CursorAiming
 {
     public class Player : SpaceHeadBaseComponent
     {
-        public static Vector2 PlayerPosition;
+        #region Player Variable
+        public static int PlayerLevel { get; private set; }
+        public static int PlayerExp { get; set; }
         public static int Health;
         public static int HealthLevel;
-        public static int PlayerSkillPoints = 0;
-        public static RectangleHitBox Hitbox;
-        public static int PlayerGoldAmount = 999999;
-        private int _playerLevel;
-        public static int ExpRequiredToLevel { get; private set; }
-
-
-        private readonly double _attackSpeed;
-        public static int AttackSpeedLevel = 0;
+        public static int PlayerSkillPoints;
         public static int MoveSpeed { get; set; }
         public static int MoveSpeedLevel = 0;
+        private readonly double _attackSpeed;
+        public static int AttackSpeedLevel = 0;
+        public static Vector2 PlayerPosition;
+        public static Vector2 PlayerStartPosition = new Vector2(Globals.ScreenWidth / 2, Globals.ScreenHeight / 2);
+        #endregion
+
+
+        public static RectangleHitBox Hitbox;
+        public static int PlayerGoldAmount = 999999;
+        public static int ExpRequiredToLevel { get; private set; }
+        
+
+
+
+
         public static Gun Gun;
         private Vector2 _aimDirection;
         private double _countDownTilNextAttack;
@@ -52,6 +61,7 @@ namespace CursorAiming
             _attackSpeed = attackSpeed;
             _countDownTilNextAttack = _attackSpeed;
             Gun = gun;
+            PlayerLevel = 1;
 
             DrawOrder = 1;
             DrawableStates = GameState.Playing | GameState.Paused;
@@ -87,7 +97,25 @@ namespace CursorAiming
             var mouse = Mouse.GetState();
             Hitbox.UpdatePosition(PlayerPosition);
 
-            ExpRequiredToLevel = CalculateRequiredExpToLevel(_playerLevel);
+            ExpRequiredToLevel = CalculateRequiredExpToLevel(PlayerLevel);
+
+            if (PlayerExp >= ExpRequiredToLevel)
+            {
+                int tmpExp = PlayerExp - ExpRequiredToLevel;
+                PlayerExp = 0;
+
+                if (tmpExp < 0)
+                {
+                    PlayerSkillPoints++;
+                    PlayerLevel++;
+                }
+                else
+                {
+                    PlayerSkillPoints++;
+                    PlayerExp += tmpExp;
+                    PlayerLevel++;
+                }
+            }
 
             _isShooting = false;
             UpdateMovement(gameTime);
@@ -143,7 +171,7 @@ namespace CursorAiming
         private int CalculateRequiredExpToLevel(int playerLevel)
         {
             float requiredExp = 0;
-            int wholeNumber = 0;
+            int wholeNumber;
 
             if (playerLevel == 1 && playerLevel <= 10)
             {
@@ -152,7 +180,6 @@ namespace CursorAiming
             if (playerLevel == 11 && playerLevel <= 31)
             {
                 requiredExp = (float) (-.4 * (playerLevel^3) + 40.4 * (playerLevel^2) + 396 * playerLevel);
-
             }
             if (playerLevel == 33 && playerLevel <= 54)
             {
@@ -176,6 +203,8 @@ namespace CursorAiming
 
             base.Draw(gameTime);
         }
+
+        
 
         private void CheckForEnvironmentCollision(List<RectangleHitBox> Obstacles)
         {

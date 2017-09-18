@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
@@ -7,6 +8,8 @@ namespace CursorAiming
 {
     internal class EnemyWithGun : Enemy
     {
+        
+
         private SoundEffect _damage;
         private readonly Gun Gun;
 
@@ -47,7 +50,11 @@ namespace CursorAiming
         public override void Update(GameTime gameTime)
         {
             if (Health <= 0)
+            {
                 Game.Components.Remove(Gun);
+            }
+                
+
 
             UpdateMovement(gameTime);
 
@@ -75,6 +82,7 @@ namespace CursorAiming
                     Gun.bulletsInAir.Remove(Gun.bulletsInAir[i]);
                     _damage.Play(1, -0.4f, 0);
                     
+
                 }   
             }
 
