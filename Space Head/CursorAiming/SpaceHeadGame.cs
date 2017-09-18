@@ -45,7 +45,7 @@ namespace CursorAiming
 
         protected override void Initialize()
         {
-            player = new Player(310, 5, 0.4f, new Gun("PlayerGun1", "laserBlue01", 20, 1500, UnitType.Enemy, this),
+            player = new Player(310, 5, 0.4f, new Gun("PlayerGun1", "laserBlue01", 1, 1500, UnitType.Enemy, this),
                 this);
 
 

@@ -83,11 +83,11 @@ namespace CursorAiming
                 }
             else
                 for (var x = x0; x <= x1; x++)
-                {
+                 {
                     if (steep) _result.Add(new Point(y, x));
                     else _result.Add(new Point(x, y));
                     error += deltaY;
-                    if (2 * error >= deltaX)
+                     if (2 * error >= deltaX)
                     {
                         y += ystep;
                         error -= deltaX;

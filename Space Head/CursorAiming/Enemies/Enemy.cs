@@ -53,11 +53,11 @@ namespace CursorAiming
         {
             Hitbox.UpdatePosition(Position);
 
-            CalculateRotation(Player.PlayerPosition);
+            
 
             if (Health <= 0)
             {
-                Game.Components.Remove(this);
+                Remove();
                 //Waves.EnemyUnitsOnField.Remove(this);
                 Die();
                 //if (Waves.EnemyUnitsOnField.Count == 0)
@@ -96,6 +96,8 @@ namespace CursorAiming
 
         public void Die()
         {
+            
+
             Player.Xp += XpValue;
             Player.Coins += CoinValue;
             Player.Points += PointValue;

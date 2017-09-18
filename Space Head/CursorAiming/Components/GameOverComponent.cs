@@ -63,9 +63,8 @@ namespace CursorAiming
             SpaceHeadGame.player = new Player(310, 5, 0.4f,
                 new Gun("PlayerGun1", "laserBlue01", 20, 1500, UnitType.Enemy, Game),
                 Game);
+            Wave.Reset();
 
-
-           // Waves.Reset(Game);
         }
     }
 }

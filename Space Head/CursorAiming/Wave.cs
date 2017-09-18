@@ -6,37 +6,53 @@ namespace CursorAiming
 {
     internal class Wave : SpaceHeadBaseComponent
     {
-        private static int _waveIndex;
+        public static int _waveIndex;
 
         public static List<Enemy> EnemiesOnField = new List<Enemy>();
-        private readonly double _timeBetweenSpawns;
-        private readonly int numberOfEnemies = _waveIndex * 2 + 1;
-        private bool _isSpawning;
+        
+        private static int _numberOfEnemies = _waveIndex * 2 + 1;
+        static int _enemiesSpawned;
+        private static  bool _isSpawning;
 
-        private double _timeBetweenWaves, _timeLeftBetweenWaves;
-        private double _timeLeftBetweenSpawns;
+        private static double _timeBetweenWaves, _timeLeftBetweenWaves;
+        private static double _timeBetweenSpawns;
+        private static double _timeLeftBetweenSpawns;
 
 
         public Wave(Game game) : base(game)
         {
             Game.Components.Add(this);
             UpdatableStates = GameState.Playing;
-            _timeBetweenWaves = 2;
-            _timeBetweenSpawns = .7;
+            _timeBetweenWaves = 4;
+            _timeBetweenSpawns = 1;
+            _timeLeftBetweenWaves = _timeBetweenWaves;
         }
 
-        private void SpawnEnemy()
+        private void SpawnMeleeEnemy()
         {
-            EnemiesOnField.Add(new MeleeEnemy(300, 1, "spaceAstronauts_red", 20, 20, 20, Game));
-            EnemiesOnField.Add(new EnemyWithGun(new Gun("PlayerGun1", "laserBlue01", 1, 500, UnitType.Player, Game),
-                100, 100, 1d, "BasicEnemy", 100, 100, 100, Game));
+            if(_waveIndex < 5)
+            EnemiesOnField.Add(new MeleeEnemy(300, 1, "spaceAstronauts_red", 20, 20, 20, Game)
+            {
+                Position = new Vector2(500, 500)
+            });
+            else if (_waveIndex < 10)
+                EnemiesOnField.Add(new MeleeEnemy(300, 2, "spaceAstronauts_red", 20, 20, 20, Game)
+                {          
+                    Position = new Vector2(500, 500)
+                });
+            _enemiesSpawned++;
+            
         }
 
         private void SpawnWave(GameTime gameTime)
         {
             if (_timeLeftBetweenSpawns <= 0)
             {
-                SpawnEnemy();
+                _numberOfEnemies = _waveIndex * 2 + 1;
+
+                //if (_waveIndex)
+                SpawnMeleeEnemy();
+                
                 _timeLeftBetweenSpawns = _timeBetweenSpawns;
             }
             else
@@ -47,9 +63,39 @@ namespace CursorAiming
 
         public override void Update(GameTime gameTime)
         {
-            if (EnemiesOnField.Count < numberOfEnemies)
+            if (_enemiesSpawned < _numberOfEnemies && _isSpawning)
                 SpawnWave(gameTime);
+            else if (_enemiesSpawned == _numberOfEnemies) _isSpawning = false;
+
+            if (EnemiesOnField.Count == 0 && !_isSpawning)
+            {
+                if (_timeLeftBetweenWaves <= 0)
+                {
+                    _isSpawning = true;
+                    _waveIndex++;
+                    _enemiesSpawned = 0;
+                    _timeLeftBetweenWaves = _timeBetweenWaves;
+                }
+                else _timeLeftBetweenWaves -= gameTime.ElapsedGameTime.TotalSeconds;
+            }
+
             base.Update(gameTime);
+        }
+
+        public static void Reset()
+        {
+            _waveIndex = 0;
+            _timeLeftBetweenSpawns = _timeBetweenSpawns;
+            _timeLeftBetweenWaves = _timeBetweenWaves;
+            _isSpawning = false;
+            _numberOfEnemies = _waveIndex * 2 + 1;
+            for (int i = 0; i < EnemiesOnField.Count; i++)
+            {
+                EnemiesOnField[i].Remove();
+                i--;
+            }
+            EnemiesOnField.Clear();
+            
         }
     }
 }

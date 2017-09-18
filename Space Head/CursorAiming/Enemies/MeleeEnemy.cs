@@ -44,6 +44,7 @@ namespace CursorAiming.Enemies
 
         public override void UpdateMovement(GameTime gameTime)
         {
+            CalculateRotation(Player.PlayerPosition);
             if (DeltaDistance.Length() < 700)
             {
                 MoveDirection = Player.PlayerPosition - Position;
@@ -73,7 +74,13 @@ namespace CursorAiming.Enemies
         private void Attack()
         {
             Player.Health--;
-            Remove();
+            Health = 0;
+        }
+
+        public override void Remove()
+        {
+            Wave.EnemiesOnField.Remove(this);
+            base.Remove();
         }
     }
 }

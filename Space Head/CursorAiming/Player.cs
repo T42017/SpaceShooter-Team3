@@ -113,12 +113,9 @@ namespace CursorAiming
             for (var i = 0; i < Gun.bulletsInAir.Count; i++)
             {
                 Gun.bulletsInAir[i].UpdatePosition(gameTime);
-                //if (Gun.bulletsInAir[i].CheckForEnemyCollision(Waves.EnemyUnitsOnField))
-                //    Gun.bulletsInAir.Remove(Gun.bulletsInAir[i]);
-                if (Gun.bulletsInAir[i].CheckForObstacleCollision())
-                {
+                if (Gun.bulletsInAir[i].CheckForEnemyCollision(Wave.EnemiesOnField) || Gun.bulletsInAir[i].CheckForObstacleCollision())
                     Gun.bulletsInAir.Remove(Gun.bulletsInAir[i]);
-                }
+               
             }
 
             base.Update(gameTime);
