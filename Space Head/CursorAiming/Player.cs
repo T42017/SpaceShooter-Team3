@@ -16,7 +16,7 @@ namespace CursorAiming
         public static Gun Gun;
 
         private readonly double _attackSpeed;
-        private readonly int _moveSpeed;
+        public static int MoveSpeed;
         private Vector2 _aimDirection;
         private double _countDownTilNextAttack;
         private Vector2 _deltaDistance;
@@ -39,7 +39,7 @@ namespace CursorAiming
 
         public Player(int moveSpeed, int health, float attackSpeed, Gun gun, Game game) : base(game)
         {
-            _moveSpeed = moveSpeed;
+            MoveSpeed = moveSpeed;
             Health = health;
             _attackSpeed = attackSpeed;
             _countDownTilNextAttack = _attackSpeed;
@@ -60,6 +60,7 @@ namespace CursorAiming
         public static int Xp { get; set; }
         public static int Points { get; set; }
         public static int Coins { get; set; }
+        public static int PlayerSkillPoints { get; set; }
 
         public override void Remove()
         {
@@ -128,7 +129,6 @@ namespace CursorAiming
             _aimDirection = tempDeltaDistance;
         }
 
-
         public override void Draw(GameTime gameTime)
         {
             _spriteBatch.Begin();
@@ -178,7 +178,7 @@ namespace CursorAiming
             if ((int) _moveDirection.X != 0 && (int) _moveDirection.Y != 0) _moveDirection.Normalize();
 
 
-            _velocity = Hitbox.CheckMoveDistance(_moveSpeed, _moveDirection,
+            _velocity = Hitbox.CheckMoveDistance(MoveSpeed, _moveDirection,
                 (float) gameTime.ElapsedGameTime.TotalSeconds);
 
 

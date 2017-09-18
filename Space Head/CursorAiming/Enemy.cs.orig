@@ -10,18 +10,20 @@ namespace CursorAiming
         protected double CountDownTilNextAttack;
         protected Vector2 DeltaDistance;
         public int Health;
-<<<<<<< HEAD
-=======
-        protected int PointValue, XpValue, CoinValue;
->>>>>>> feature_Wave
 
         public RectangleHitBox Hitbox;
         protected Vector2 MoveDirection, Velocity, AimDirection;
 
         protected int MoveSpeed;
+<<<<<<< HEAD
         protected int PointValue, XpValue, CoinValue;
         public Vector2 Position;
         public float Rotation;
+=======
+        protected Vector2 Position, MoveDirection, Velocity, AimDirection;
+        protected float Rotation;
+        
+>>>>>>> origin/Feature-Upgrade
 
         protected string TexturePath;
         public UnitType Type = UnitType.Enemy;
@@ -33,7 +35,7 @@ namespace CursorAiming
             DrawOrder = 1;
             Hitbox = new RectangleHitBox(3);
 
-            DrawableStates = GameState.Playing | GameState.Paused | GameState.ShopUpgradeMenu;
+            DrawableStates = GameState.Playing | GameState.Paused;
 
             UpdatableStates = GameState.Playing;
         }
@@ -54,17 +56,29 @@ namespace CursorAiming
             Hitbox.UpdatePosition(Position);
 
             CalculateRotation(Player.PlayerPosition);
+
             if (Health <= 0)
             {
+<<<<<<< HEAD
+                Game.Components.Remove(this);
+                Waves.EnemyUnitsOnField.Remove(this);
+                Die();
                 if (Waves.EnemyUnitsOnField.Count == 0)
                 {
                     Waves._waveRound++;
                     Waves._enemyCount = 0;
                 }
-                Game.Components.Remove(this);
-                Waves.EnemyUnitsOnField.Remove(this);
-                Die();
             }
+=======
+                SpaceHeadGame.EnemyUnitsOnField.Remove(this);
+
+
+
+            }
+                
+
+
+>>>>>>> origin/Feature-Upgrade
             base.Update(gameTime);
         }
 
@@ -89,6 +103,8 @@ namespace CursorAiming
 
         public virtual void UpdateMovement(GameTime gameTime)
         {
+            Velocity = Hitbox.CheckMoveDistance(MoveSpeed, MoveDirection,
+                (float) gameTime.ElapsedGameTime.TotalSeconds);
         }
 
         public void Die()
