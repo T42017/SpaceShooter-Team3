@@ -65,7 +65,7 @@ namespace CursorAiming
                 Game);
 
 
-            Waves.Reset(Game);
+           // Waves.Reset(Game);
         }
     }
 }

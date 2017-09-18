@@ -137,6 +137,7 @@ namespace CursorAiming
 
                     if (collision) return Vector2.Distance(edgePosition, hit);
                 }
+                
             }
             return float.PositiveInfinity;
         }

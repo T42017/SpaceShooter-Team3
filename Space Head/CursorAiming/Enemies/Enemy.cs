@@ -18,7 +18,7 @@ namespace CursorAiming
         protected int PointValue, XpValue, CoinValue;
         public Vector2 Position;
         public float Rotation;
-        
+
 
         protected string TexturePath;
         public UnitType Type = UnitType.Enemy;
@@ -27,7 +27,7 @@ namespace CursorAiming
 
         public Enemy(Game game) : base(game)
         {
-            DrawOrder = 1;
+            DrawOrder = 2;
             Hitbox = new RectangleHitBox(3);
 
             DrawableStates = GameState.Playing | GameState.Paused;
@@ -43,6 +43,9 @@ namespace CursorAiming
 
         public override void Draw(GameTime gameTime)
         {
+            SpriteBatch.Begin();
+            UpdateGraphics(SpriteBatch);
+            SpriteBatch.End();
             base.Draw(gameTime);
         }
 
@@ -55,13 +58,13 @@ namespace CursorAiming
             if (Health <= 0)
             {
                 Game.Components.Remove(this);
-                Waves.EnemyUnitsOnField.Remove(this);
+                //Waves.EnemyUnitsOnField.Remove(this);
                 Die();
-                if (Waves.EnemyUnitsOnField.Count == 0)
-                {
-                    Waves._waveRound++;
-                    Waves._enemyCount = 0;
-                }
+                //if (Waves.EnemyUnitsOnField.Count == 0)
+                //{
+                //    Waves._waveRound++;
+                //    Waves._enemyCount = 0;
+                //}
             }
             base.Update(gameTime);
         }

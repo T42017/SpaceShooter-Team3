@@ -14,9 +14,9 @@ namespace CursorAiming
         public static RectangleHitBox Hitbox;
         public static int PlayerGoldAmount = 999999;
         public static Gun Gun;
+        public static int MoveSpeed;
 
         private readonly double _attackSpeed;
-        public static int MoveSpeed;
         private Vector2 _aimDirection;
         private double _countDownTilNextAttack;
         private Vector2 _deltaDistance;
@@ -48,7 +48,7 @@ namespace CursorAiming
             DrawOrder = 1;
             DrawableStates = GameState.Playing | GameState.Paused;
 
-            PlayerPosition = new Vector2(Globals.ScreenWidth, Globals.ScreenHeight);
+            PlayerPosition = new Vector2(Globals.ScreenWidth / 2, Globals.ScreenHeight / 2);
             UpdatableStates = GameState.Playing;
 
             Hitbox = new RectangleHitBox(2);
@@ -113,8 +113,12 @@ namespace CursorAiming
             for (var i = 0; i < Gun.bulletsInAir.Count; i++)
             {
                 Gun.bulletsInAir[i].UpdatePosition(gameTime);
-                if (Gun.bulletsInAir[i].CheckForEnemyCollision(Waves.EnemyUnitsOnField))
+                //if (Gun.bulletsInAir[i].CheckForEnemyCollision(Waves.EnemyUnitsOnField))
+                //    Gun.bulletsInAir.Remove(Gun.bulletsInAir[i]);
+                if (Gun.bulletsInAir[i].CheckForObstacleCollision())
+                {
                     Gun.bulletsInAir.Remove(Gun.bulletsInAir[i]);
+                }
             }
 
             base.Update(gameTime);
@@ -158,7 +162,6 @@ namespace CursorAiming
                 spriteBatch.Draw(_lifeTexture,
                     new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + Globals.ScreenHeight * 0.01f), Color.White);
 
-            _spriteBatch.Draw(Obstacletexture, SpaceHeadGame.ObstaclesOnField[0], Color.White);
         }
 
         public void UpdateMovement(GameTime gameTime)

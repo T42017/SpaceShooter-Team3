@@ -9,7 +9,6 @@ namespace CursorAiming
 {
     public class SpaceHeadGame : Game
     {
-        public static Waves Wave;
         public static Player player;
 
         public static List<Rectangle> ObstaclesOnField = new List<Rectangle>();
@@ -23,10 +22,11 @@ namespace CursorAiming
         private string _totalScore;
         private Waves _wave;
 
+
         public SpaceHeadGame()
         {
             _graphics = new GraphicsDeviceManager(this);
-
+            Wave Wave = new Wave(this);
             Content.RootDirectory = "Content";
         }
 
@@ -50,6 +50,7 @@ namespace CursorAiming
 
 
             #region Components
+
             Components.Add(new UIComponent(this));
             Components.Add(new EnviornmentComponent(this));
             Components.Add(new MenuComponent(this));
@@ -57,9 +58,18 @@ namespace CursorAiming
             Components.Add(new GameOverComponent(this));
             Components.Add(new MouseComponent(this));
             _wave = new Waves(this);
+
             #endregion
-            ObstaclesOnField.Add(new Rectangle(Globals.ScreenWidth / 2 - 100, Globals.ScreenHeight / 2 - 100, 100,
-                200));
+
+            ObstaclesOnField.Add(new Rectangle(0, Globals.ScreenHeight - 50, Globals.ScreenWidth,
+                100));
+            ObstaclesOnField.Add(new Rectangle(Globals.ScreenWidth - 50, 0, 100,
+                Globals.ScreenHeight));
+            ObstaclesOnField.Add(new Rectangle(0, 0, Globals.ScreenWidth,
+                100));
+
+            ObstaclesOnField.Add(new Rectangle(0, 0, 100,
+                Globals.ScreenHeight));
 
             #region windowSettings
 

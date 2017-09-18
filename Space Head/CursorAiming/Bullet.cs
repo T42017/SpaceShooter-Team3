@@ -51,22 +51,25 @@ namespace CursorAiming
                         return true;
                     }
 
-                    foreach (var rectangle in SpaceHeadGame.ObstaclesOnField)
-                        if (rectangle.Contains(Position)) return true;
+                    
                 }
 
 
             return false;
         }
-        
+
         public bool CheckForPlayerCollision()
         {
             if (Player.Hitbox.CollidesWith(Position))
-            {
-                Player.Health--;          
                 return true;
-            }
 
+            
+
+            return false;
+        }
+
+        public bool CheckForObstacleCollision()
+        {
             foreach (var rectangle in SpaceHeadGame.ObstaclesOnField)
                 if (rectangle.Contains(Position)) return true;
 

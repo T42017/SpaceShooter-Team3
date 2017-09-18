@@ -25,9 +25,11 @@ namespace CursorAiming
         public override void Initialize()
         {
             _wave = new Waves(Game);
-            _choices = new List<MenuChoice>();
-            _choices.Add(new MenuChoice() { Text = "START", Selected = true, ClickAction = MenuStartClicked });
-            _choices.Add(new MenuChoice() { Text = "QUIT", ClickAction = MenuQuitClicked });
+            _choices = new List<MenuChoice>
+            {
+                new MenuChoice {Text = "START", Selected = true, ClickAction = MenuStartClicked},
+                new MenuChoice {Text = "QUIT", ClickAction = MenuQuitClicked}
+            };
 
             _title = "SPACE HEAD";
 
@@ -39,7 +41,7 @@ namespace CursorAiming
         private void MenuStartClicked()
         {
             SpaceHeadGame.ChangeCurrentGameState(GameState.Playing);
-            _wave.SetTimer();
+            // _wave.SetTimer();
         }
 
         private void MenuQuitClicked()
