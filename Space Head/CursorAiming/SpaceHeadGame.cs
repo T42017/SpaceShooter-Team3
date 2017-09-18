@@ -13,7 +13,6 @@ namespace CursorAiming
         public static Player player;
 
         public static List<Rectangle> ObstaclesOnField = new List<Rectangle>();
-
         private readonly GraphicsDeviceManager _graphics;
 
         private Song _backgroundMusic;
@@ -105,17 +104,26 @@ namespace CursorAiming
                 if (GameState == GameState.Paused)
                     ChangeCurrentGameState(GameState.Playing);
                 else if (GameState != GameState.Paused)
+                {
                     ChangeCurrentGameState(GameState.Paused);
+                    _wave.SetTimer(GameState);
+                }
 
             if (kbState.IsKeyDown(Keys.Space) && _previousKeyboardState.IsKeyUp(Keys.Space))
                 if (GameState == GameState.GameOver)
+                {
                     ChangeCurrentGameState(GameState.MainMenu);
+                    _wave.SetTimer(GameState);
+                }
 
             if (kbState.IsKeyDown(Keys.B) && _previousKeyboardState.IsKeyUp(Keys.B))
                 if (GameState == GameState.ShopUpgradeMenu)
                     ChangeCurrentGameState(GameState.Playing);
                 else if (GameState != GameState.ShopUpgradeMenu)
+                {
                     ChangeCurrentGameState(GameState.ShopUpgradeMenu);
+                    _wave.SetTimer(GameState);
+                }
 
 
             _previousKeyboardState = kbState;

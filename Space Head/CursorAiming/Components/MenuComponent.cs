@@ -37,7 +37,7 @@ namespace CursorAiming
         private void MenuStartClicked()
         {
             SpaceHeadGame.ChangeCurrentGameState(GameState.Playing);
-            _wave.SetTimer();
+            _wave.SetTimer(SpaceHeadGame.GameState);
         }
 
         private void MenuQuitClicked()
