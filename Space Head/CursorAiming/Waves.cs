@@ -34,10 +34,10 @@ namespace CursorAiming
             newEnemyPosition.X = _rng.Next(0, Globals.ScreenWidth);
             newEnemyPosition.Y = _rng.Next(0, Globals.ScreenHeight);
 
-            var spawnedEnemy = new EnemyWithGun(new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Player, Game),
+            new EnemyWithGun(new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Player, Game),
                 200, 10, 1d, "BasicEnemy", 100, 100, 100, Game) {Position = newEnemyPosition};
 
-            EnemyUnitsOnField.Add(spawnedEnemy);
+           //EnemyUnitsOnField.Add(spawnedEnemy);
         }
 
         public void SetTimer(GameState gameState)

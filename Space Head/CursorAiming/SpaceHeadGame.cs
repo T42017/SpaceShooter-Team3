@@ -22,10 +22,13 @@ namespace CursorAiming
         private string _totalScore;
         private Waves _wave;
 
+
+        public GraphicsDeviceManager Graphics => _graphics;
+
+
         public SpaceHeadGame()
         {
             _graphics = new GraphicsDeviceManager(this);
-
             Content.RootDirectory = "Content";
         }
 
