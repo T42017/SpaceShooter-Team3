@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Timers;
+using System.Windows.Forms;
 using Microsoft.Xna.Framework;
+using Timer = System.Timers.Timer;
 
 namespace CursorAiming
 {
@@ -18,9 +20,7 @@ namespace CursorAiming
         public static int _enemyCount;
         private static readonly Random _rng = new Random();
         public static int _waveRound = 1;
-        private readonly double _tempTimer = 1d;
         private int _numberOfEnemiesToSpawn;
-        private double _tempTimeLeft;
 
         public Waves(Game game) : base(game)
         {
@@ -36,26 +36,27 @@ namespace CursorAiming
 
             var spawnedEnemy = new EnemyWithGun(new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Player, Game),
 <<<<<<< HEAD
-                100, 100, 1d, "BasicEnemy", 100, 100, 100, Game) {Position = newEnemyPosition};
+                200, 10, 1d, "BasicEnemy", 100, 100, 100, Game) {Position = newEnemyPosition};
 =======
-                200, 2, 1d, "BasicEnem", 100, 100, 100, Game) {Position = newEnemyPosition};
->>>>>>> Feature-Enemy_Graphics
+                100, 100, 1d, "BasicEnemy", 100, 100, 100, Game) {Position = newEnemyPosition};
+>>>>>>> 88f1202329b795d6440d4f7cc1708ac934c15c55
 
             EnemyUnitsOnField.Add(spawnedEnemy);
         }
 
-        public void SetTimer()
+        public void SetTimer(GameState gameState)
         {
-            var aTimer = new Timer(2000);
+            SpaceHeadGame.ChangeCurrentGameState(gameState);
+            var aTimer = new Timer(3000);
             aTimer.Elapsed += OnTimedEvent;
             aTimer.Enabled = true;
         }
 
-        private void OnTimedEvent(object sender, ElapsedEventArgs e)
+        public void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
             _numberOfEnemiesToSpawn = _waveRound * 2 + 1;
 
-            while (_enemyCount < _numberOfEnemiesToSpawn)
+            while (_enemyCount < _numberOfEnemiesToSpawn && GameState.Playing == SpaceHeadGame.GameState)
             {
                 SpawnEnemy();
                 _enemyCount++;
