@@ -1,23 +1,28 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace CursorAiming
 {
     internal class EnemyWithGun : Enemy
     {
-<<<<<<< HEAD
         private readonly Gun Gun;
+<<<<<<< HEAD
+        private SoundEffect _damage;
+=======
+        private Texture2D _astronautMarine;
+        private Texture2D _astronautBlue;
+        private Texture2D _astronautRed;
+        private Texture2D _astronautWhite;
+        private Texture2D _astronautBrown;
+        private Texture2D _astronautYellow;
+        private Texture2D _astronautPink;
+        private Texture2D _astronautGreen;
+>>>>>>> Feature-Enemy_Graphics
 
         public EnemyWithGun(Gun gun, int moveSpeed, int health, double attackSpeed, string texturePath, int pointValue,
             int xpValue, int coinValue,
             Game game) : base(game)
-=======
-        private SoundEffect _damage;
-
-        public EnemyWIthGun(BasicEnemyWithGun template, Game game) : base(game)
->>>>>>> origin/Feature-Upgrade
         {
             Gun = gun;
             MoveSpeed = moveSpeed;
@@ -34,12 +39,18 @@ namespace CursorAiming
 
         protected override void LoadContent()
         {
-<<<<<<< HEAD
-=======
             _damage = Game.Content.Load<SoundEffect>("STRONK");
-            SpriteBatch = new SpriteBatch(Game.GraphicsDevice);
->>>>>>> origin/Feature-Upgrade
             UnitTexture = Game.Content.Load<Texture2D>(TexturePath);
+            
+            _astronautGreen = Game.Content.Load<Texture2D>("spaceAstronaut_green");
+            _astronautRed = Game.Content.Load<Texture2D>("spaceAstronaut_red");
+            _astronautBlue = Game.Content.Load<Texture2D>("spaceAstronaut_marineblue");
+            _astronautMarine = Game.Content.Load<Texture2D>("spaceAstronaut_marine");
+            _astronautPink = Game.Content.Load<Texture2D>("spaceAstronaut_pink");
+            _astronautWhite = Game.Content.Load<Texture2D>("spaceAstronaut_002");
+            _astronautBrown = Game.Content.Load<Texture2D>("spaceAstronaut_brown");
+            _astronautYellow = Game.Content.Load<Texture2D>("spaceAstronaut_yellow");
+            
             base.LoadContent();
         }
 
@@ -65,19 +76,12 @@ namespace CursorAiming
             Gun.Position = Position + new Vector2(AimDirection.X * (UnitTexture.Width + 5),
                                AimDirection.Y * (UnitTexture.Width + 5));
 
-<<<<<<< HEAD
-=======
-            if (Health <= 0)
-            {
-                Player.PlayerGoldAmount += 2;
-            }
-
->>>>>>> origin/Feature-Upgrade
+            Player.PlayerGoldAmount += 2;
             if (CountDownTilNextAttack > 0)
             {
                 CountDownTilNextAttack -= (float) gameTime.ElapsedGameTime.TotalSeconds;
             }
-            else if (DeltaDistance.Length() < 300)
+            else if (DeltaDistance.Length() < 780)
             {
                 Gun.Shoot();
                 CountDownTilNextAttack = AttackSpeed;
@@ -90,12 +94,17 @@ namespace CursorAiming
                 {
                     Gun.bulletsInAir.Remove(Gun.bulletsInAir[i]);
                     _damage.Play(1, -0.4f, 0);
-                    
-                }   
+                }
             }
 
 
             base.Update(gameTime);
+        }
+
+        public override void Remove()
+        {
+            Game.Components.Remove(Gun);
+            base.Remove();
         }
 
         public override void UpdateGraphics(SpriteBatch spriteBatch)
@@ -111,23 +120,34 @@ namespace CursorAiming
 
         public override void UpdateMovement(GameTime gameTime)
         {
-            if (DeltaDistance.Length() > 200)
+            base.UpdateMovement(gameTime);
+
+            if (DeltaDistance.Length() > 700)
             {
                 MoveDirection = Player.PlayerPosition - Position;
                 MoveDirection.Normalize();
 
-                Velocity = MoveDirection * (int) (MoveSpeed * gameTime.ElapsedGameTime.TotalSeconds);
+                Velocity = Hitbox.CheckMoveDistance(MoveSpeed, MoveDirection,
+                    (float) gameTime.ElapsedGameTime.TotalSeconds);
+
                 Position += Velocity;
             }
-            else if (DeltaDistance.Length() < 190)
+
+            else if (DeltaDistance.Length() < 500)
             {
                 MoveDirection = Player.PlayerPosition - Position;
                 MoveDirection.Normalize();
-
-                Velocity = MoveDirection * (int) (MoveSpeed * gameTime.ElapsedGameTime.TotalSeconds);
-                Position -= Velocity;
+                Velocity = Hitbox.CheckMoveDistance(MoveSpeed, -MoveDirection,
+                    (float) gameTime.ElapsedGameTime.TotalSeconds);
+                Position += Velocity;
             }
+<<<<<<< HEAD
+=======
+
+             
+
             base.UpdateMovement(gameTime);
+>>>>>>> Feature-Enemy_Graphics
         }
     }
 }
