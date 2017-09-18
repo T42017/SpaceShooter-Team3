@@ -10,7 +10,7 @@ namespace CursorAiming
 
         public static List<Enemy> EnemiesOnField = new List<Enemy>();
         
-        private static int _numberOfEnemies = _waveIndex * 2 + 1;
+        private static int _numberOfEnemiesToSpawn = _waveIndex * 2 + 1;
         static int _enemiesSpawned;
         private static  bool _isSpawning;
 
@@ -44,14 +44,25 @@ namespace CursorAiming
             
         }
 
+        private void SpawnGunner()
+        {
+            EnemiesOnField.Add(new EnemyWithGun(new Gun("playerGun1", "laserBlue01", 1, 400, UnitType.Player, Game), 200, 3, 2, "SpaceAstronauts_blue", 40, 40, 40, Game)
+            {
+                Position = new Vector2(700, 600)
+            });
+            _enemiesSpawned++;
+        }
+
         private void SpawnWave(GameTime gameTime)
         {
             if (_timeLeftBetweenSpawns <= 0)
             {
-                _numberOfEnemies = _waveIndex * 2 + 1;
+                _numberOfEnemiesToSpawn = _waveIndex * 2 + 1;
 
-                //if (_waveIndex)
-                SpawnMeleeEnemy();
+                if (_waveIndex < 2)
+                    SpawnMeleeEnemy();
+                else if (_waveIndex < 10)
+                    SpawnGunner();
                 
                 _timeLeftBetweenSpawns = _timeBetweenSpawns;
             }
@@ -63,9 +74,9 @@ namespace CursorAiming
 
         public override void Update(GameTime gameTime)
         {
-            if (_enemiesSpawned < _numberOfEnemies && _isSpawning)
+            if (_enemiesSpawned < _numberOfEnemiesToSpawn && _isSpawning)
                 SpawnWave(gameTime);
-            else if (_enemiesSpawned == _numberOfEnemies) _isSpawning = false;
+            else if (_enemiesSpawned == _numberOfEnemiesToSpawn) _isSpawning = false;
 
             if (EnemiesOnField.Count == 0 && !_isSpawning)
             {
@@ -88,7 +99,7 @@ namespace CursorAiming
             _timeLeftBetweenSpawns = _timeBetweenSpawns;
             _timeLeftBetweenWaves = _timeBetweenWaves;
             _isSpawning = false;
-            _numberOfEnemies = _waveIndex * 2 + 1;
+            _numberOfEnemiesToSpawn = _waveIndex * 2 + 1;
             for (int i = 0; i < EnemiesOnField.Count; i++)
             {
                 EnemiesOnField[i].Remove();

@@ -65,7 +65,7 @@ namespace CursorAiming
         public override void Update(GameTime gameTime)
         {
             if (Health <= 0)
-                Game.Components.Remove(Gun);
+                Remove();
 
             UpdateMovement(gameTime);
 
@@ -90,7 +90,6 @@ namespace CursorAiming
                 if (Gun.bulletsInAir[i].CheckForPlayerCollision())
                 {
                     Gun.bulletsInAir.Remove(Gun.bulletsInAir[i]);
-                    _damage.Play(1, -0.4f, 0);
                 }
             }
 
@@ -100,6 +99,7 @@ namespace CursorAiming
 
         public override void Remove()
         {
+            Wave.EnemiesOnField.Remove(this);
             Game.Components.Remove(Gun);
             base.Remove();
         }

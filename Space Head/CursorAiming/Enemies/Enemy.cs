@@ -52,7 +52,7 @@ namespace CursorAiming
         public override void Update(GameTime gameTime)
         {
             Hitbox.UpdatePosition(Position);
-
+            CalculateRotation(Player.PlayerPosition);
             
 
             if (Health <= 0)
