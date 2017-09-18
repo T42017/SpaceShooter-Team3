@@ -37,7 +37,7 @@ namespace CursorAiming
 
         protected override void LoadContent()
         {
-            Hitbox.Box.Size = new Point(UnitTexture.Width / 2, UnitTexture.Width / 2);
+            Hitbox.Box.Size = new Point(UnitTexture.Width, UnitTexture.Width);
             base.LoadContent();
         }
 

@@ -60,7 +60,7 @@ namespace CursorAiming
             {
                 CountDownTilNextAttack -= (float) gameTime.ElapsedGameTime.TotalSeconds;
             }
-            else if (DeltaDistance.Length() < 420)
+            else if (DeltaDistance.Length() < 780)
             {
                 Gun.Shoot();
                 CountDownTilNextAttack = AttackSpeed;
@@ -101,7 +101,7 @@ namespace CursorAiming
         {
             base.UpdateMovement(gameTime);
 
-            if (DeltaDistance.Length() > 400)
+            if (DeltaDistance.Length() > 700)
             {
                 MoveDirection = Player.PlayerPosition - Position;
                 MoveDirection.Normalize();
@@ -112,7 +112,7 @@ namespace CursorAiming
                 Position += Velocity;
             }
 
-            else if (DeltaDistance.Length() < 300)
+            else if (DeltaDistance.Length() < 500)
             {
                 MoveDirection = Player.PlayerPosition - Position;
                 MoveDirection.Normalize();

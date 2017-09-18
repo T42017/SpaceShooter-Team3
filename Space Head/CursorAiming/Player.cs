@@ -60,6 +60,7 @@ namespace CursorAiming
         public static int Xp { get; set; }
         public static int Points { get; set; }
         public static int Coins { get; set; }
+        public static int PlayerSkillPoints { get; set; }
 
         public override void Remove()
         {
@@ -177,7 +178,7 @@ namespace CursorAiming
             if ((int) _moveDirection.X != 0 && (int) _moveDirection.Y != 0) _moveDirection.Normalize();
 
 
-            _velocity = Hitbox.CheckMoveDistance(_moveSpeed, _moveDirection,
+            _velocity = Hitbox.CheckMoveDistance(MoveSpeed, _moveDirection,
                 (float) gameTime.ElapsedGameTime.TotalSeconds);
 
 
