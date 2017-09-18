@@ -103,7 +103,9 @@ namespace CursorAiming
                 if (GameState == GameState.Playing)
                 {
                     ChangeCurrentGameState(GameState.Paused);
+                }
                 else if (GameState == GameState.Paused)
+                {
                     ChangeCurrentGameState(GameState.Playing);
                     _wave.SetTimer(GameState);
                 }
@@ -119,7 +121,9 @@ namespace CursorAiming
                 if (GameState == GameState.Playing)
                 {
                     ChangeCurrentGameState(GameState.ShopUpgradeMenu);
+                }
                 else if (GameState == GameState.ShopUpgradeMenu)
+                {
                     ChangeCurrentGameState(GameState.Playing);
                     _wave.SetTimer(GameState);
                 }
