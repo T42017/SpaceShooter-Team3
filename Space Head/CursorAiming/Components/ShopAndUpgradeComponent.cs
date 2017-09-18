@@ -197,18 +197,7 @@ namespace CursorAiming
             }
         }
 
-        public void UpgradePlayerMovementSpeed()
-        {
-            if (SpaceHeadGame.GameState == GameState.ShopUpgradeMenu)
-            {
-                if (Player.PlayerSkillPoints >= 1)
-                {
-                    Player.MoveSpeed += 10;
-                    Player.MoveSpeedLevel++;
-                    Player.PlayerSkillPoints--;
-                }
-            }
-        }
+        
 
         public void UpgradePlayerHealth()
         {

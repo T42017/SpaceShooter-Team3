@@ -19,6 +19,7 @@ namespace CursorAiming
         public static int MoveSpeedLevel = 0;
         private readonly double _attackSpeed;
         public static int AttackSpeedLevel = 0;
+        public static Gun Gun;
         public static Vector2 PlayerPosition;
         public static Vector2 PlayerStartPosition = new Vector2(Globals.ScreenWidth / 2, Globals.ScreenHeight / 2);
         #endregion
@@ -76,7 +77,6 @@ namespace CursorAiming
         public static int Xp { get; set; }
         public static int Points { get; set; }
         public static int Coins { get; set; }
-        public static int PlayerSkillPoints { get; set; }
 
         public override void Remove()
         {
