@@ -18,6 +18,7 @@ namespace CursorAiming
         protected int PointValue, XpValue, CoinValue;
         public Vector2 Position;
         public float Rotation;
+        
 
         protected string TexturePath;
         public UnitType Type = UnitType.Enemy;
@@ -50,6 +51,7 @@ namespace CursorAiming
             Hitbox.UpdatePosition(Position);
 
             CalculateRotation(Player.PlayerPosition);
+
             if (Health <= 0)
             {
                 Game.Components.Remove(this);

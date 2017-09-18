@@ -28,11 +28,11 @@ namespace CursorAiming
             _upgradeWeapon = new List<MenuChoice>();
             _upgradePlayer = new List<MenuChoice>();
 
-            _upgradeWeapon.Add(new MenuChoice() { Text = "UPGRADE ATTACK SPEED", Selected = true, ClickAction = UpgradeAtkSpeedClicked });
-            _upgradeWeapon.Add(new MenuChoice() { Text = "UPGRADE WEAPON DAMAGE", ClickAction = UpgradeWeaponDamageClicked });
+            _upgradeWeapon.Add(new MenuChoice { Text = "UPGRADE ATTACK SPEED", Selected = true, ClickAction = UpgradeAtkSpeedClicked });
+            _upgradeWeapon.Add(new MenuChoice { Text = "UPGRADE WEAPON DAMAGE", ClickAction = UpgradeWeaponDamageClicked });
 
-            _upgradePlayer.Add(new MenuChoice() { Text = "UPGRADE HIT POINTS", Selected = true, ClickAction = UpgradeHitPointsClicked });
-            _upgradePlayer.Add(new MenuChoice() { Text = "UPGRADE MOVEMENT SPEED", ClickAction = UpgradeMovementSpdClicked });
+            _upgradePlayer.Add(new MenuChoice { Text = "UPGRADE HIT POINTS", Selected = true, ClickAction = UpgradeHitPointsClicked });
+            _upgradePlayer.Add(new MenuChoice { Text = "UPGRADE MOVEMENT SPEED", ClickAction = UpgradeMovementSpdClicked });
 
             base.Initialize();
         }
@@ -50,12 +50,12 @@ namespace CursorAiming
 
         private void UpgradeHitPointsClicked()
         {
-            SpaceHeadGame.ChangeCurrentGameState(GameState.Playing);
+            UpgradePlayerHealth();
         }
 
         private void UpgradeMovementSpdClicked()
         {
-            SpaceHeadGame.ChangeCurrentGameState(GameState.Playing);
+            UpgradePlayerMovementSpeed();
         }
         #endregion
 
@@ -120,7 +120,7 @@ namespace CursorAiming
                         choice.ClickAction.Invoke();
                 }
             }
-
+            
             _previousMouseState = mouseState;
 
             base.Update(gameTime);
@@ -146,15 +146,10 @@ namespace CursorAiming
 
             base.Draw(gameTime);
         }
-
-        public void CheckPlayerInput(GameState gameState)
-        {
-            
-        }
-
+        
         public void UpgradeGunDamage(Gun gunType)
         {
-            int cost = (int)gunType.GunAtkLevel * 100;
+            int cost = gunType.GunAtkLevel * 100;
 
             if (SpaceHeadGame.GameState == GameState.ShopUpgradeMenu)
             {
@@ -169,7 +164,7 @@ namespace CursorAiming
 
         public void UpgradeGunAtkSpeed(Gun gunType)
         {
-            int cost = (int)gunType.GunAtkSpeedLevel * 100;
+            int cost = gunType.GunAtkSpeedLevel * 100;
 
             if (SpaceHeadGame.GameState == GameState.ShopUpgradeMenu)
             {
@@ -181,5 +176,31 @@ namespace CursorAiming
                 }
             }
         }
+
+        public void UpgradePlayerHealth()
+        {
+            if (SpaceHeadGame.GameState == GameState.ShopUpgradeMenu)
+            {
+                if (Player.PlayerSkillPoints > 0)
+                {
+                    Player.Health++;
+                    Player.PlayerSkillPoints -= 1;
+                }
+            }
+        }
+
+        public void UpgradePlayerMovementSpeed()
+        {
+            if (SpaceHeadGame.GameState == GameState.ShopUpgradeMenu)
+            {
+                if (Player.PlayerSkillPoints > 0)
+                {
+                    Player.MoveSpeed += 10;
+                    Player.PlayerSkillPoints -= 1;
+                }
+            }
+        }
+
+
     }
 }

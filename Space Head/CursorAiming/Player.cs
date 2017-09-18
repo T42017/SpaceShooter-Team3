@@ -16,7 +16,7 @@ namespace CursorAiming
         public static Gun Gun;
 
         private readonly double _attackSpeed;
-        private readonly int _moveSpeed;
+        public static int MoveSpeed;
         private Vector2 _aimDirection;
         private double _countDownTilNextAttack;
         private Vector2 _deltaDistance;
@@ -39,7 +39,7 @@ namespace CursorAiming
 
         public Player(int moveSpeed, int health, float attackSpeed, Gun gun, Game game) : base(game)
         {
-            _moveSpeed = moveSpeed;
+            MoveSpeed = moveSpeed;
             Health = health;
             _attackSpeed = attackSpeed;
             _countDownTilNextAttack = _attackSpeed;
@@ -127,7 +127,6 @@ namespace CursorAiming
             tempDeltaDistance.Normalize();
             _aimDirection = tempDeltaDistance;
         }
-
 
         public override void Draw(GameTime gameTime)
         {

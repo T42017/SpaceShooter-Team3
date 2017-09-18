@@ -8,10 +8,10 @@ namespace CursorAiming
 {
     class MenuComponent : SpaceHeadBaseComponent
     {
-        SpriteBatch _spriteBatch;
-        SpriteFont _normalFont;
+        SpriteFont _font;
         List<MenuChoice> _choices;
         MouseState _previousMouseState;
+        private string _title;
         Waves _wave;
         
         public MenuComponent(Game game)
@@ -28,6 +28,8 @@ namespace CursorAiming
             _choices = new List<MenuChoice>();
             _choices.Add(new MenuChoice() { Text = "START", Selected = true, ClickAction = MenuStartClicked });
             _choices.Add(new MenuChoice() { Text = "QUIT", ClickAction = MenuQuitClicked });
+
+            _title = "SPACE HEAD";
 
             base.Initialize();
         }
@@ -49,14 +51,13 @@ namespace CursorAiming
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _normalFont = Game.Content.Load<SpriteFont>("Font");
+            _font = Game.Content.Load<SpriteFont>("Font");
 
-            float startY = 0.2f * Globals.ScreenHeight;
+            float startY = 0.6f * Globals.ScreenHeight;
 
             foreach (var choice in _choices)
             {
-                Vector2 size = _normalFont.MeasureString(choice.Text);
+                Vector2 size = _font.MeasureString(choice.Text);
                 choice.Y = startY;
                 choice.X = Globals.ScreenWidth / 2.0f - size.X / 2;
                 choice.HitBox = new Rectangle((int)choice.X, (int)choice.Y, (int)size.X, (int)size.Y);
@@ -115,14 +116,16 @@ namespace CursorAiming
 
         public override void Draw(GameTime gameTime)
         {
-            _spriteBatch.Begin();
+            SpriteBatch.Begin();
+
+            SpriteBatch.DrawString(_font, _title, new Vector2(Globals.ScreenWidth/2 - _font.MeasureString(_title).X/2 , Globals.ScreenHeight * 0.2f), Color.Green);
 
             foreach (var choice in _choices)
             {
-                _spriteBatch.DrawString(_normalFont, choice.Text, new Vector2(choice.X, choice.Y), Color.White);
+                SpriteBatch.DrawString(_font, choice.Text, new Vector2(choice.X, choice.Y), Color.Green);
             }
 
-            _spriteBatch.End();
+            SpriteBatch.End();
             base.Draw(gameTime);
         }
     }

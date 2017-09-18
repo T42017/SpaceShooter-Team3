@@ -49,16 +49,15 @@ namespace CursorAiming
                 this);
 
 
+            #region Components
             Components.Add(new UIComponent(this));
             Components.Add(new EnviornmentComponent(this));
             Components.Add(new MenuComponent(this));
             Components.Add(new ShopAndUpgradeComponent(this));
             Components.Add(new GameOverComponent(this));
             Components.Add(new MouseComponent(this));
-
-
             _wave = new Waves(this);
-
+            #endregion
             ObstaclesOnField.Add(new Rectangle(Globals.ScreenWidth / 2 - 100, Globals.ScreenHeight / 2 - 100, 100,
                 200));
 
@@ -102,21 +101,20 @@ namespace CursorAiming
             var kbState = Keyboard.GetState();
 
             if (kbState.IsKeyDown(Keys.P) && _previousKeyboardState.IsKeyUp(Keys.P))
-                if (GameState == GameState.Paused)
-                    ChangeCurrentGameState(GameState.Playing);
-                else if (GameState != GameState.Paused)
+                if (GameState == GameState.Playing)
                     ChangeCurrentGameState(GameState.Paused);
+                else if (GameState == GameState.Paused)
+                    ChangeCurrentGameState(GameState.Playing);
 
             if (kbState.IsKeyDown(Keys.Space) && _previousKeyboardState.IsKeyUp(Keys.Space))
                 if (GameState == GameState.GameOver)
                     ChangeCurrentGameState(GameState.MainMenu);
 
             if (kbState.IsKeyDown(Keys.B) && _previousKeyboardState.IsKeyUp(Keys.B))
-                if (GameState == GameState.ShopUpgradeMenu)
-                    ChangeCurrentGameState(GameState.Playing);
-                else if (GameState != GameState.ShopUpgradeMenu)
+                if (GameState == GameState.Playing)
                     ChangeCurrentGameState(GameState.ShopUpgradeMenu);
-
+                else if (GameState == GameState.ShopUpgradeMenu)
+                    ChangeCurrentGameState(GameState.Playing);
 
             _previousKeyboardState = kbState;
 
@@ -126,7 +124,6 @@ namespace CursorAiming
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-
 
             _spriteBatch.Begin();
 

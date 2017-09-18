@@ -8,12 +8,16 @@ namespace CursorAiming
 {
     class MenuComponent : SpaceHeadBaseComponent
     {
-        SpriteBatch _spriteBatch;
-        SpriteFont _normalFont;
+        SpriteFont _font;
         List<MenuChoice> _choices;
         MouseState _previousMouseState;
-
 <<<<<<< HEAD
+        Waves _wave;
+        
+=======
+        private string _title;
+
+>>>>>>> origin/Feature-Upgrade
         public MenuComponent(Game game)
             : base(game)
         {
@@ -21,18 +25,15 @@ namespace CursorAiming
             DrawableStates = GameState.MainMenu;
             UpdatableStates = GameState.MainMenu;
         }
-=======
-        private Texture2D _survivalModeButton, _exitGameButton;
-        private Waves _wave;
-        private Vector2 _survivalModeButtonPos = Vector2.Zero;
-        private Vector2 _exitGameButtonPos = Vector2.Zero;
->>>>>>> origin/feature_Wave
 
         public override void Initialize()
         {
+            _wave = new Waves(Game);
             _choices = new List<MenuChoice>();
             _choices.Add(new MenuChoice() { Text = "START", Selected = true, ClickAction = MenuStartClicked });
             _choices.Add(new MenuChoice() { Text = "QUIT", ClickAction = MenuQuitClicked });
+
+            _title = "SPACE HEAD";
 
             base.Initialize();
         }
@@ -41,14 +42,8 @@ namespace CursorAiming
 
         private void MenuStartClicked()
         {
-<<<<<<< HEAD
             SpaceHeadGame.ChangeCurrentGameState(GameState.Playing);
-=======
-            _wave = new Waves(Game);
-            DrawOrder = 10;
-            UpdatableStates = GameState.MainMenu;
-            DrawableStates = GameState.MainMenu;
->>>>>>> origin/feature_Wave
+            _wave.SetTimer();
         }
 
         private void MenuQuitClicked()
@@ -60,14 +55,13 @@ namespace CursorAiming
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _normalFont = Game.Content.Load<SpriteFont>("Font");
+            _font = Game.Content.Load<SpriteFont>("Font");
 
-            float startY = 0.2f * Globals.ScreenHeight;
+            float startY = 0.6f * Globals.ScreenHeight;
 
             foreach (var choice in _choices)
             {
-                Vector2 size = _normalFont.MeasureString(choice.Text);
+                Vector2 size = _font.MeasureString(choice.Text);
                 choice.Y = startY;
                 choice.X = Globals.ScreenWidth / 2.0f - size.X / 2;
                 choice.HitBox = new Rectangle((int)choice.X, (int)choice.Y, (int)size.X, (int)size.Y);
@@ -126,30 +120,16 @@ namespace CursorAiming
 
         public override void Draw(GameTime gameTime)
         {
-            _spriteBatch.Begin();
+            SpriteBatch.Begin();
+
+            SpriteBatch.DrawString(_font, _title, new Vector2(Globals.ScreenWidth/2 - _font.MeasureString(_title).X/2 , Globals.ScreenHeight * 0.2f), Color.Green);
 
             foreach (var choice in _choices)
             {
-<<<<<<< HEAD
-                _spriteBatch.DrawString(_normalFont, choice.Text, new Vector2(choice.X, choice.Y), Color.White);
-=======
-                if (_mouseState.LeftButton == ButtonState.Pressed && _previousMouseState.LeftButton != ButtonState.Pressed)
-                {
-                    if (new Rectangle((int) _survivalModeButtonPos.X, (int) _survivalModeButtonPos.Y, _survivalModeButton.Width, _survivalModeButton.Height).Contains(_mouseX, _mouseY))
-                    {
-                        SpaceHeadGame.ChangeCurrentGameState(GameState.Playing);
-                        _wave.SetTimer();
-                    }
-
-                    if (new Rectangle((int)_exitGameButtonPos.X, (int)_exitGameButtonPos.Y, _exitGameButton.Width, _exitGameButton.Height).Contains(_mouseX, _mouseY))
-                    {
-                        Game.Exit();
-                    }
-                }
->>>>>>> origin/feature_Wave
+                SpriteBatch.DrawString(_font, choice.Text, new Vector2(choice.X, choice.Y), Color.Green);
             }
 
-            _spriteBatch.End();
+            SpriteBatch.End();
             base.Draw(gameTime);
         }
     }
