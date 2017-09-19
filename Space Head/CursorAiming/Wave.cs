@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CursorAiming.Enemies;
 using Microsoft.Xna.Framework;
 
@@ -9,10 +10,10 @@ namespace CursorAiming
         public static int _waveIndex;
 
         public static List<Enemy> EnemiesOnField = new List<Enemy>();
-        
+
         private static int _numberOfEnemiesToSpawn = _waveIndex * 2 + 1;
-        static int _enemiesSpawned;
-        private static  bool _isSpawning;
+        private static int _enemiesSpawned;
+        private static bool _isSpawning;
 
         private static double _timeBetweenWaves, _timeLeftBetweenWaves;
         private static double _timeBetweenSpawns;
@@ -30,25 +31,27 @@ namespace CursorAiming
 
         private void SpawnMeleeEnemy()
         {
-            if(_waveIndex < 5)
-            EnemiesOnField.Add(new MeleeEnemy(300, 1, "spaceAstronauts_red", 20, 20, 20, Game)
-            {
-                Position = new Vector2(500, 500)
-            });
+            var rand = new Random();
+            if (_waveIndex < 5)
+                EnemiesOnField.Add(new MeleeEnemy(200, 2, "spaceAstronauts_red", 20, 20, 20, Game)
+                {
+                    Position = new Vector2(rand.Next(300, 1200), rand.Next(300, 800))
+                });
             else if (_waveIndex < 10)
-                EnemiesOnField.Add(new MeleeEnemy(300, 2, "spaceAstronauts_red", 20, 20, 20, Game)
-                {          
-                    Position = new Vector2(500, 500)
+                EnemiesOnField.Add(new MeleeEnemy(200, 6, "spaceAstronauts_red", 20, 20, 20, Game)
+                {
+                    Position = new Vector2(rand.Next(300, 1200), rand.Next(300, 800))
                 });
             _enemiesSpawned++;
-            
         }
 
         private void SpawnGunner()
         {
-            EnemiesOnField.Add(new EnemyWithGun(new Gun("playerGun1", "laserBlue01", 1, 400, UnitType.Player, Game), 200, 3, 2, "SpaceAstronauts_blue", 40, 40, 40, Game)
+            var rand = new Random();
+            EnemiesOnField.Add(new EnemyWithGun(new Gun("playerGun1", "laserBlue01", 1, 400, UnitType.Player, Game),
+                200, 8, 2, "SpaceAstronauts_blue", 40, 40, 40, Game)
             {
-                Position = new Vector2(700, 600)
+                Position = new Vector2(rand.Next(300, 1200), rand.Next(300, 800))
             });
             _enemiesSpawned++;
         }
@@ -63,7 +66,7 @@ namespace CursorAiming
                     SpawnMeleeEnemy();
                 else if (_waveIndex < 10)
                     SpawnGunner();
-                
+
                 _timeLeftBetweenSpawns = _timeBetweenSpawns;
             }
             else
@@ -79,7 +82,6 @@ namespace CursorAiming
             else if (_enemiesSpawned == _numberOfEnemiesToSpawn) _isSpawning = false;
 
             if (EnemiesOnField.Count == 0 && !_isSpawning)
-            {
                 if (_timeLeftBetweenWaves <= 0)
                 {
                     _isSpawning = true;
@@ -87,8 +89,10 @@ namespace CursorAiming
                     _enemiesSpawned = 0;
                     _timeLeftBetweenWaves = _timeBetweenWaves;
                 }
-                else _timeLeftBetweenWaves -= gameTime.ElapsedGameTime.TotalSeconds;
-            }
+                else
+                {
+                    _timeLeftBetweenWaves -= gameTime.ElapsedGameTime.TotalSeconds;
+                }
 
             base.Update(gameTime);
         }
@@ -100,13 +104,12 @@ namespace CursorAiming
             _timeLeftBetweenWaves = _timeBetweenWaves;
             _isSpawning = false;
             _numberOfEnemiesToSpawn = _waveIndex * 2 + 1;
-            for (int i = 0; i < EnemiesOnField.Count; i++)
+            for (var i = 0; i < EnemiesOnField.Count; i++)
             {
                 EnemiesOnField[i].Remove();
                 i--;
             }
             EnemiesOnField.Clear();
-            
         }
     }
 }

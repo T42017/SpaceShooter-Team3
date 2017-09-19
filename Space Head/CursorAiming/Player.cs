@@ -26,7 +26,7 @@ namespace CursorAiming
 
 
         public static RectangleHitBox Hitbox;
-        public static int PlayerGoldAmount = 999999;
+        public static int PlayerGoldAmount = 0;
         public static int ExpRequiredToLevel { get; private set; }
         
 
@@ -89,7 +89,7 @@ namespace CursorAiming
             _spriteBatch = new SpriteBatch(Game.GraphicsDevice);
             _playerTexture = Game.Content.Load<Texture2D>("Player");
             _lifeTexture = Game.Content.Load<Texture2D>("spaceRocketParts_012");
-            _takeDamage = Game.Content.Load<SoundEffect>("Jump");
+            //_takeDamage = Game.Content.Load<SoundEffect>("Ljudfiler/Jump");
             Obstacletexture = Game.Content.Load<Texture2D>("gameOverBackground");
 
             Hitbox.Box.Size = new Point(_playerTexture.Width / 2, _playerTexture.Width / 2);
@@ -99,27 +99,17 @@ namespace CursorAiming
         public override void Update(GameTime gameTime)
         {
             var mouse = Mouse.GetState();
+
+            var xpNeeded = CalculateRequiredExpToLevel(PlayerLevel);
+            if (Xp >= xpNeeded)
+            {
+                PlayerLevel++;
+                PlayerSkillPoints++;
+                Xp -= xpNeeded;
+            }
             Hitbox.UpdatePosition(PlayerPosition);
 
-            ExpRequiredToLevel = CalculateRequiredExpToLevel(PlayerLevel);
-
-            if (PlayerExp >= ExpRequiredToLevel)
-            {
-                int tmpExp = PlayerExp - ExpRequiredToLevel;
-                PlayerExp = 0;
-
-                if (tmpExp < 0)
-                {
-                    PlayerSkillPoints++;
-                    PlayerLevel++;
-                }
-                else
-                {
-                    PlayerSkillPoints++;
-                    PlayerExp += tmpExp;
-                    PlayerLevel++;
-                }
-            }
+            ExpRequiredToLevel = CalculateRequiredExpToLevel(PlayerLevel);           
 
             _isShooting = false;
             UpdateMovement(gameTime);
@@ -171,20 +161,11 @@ namespace CursorAiming
             float requiredExp = 0;
             int wholeNumber;
 
-            if (playerLevel == 1 && playerLevel <= 10)
-            {
-                requiredExp = 40 * playerLevel ^ 2 + 360 * playerLevel;
-            }
-            if (playerLevel == 11 && playerLevel <= 31)
-            {
-                requiredExp = (float) (-.4 * (playerLevel^3) + 40.4 * (playerLevel^2) + 396 * playerLevel);
-            }
-            if (playerLevel == 33 && playerLevel <= 54)
-            {
-                requiredExp = (65 * playerLevel ^ 2 - 165 * playerLevel - 6750) * playerLevel * .82f;
-            }
-
-            wholeNumber =  (int)Math.Ceiling(requiredExp);
+            
+            requiredExp = (float) (10 * Math.Pow(playerLevel, 2) + 360 * playerLevel);
+            
+            
+            wholeNumber =  (int)requiredExp;
             
 
             return wholeNumber;
