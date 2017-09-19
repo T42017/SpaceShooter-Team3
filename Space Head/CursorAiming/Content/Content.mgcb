@@ -224,7 +224,7 @@
 /processorParam:Quality=Best
 /build:heman.mp3
 
-#begin spaceAstronauts_002.png
+#begin Background.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -234,7 +234,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:spaceAstronauts_002.png
+/build:Background.png
 
 #begin spaceAstronauts_blue.png
 /importer:TextureImporter
@@ -308,6 +308,18 @@
 /processorParam:TextureFormat=Color
 /build:spaceAstronauts_red.png
 
+#begin spaceAstronauts_white.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:spaceAstronauts_white.png
+
 #begin spaceAstronauts_yellow.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -319,16 +331,4 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:spaceAstronauts_yellow.png
-
-#begin Background.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Background.png
 
