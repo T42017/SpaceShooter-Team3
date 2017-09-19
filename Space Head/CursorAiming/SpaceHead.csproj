@@ -60,6 +60,7 @@
     <Compile Include="Components\SpaceHeadBaseComponent.cs" />
     <Compile Include="Components\ShopAndUpgradeComponent.cs" />
     <Compile Include="Ray2D.cs" />
+    <Compile Include="ShotGun.cs" />
     <Compile Include="SpaceHeadGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

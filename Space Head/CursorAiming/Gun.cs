@@ -4,6 +4,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CursorAiming
 {
+    public enum SelectedWeapon
+    {
+        AssaultRifle,
+        RocketLauncher,
+    }
+
+
     public class Gun : SpaceHeadBaseComponent
     {
         public int GunAtkLevel;
@@ -39,7 +46,6 @@ namespace CursorAiming
         public void Shoot()
         {
             bulletsInAir.Add(new Bullet(ShotSpeed, Damage, AimDirection, Position, Rotation, _bulletTexture, _typeToHit));
-                
         }
 
         public void UpdateGraphics(SpriteBatch spriteBatch)

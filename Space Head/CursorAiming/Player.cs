@@ -17,9 +17,8 @@ namespace CursorAiming
         public static int PlayerSkillPoints;
         public static int MoveSpeed { get; set; }
         public static int MoveSpeedLevel = 0;
-        private readonly double _attackSpeed;
+        public static double _attackSpeed;
         public static int AttackSpeedLevel = 0;
-        public static Gun Gun;
         public static Vector2 PlayerPosition;
         public static Vector2 PlayerStartPosition = new Vector2(Globals.ScreenWidth / 2, Globals.ScreenHeight / 2);
         #endregion
@@ -30,7 +29,7 @@ namespace CursorAiming
         public static int ExpRequiredToLevel { get; private set; }
         
 
-
+        public static Gun Gun;
 
 
         private Vector2 _aimDirection;
@@ -61,6 +60,7 @@ namespace CursorAiming
             _countDownTilNextAttack = _attackSpeed;
             Gun = gun;
             PlayerLevel = 1;
+            PlayerSkillPoints = 11;
 
             DrawOrder = 1;
             DrawableStates = GameState.Playing | GameState.Paused;

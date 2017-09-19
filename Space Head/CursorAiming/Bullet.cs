@@ -38,7 +38,6 @@ namespace CursorAiming
             Position += Direction * (int) (Speed * gameTime.ElapsedGameTime.TotalSeconds);
         }
 
-
         public bool CheckForEnemyCollision(List<Enemy> unitsToCollideWith)
         {
             for (var i = 0; i < unitsToCollideWith.Count; i++)
@@ -50,11 +49,7 @@ namespace CursorAiming
 
                         return true;
                     }
-
-                    
                 }
-
-
             return false;
         }
 
@@ -65,10 +60,6 @@ namespace CursorAiming
                 Player.Health--;
                 return true;
             }
-               
-
-            
-
             return false;
         }
 

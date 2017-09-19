@@ -15,9 +15,9 @@ namespace CursorAiming
 
         public UIComponent(Game game) : base(game)
         {
-            
             DrawOrder = 2;
-            
+            DrawableStates = GameState.Playing | GameState.Paused | GameState.ShopUpgradeMenu;
+            UpdatableStates = GameState.Playing | GameState.ShopUpgradeMenu;
         }
 
         protected override void LoadContent()
@@ -35,7 +35,14 @@ namespace CursorAiming
         public override void Draw(GameTime gameTime)
         {
             SpriteBatch.Begin();
-            
+
+            SpriteBatch.DrawString(_font, "Gold: " + Player.PlayerGoldAmount, new Vector2(Globals.ScreenWidth * 0.05f, Globals.ScreenHeight * 0.9f), Color.Green  );
+
+            SpriteBatch.DrawString(_font, "Skill Points: " + Player.PlayerSkillPoints, new Vector2(Globals.ScreenWidth * 0.05f, Globals.ScreenHeight * 0.85f), Color.Green);
+
+            SpriteBatch.DrawString(_font, "Score: " + Player.Points, new Vector2(Globals.ScreenWidth * 0.05f, Globals.ScreenHeight * 0.8f), Color.Green);
+
+
             SpriteBatch.End();
 
             base.Draw(gameTime);
