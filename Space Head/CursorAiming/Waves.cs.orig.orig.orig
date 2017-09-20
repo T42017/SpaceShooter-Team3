@@ -51,9 +51,13 @@ namespace CursorAiming
             newEnemyPosition.X = _rng.Next(0, Globals.ScreenWidth);
             newEnemyPosition.Y = _rng.Next(0, Globals.ScreenHeight);
 
-            new EnemyWithGun(new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Player, Game),
+<<<<<<< HEAD:Space Head/CursorAiming/Waves.cs.orig.orig
+            var spawnedEnemy = new EnemyWithGun(new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Player, Game),
 <<<<<<< HEAD:Space Head/CursorAiming/Waves.cs.orig
 <<<<<<< HEAD
+=======
+            new EnemyWithGun(new Gun("PlayerGun1", "laserBlue01", 1, 700, UnitType.Player, Game),
+>>>>>>> 6d0e7780aab129579c37da0012affc28910df4ba:Space Head/CursorAiming/Waves.cs
                 200, 10, 1d, "BasicEnemy", 100, 100, 100, Game) {Position = newEnemyPosition};
 =======
                 100, 100, 1d, "BasicEnemy", 100, 100, 100, Game) {Position = newEnemyPosition};

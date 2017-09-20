@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,28 +13,31 @@ namespace CursorAiming
     {
         public static Player player;
 
-        public static List<Rectangle> ObstaclesOnField = new List<Rectangle>();
+      
+
         private readonly GraphicsDeviceManager _graphics;
 
         private Song _backgroundMusic;
         private KeyboardState _previousKeyboardState;
-
         private SpriteBatch _spriteBatch;
         private string _totalScore;
+
 <<<<<<< HEAD
-
 =======
-        private Waves _wave;
-
         public SpaceHeadGame Instance { get { return this; } }
->>>>>>> origin/Feature-LevelUp
 
+        public GraphicsDeviceManager Graphics => _graphics;
+
+>>>>>>> origin/feature-FieldOfView
         public SpaceHeadGame()
         {
             _graphics = new GraphicsDeviceManager(this);
-            Wave Wave = new Wave(this);
+            var Wave = new Wave(this);
             Content.RootDirectory = "Content";
         }
+
+
+        public SpaceHeadGame Instance => this;
 
         public GameState GameState { get; private set; }
 
@@ -49,7 +54,7 @@ namespace CursorAiming
 
         protected override void Initialize()
         {
-            player = new Player(310, 5, 0.4f, new Gun("PlayerGun1", "laserBlue01", 1, 1500, UnitType.Enemy, this),
+            player = new Player(310, 5, 0.4f, new Gun("GattlingGun", "GattlingShot", 1, 1500, UnitType.Enemy, this),
                 this);
 
 
@@ -64,15 +69,12 @@ namespace CursorAiming
 
             #endregion
 
-            ObstaclesOnField.Add(new Rectangle(0, Globals.ScreenHeight - 50, Globals.ScreenWidth,
-                100));
-            ObstaclesOnField.Add(new Rectangle(Globals.ScreenWidth - 50, 0, 100,
-                Globals.ScreenHeight));
-            ObstaclesOnField.Add(new Rectangle(0, 0, Globals.ScreenWidth,
-                100));
 
-            ObstaclesOnField.Add(new Rectangle(0, 0, 100,
-                Globals.ScreenHeight));
+            
+
+           
+
+
 
             #region windowSettings
 
@@ -91,9 +93,9 @@ namespace CursorAiming
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _backgroundMusic = Content.Load<Song>("yeahBoy");
+            _backgroundMusic = Content.Load<Song>("BackgroundMusicGold");
             MediaPlayer.Play(_backgroundMusic);
-            MediaPlayer.Volume = 0.3f;
+            MediaPlayer.Volume = 0.2f;
             MediaPlayer.IsRepeating = true;
 
             base.LoadContent();
@@ -115,32 +117,19 @@ namespace CursorAiming
 
             if (kbState.IsKeyDown(Keys.P) && _previousKeyboardState.IsKeyUp(Keys.P))
                 if (GameState == GameState.Playing)
-                {
                     ChangeCurrentGameState(GameState.Paused);
-                }
                 else if (GameState == GameState.Paused)
-                {
                     ChangeCurrentGameState(GameState.Playing);
-                }
 
             if (kbState.IsKeyDown(Keys.Space) && _previousKeyboardState.IsKeyUp(Keys.Space))
                 if (GameState == GameState.GameOver)
-                {
                     ChangeCurrentGameState(GameState.MainMenu);
-                }
 
             if (kbState.IsKeyDown(Keys.B) && _previousKeyboardState.IsKeyUp(Keys.B))
                 if (GameState == GameState.Playing)
-                {
                     ChangeCurrentGameState(GameState.ShopUpgradeMenu);
-<<<<<<< HEAD
-                }
                 else if (GameState == GameState.ShopUpgradeMenu)
-                {
                     ChangeCurrentGameState(GameState.Playing);
-                }
-=======
->>>>>>> origin/Feature-LevelUp
 
             _previousKeyboardState = kbState;
 

@@ -242,3 +242,9 @@
 /processorParam:TextureFormat=Color
 /build:EnemyGun1.png
 
+#begin BackgroundMusicGold.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:BackgroundMusicGold.mp3
+
