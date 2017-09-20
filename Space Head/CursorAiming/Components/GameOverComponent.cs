@@ -61,10 +61,9 @@ namespace CursorAiming
 
             SpaceHeadGame.player.Remove();
             SpaceHeadGame.player = new Player(310, 5, 0.4f,
-                new Gun("PlayerGun1", "laserBlue01", 20, 1500, UnitType.Enemy, Game),
+                new Gun("GattlingGun", "GattlingShot", 1, 1500, UnitType.Enemy, Game),
                 Game);
             Wave.Reset();
-
         }
     }
 }

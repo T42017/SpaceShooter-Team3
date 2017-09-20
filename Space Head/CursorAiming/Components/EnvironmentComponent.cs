@@ -23,8 +23,8 @@ namespace CursorAiming
             DrawableStates = GameState.Playing | GameState.Paused;
 
             Borders.Add(new Rectangle(0, Globals.ScreenHeight - 145, Globals.ScreenWidth,
-                1));
-            Borders.Add(new Rectangle(Globals.ScreenWidth - 285, 0, 1,
+                100));
+            Borders.Add(new Rectangle(Globals.ScreenWidth - 285, 0, 100,
                 Globals.ScreenHeight));
             Borders.Add(new Rectangle(0, 0, Globals.ScreenWidth,
                 150));

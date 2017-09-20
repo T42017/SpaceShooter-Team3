@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace CursorAiming
@@ -8,15 +7,6 @@ namespace CursorAiming
     {
         private readonly Gun Gun;
 
-        private SoundEffect _damage;
-        //private Texture2D _astronautMarine;
-        //private Texture2D _astronautBlue;
-        //private Texture2D _astronautRed;
-        //private Texture2D _astronautWhite;
-        //private Texture2D _astronautBrown;
-        //private Texture2D _astronautYellow;
-        //private Texture2D _astronautPink;
-        //private Texture2D _astronautGreen;
 
         public EnemyWithGun(Gun gun, int moveSpeed, int health, double attackSpeed, string texturePath, int pointValue,
             int xpValue, int coinValue,
@@ -37,17 +27,7 @@ namespace CursorAiming
 
         protected override void LoadContent()
         {
-            _damage = Game.Content.Load<SoundEffect>("STRONK");
             UnitTexture = Game.Content.Load<Texture2D>(TexturePath);
-
-            //_astronautGreen = Game.Content.Load<Texture2D>("spaceAstronaut_green");
-            //_astronautRed = Game.Content.Load<Texture2D>("spaceAstronaut_red");
-            //_astronautBlue = Game.Content.Load<Texture2D>("spaceAstronaut_marineblue");
-            //_astronautMarine = Game.Content.Load<Texture2D>("spaceAstronaut_marine");
-            //_astronautPink = Game.Content.Load<Texture2D>("spaceAstronaut_pink");
-            //_astronautWhite = Game.Content.Load<Texture2D>("spaceAstronaut_002");
-            //_astronautBrown = Game.Content.Load<Texture2D>("spaceAstronaut_brown");
-            //_astronautYellow = Game.Content.Load<Texture2D>("spaceAstronaut_yellow");
 
             base.LoadContent();
         }
@@ -72,8 +52,8 @@ namespace CursorAiming
 
             Gun.AimDirection = AimDirection;
             Gun.Rotation = Rotation;
-            Gun.Position = Position + new Vector2(AimDirection.X * (UnitTexture.Width + 5),
-                               AimDirection.Y * (UnitTexture.Width + 5));
+            Gun.Position = Position + new Vector2(AimDirection.X * (UnitTexture.Width - 4),
+                               AimDirection.Y * (UnitTexture.Width - 4));
 
             if (CountDownTilNextAttack > 0)
             {

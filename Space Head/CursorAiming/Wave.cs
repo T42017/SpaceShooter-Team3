@@ -35,12 +35,12 @@ namespace CursorAiming
             if (_waveIndex < 5)
                 EnemiesOnField.Add(new MeleeEnemy(200, 2, "MeleeEnemy1", 20, 20, 20, Game)
                 {
-                    Position = new Vector2(rand.Next(300, 1200), rand.Next(300, 800))
+                    Position = GetSpawnLocation()
                 });
             else if (_waveIndex < 10)
                 EnemiesOnField.Add(new MeleeEnemy(200, 6, "MeleeEnemy1", 20, 20, 20, Game)
                 {
-                    Position = new Vector2(rand.Next(300, 1200), rand.Next(300, 800))
+                    Position = GetSpawnLocation()
                 });
             _enemiesSpawned++;
         }
@@ -48,10 +48,10 @@ namespace CursorAiming
         private void SpawnGunner()
         {
             var rand = new Random();
-            EnemiesOnField.Add(new EnemyWithGun(new Gun("playerGun1", "laserBlue01", 1, 400, UnitType.Player, Game),
+            EnemiesOnField.Add(new EnemyWithGun(new Gun("EnemyGun1", "EnemyShot", 1, 400, UnitType.Player, Game),
                 200, 8, 2, "Enemy1", 40, 40, 40, Game)
             {
-                Position = new Vector2(rand.Next(300, 1200), rand.Next(300, 800))
+                Position = GetSpawnLocation()
             });
             _enemiesSpawned++;
         }
@@ -110,6 +110,24 @@ namespace CursorAiming
                 i--;
             }
             EnemiesOnField.Clear();
+        }
+
+        public Vector2 GetSpawnLocation()
+        {
+            var rand = new Random();
+            var playerZone = new Rectangle(Player.PlayerPosition.ToPoint() - new Point(100, 100), new Point(200, 200));
+
+            var spawn = new Vector2(rand.Next(300, Globals.ScreenWidth - 285),
+                rand.Next(150, Globals.ScreenHeight - 145));
+            for (var i = 0; i < EnviornmentComponent.ObstaclesOnField.Count; i++)
+                if (EnviornmentComponent.ObstaclesOnField[i].Contains(spawn) || playerZone.Contains(spawn))
+                {
+                    spawn = new Vector2(rand.Next(300, Globals.ScreenWidth - 285),
+                        rand.Next(150, Globals.ScreenHeight - 145));
+                    i = 0;
+                }
+
+            return spawn;
         }
     }
 }

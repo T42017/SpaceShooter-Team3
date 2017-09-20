@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -20,8 +19,8 @@ namespace CursorAiming
         private Texture2D _texture, _bulletTexture;
         public List<Bullet> bulletsInAir = new List<Bullet>();
         public int Damage;
-        public int GunAtkLevel;
-        public int GunAtkSpeedLevel;
+        public int GunAtkLevel = 1;
+        public int GunAtkSpeedLevel = 1;
         public Vector2 Position, AimDirection;
 
         public float Rotation;
@@ -46,7 +45,7 @@ namespace CursorAiming
 
 
         public void Shoot()
-        {     
+        {
             bulletsInAir.Add(
                 new Bullet(ShotSpeed, Damage, AimDirection, Position, Rotation, _bulletTexture, _typeToHit));
         }

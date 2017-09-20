@@ -16,7 +16,6 @@ namespace CursorAiming.Enemies
             CoinValue = coinValue;
             DrawOrder = 2;
             Game.Components.Add(this);
-
         }
 
 
@@ -45,16 +44,15 @@ namespace CursorAiming.Enemies
         public override void UpdateMovement(GameTime gameTime)
         {
             CalculateRotation(Player.PlayerPosition);
-            if (DeltaDistance.Length() < 700)
-            {
-                MoveDirection = Player.PlayerPosition - Position;
-                MoveDirection.Normalize();
 
-                Velocity = Hitbox.CheckMoveDistance(MoveSpeed, MoveDirection,
-                    (float) gameTime.ElapsedGameTime.TotalSeconds);
+            MoveDirection = Player.PlayerPosition - Position;
+            MoveDirection.Normalize();
 
-                Position += Velocity;
-            }
+            Velocity = Hitbox.CheckMoveDistance(MoveSpeed, MoveDirection,
+                (float) gameTime.ElapsedGameTime.TotalSeconds);
+
+            Position += Velocity;
+
             if (DeltaDistance.Length() < 30)
                 Attack();
 
