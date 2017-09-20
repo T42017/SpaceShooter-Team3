@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,7 +18,6 @@ namespace CursorAiming
 
         private Song _backgroundMusic;
         private KeyboardState _previousKeyboardState;
-
         private SpriteBatch _spriteBatch;
         private string _totalScore;
 
@@ -88,7 +89,7 @@ namespace CursorAiming
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _backgroundMusic = Content.Load<Song>("POL");
+            _backgroundMusic = Content.Load<Song>("BackgroundMusicGold");
             MediaPlayer.Play(_backgroundMusic);
             MediaPlayer.Volume = 0.2f;
             MediaPlayer.IsRepeating = true;
