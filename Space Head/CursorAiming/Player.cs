@@ -9,7 +9,6 @@ namespace CursorAiming
     public class Player : SpaceHeadBaseComponent
     {
         public static RectangleHitBox Hitbox;
-        public static int PlayerGoldAmount = 0;
 
 
         public static Gun Gun;
@@ -30,7 +29,6 @@ namespace CursorAiming
         private SpriteBatch _spriteBatch;
         private SoundEffect _takeDamage;
         private Vector2 _velocity;
-        private Texture2D Obstacletexture;
 
         public UnitType Type = UnitType.Player;
 
@@ -43,7 +41,8 @@ namespace CursorAiming
             _countDownTilNextAttack = _attackSpeed;
             Gun = gun;
             PlayerLevel = 1;
-            PlayerSkillPoints = 11;
+            PlayerSkillPoints = 0;
+            Coins = 100000;
 
             DrawOrder = 1;
             DrawableStates = GameState.Playing | GameState.Paused;
@@ -69,13 +68,22 @@ namespace CursorAiming
             base.Remove();
         }
 
+        public static void Reset()
+        {
+            Player.Coins = 0;
+            Player.PlayerExp = 0;
+            Player.Points = 0;
+            Player.PlayerLevel = 1;
+            Player.MoveSpeedLevel = 0;
+            Player.HealthLevel = 0;
+        }
+
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(Game.GraphicsDevice);
             _playerTexture = Game.Content.Load<Texture2D>("Player");
             _lifeTexture = Game.Content.Load<Texture2D>("spaceRocketParts_012");
             //_takeDamage = Game.Content.Load<SoundEffect>("Ljudfiler/Jump");
-            Obstacletexture = Game.Content.Load<Texture2D>("gameOverBackground");
 
             Hitbox.Box.Size = new Point(_playerTexture.Width / 2, _playerTexture.Width / 2);
             base.LoadContent();
@@ -170,7 +178,7 @@ namespace CursorAiming
 
         #region Player Variable
 
-        public static int PlayerLevel { get; private set; }
+        public static int PlayerLevel { get; set; }
         public static int PlayerExp { get; set; }
         public static int Health;
         public static int HealthLevel;

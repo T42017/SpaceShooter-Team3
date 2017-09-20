@@ -33,12 +33,12 @@ namespace CursorAiming
         {
             var rand = new Random();
             if (_waveIndex < 5)
-                EnemiesOnField.Add(new MeleeEnemy(200, 2, "MeleeEnemy1", 20, 20, 20, Game)
+                EnemiesOnField.Add(new MeleeEnemy(200, 6, "MeleeEnemy1", 40, 20, 20, Game)
                 {
                     Position = GetSpawnLocation()
                 });
             else if (_waveIndex < 10)
-                EnemiesOnField.Add(new MeleeEnemy(200, 6, "MeleeEnemy1", 20, 20, 20, Game)
+                EnemiesOnField.Add(new MeleeEnemy(200, 10, "MeleeEnemy1", 80, 50, 50, Game)
                 {
                     Position = GetSpawnLocation()
                 });
@@ -49,7 +49,7 @@ namespace CursorAiming
         {
             var rand = new Random();
             EnemiesOnField.Add(new EnemyWithGun(new Gun("EnemyGun1", "EnemyShot", 1, 400, UnitType.Player, Game),
-                200, 8, 2, "Enemy1", 40, 40, 40, Game)
+                200, 20, 2, "Enemy1", 40, 40, 40, Game)
             {
                 Position = GetSpawnLocation()
             });
@@ -60,12 +60,18 @@ namespace CursorAiming
         {
             if (_timeLeftBetweenSpawns <= 0)
             {
-                _numberOfEnemiesToSpawn = _waveIndex * 2 + 1;
+                _numberOfEnemiesToSpawn = _waveIndex * 2 + 2;
 
-                if (_waveIndex < 2)
+                if (_waveIndex < 1)
                     SpawnMeleeEnemy();
-                else if (_waveIndex < 10)
+                else if (_waveIndex < 1)
                     SpawnGunner();
+                else if (_waveIndex < 10)
+                {
+                    SpawnGunner();
+
+                    SpawnMeleeEnemy();                    
+                }
 
                 _timeLeftBetweenSpawns = _timeBetweenSpawns;
             }

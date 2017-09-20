@@ -11,7 +11,7 @@ namespace CursorAiming
         private MouseState _previousMouseState;
         private Texture2D _shopBackground;
         private List<MenuChoice> _upgradePlayer, _upgradeWeapon;
-        private MenuChoice AttackSpeed, Health, Damage, MoveSpeed, UpgradePlayerTitle, UpgradeWeaponTitle;
+        private static MenuChoice AttackSpeed, Health, Damage, MoveSpeed, UpgradePlayerTitle, UpgradeWeaponTitle;
 
         public ShopAndUpgradeComponent(Game game) : base(game)
         {
@@ -26,10 +26,10 @@ namespace CursorAiming
             _upgradePlayer = new List<MenuChoice>();
 
             UpgradePlayerTitle = new MenuChoice {Text = "UPGRADE YOUR CHARACTER"};
-            _upgradePlayer.Add(UpgradePlayerTitle);
+            //_upgradePlayer.Add(UpgradePlayerTitle);
 
             UpgradeWeaponTitle = new MenuChoice {Text = "UPGRADE YOUR WEAPON"};
-            _upgradeWeapon.Add(UpgradeWeaponTitle);
+            //_upgradeWeapon.Add(UpgradeWeaponTitle);
 
             AttackSpeed = new MenuChoice
             {
@@ -130,9 +130,11 @@ namespace CursorAiming
 
             foreach (var choice in _upgradeWeapon)
                 SpriteBatch.DrawString(_font, choice.Text, new Vector2(choice.X, choice.Y), Color.Green);
-
+            SpriteBatch.DrawString(_font, UpgradePlayerTitle.Text, new Vector2(UpgradePlayerTitle.X, UpgradePlayerTitle.Y), Color.Green);
             foreach (var choice in _upgradePlayer)
                 SpriteBatch.DrawString(_font, choice.Text, new Vector2(choice.X, choice.Y), Color.Green);
+            SpriteBatch.DrawString(_font, UpgradeWeaponTitle.Text, new Vector2(UpgradeWeaponTitle.X, UpgradeWeaponTitle.Y), Color.Green);
+
 
             SpriteBatch.End();
 
@@ -144,11 +146,11 @@ namespace CursorAiming
             var cost = gunType.GunAtkLevel * 100;
 
             if (SpaceHeadGame.GameState == GameState.ShopUpgradeMenu)
-                if (cost <= Player.PlayerGoldAmount)
+                if (cost <= Player.Coins)
                 {
-                    gunType.Damage++;
+                    gunType.Damage += (int)(gunType.Damage * 0.2);
                     gunType.GunAtkLevel++;
-                    Player.PlayerGoldAmount -= cost;
+                    Player.Coins -= cost;
                 }
         }
 
@@ -157,18 +159,18 @@ namespace CursorAiming
             var cost = gunType.GunAtkSpeedLevel * 100;
 
             if (SpaceHeadGame.GameState == GameState.ShopUpgradeMenu)
-                if (cost <= Player.PlayerGoldAmount)
+                if (cost <= Player.Coins)
                 {
-                    Player._attackSpeed -= Player._attackSpeed * 0.05f;
+                    Player._attackSpeed -= Player._attackSpeed * 0.2f;
                     gunType.GunAtkSpeedLevel++;
-                    Player.PlayerGoldAmount -= cost;
+                    Player.Coins -= cost;
                 }
         }
 
         public void UpgradePlayerHitPoints()
         {
             if (SpaceHeadGame.GameState == GameState.ShopUpgradeMenu)
-                if (Player.PlayerSkillPoints >= 1)
+                if (Player.PlayerSkillPoints > 0)
                 {
                     Player.Health++;
                     Player.HealthLevel++;
@@ -181,9 +183,9 @@ namespace CursorAiming
             if (SpaceHeadGame.GameState == GameState.ShopUpgradeMenu)
                 if (Player.PlayerSkillPoints > 0)
                 {
-                    Player.MoveSpeed += 10;
+                    Player.MoveSpeed += 20;
                     Player.MoveSpeedLevel++;
-                    Player.PlayerSkillPoints -= 1;
+                    Player.PlayerSkillPoints--;
                 }
         }
 
@@ -192,27 +194,36 @@ namespace CursorAiming
         private void UpgradeAtkSpeedClicked()
         {
             UpgradeGunAtkSpeed(Player.Gun);
-            AttackSpeed.Text = "UPGRADE ATTACK SPEED || LEVEL: " + Player.Gun.GunAtkSpeedLevel;
+            AttackSpeed.Text = "UPGRADE ATTACK SPEED // LEVEL: " + Player.Gun.GunAtkSpeedLevel;
         }
 
         private void UpgradeWeaponDamageClicked()
         {
             UpgradeGunDamage(Player.Gun);
-            Damage.Text = "UPGRADE WEAPON DAMAGE || LEVEL: " + Player.Gun.GunAtkLevel;
+            Damage.Text = "UPGRADE WEAPON DAMAGE // LEVEL: " + Player.Gun.GunAtkLevel;
         }
 
         private void UpgradeHitPointsClicked()
         {
             UpgradePlayerHitPoints();
-            Health.Text = "UPGRADE HIT POINTS || LEVEL: " + Player.HealthLevel;
+            Health.Text = "UPGRADE HIT POINTS // LEVEL: " + Player.HealthLevel;
         }
 
         private void UpgradeMovementSpdClicked()
         {
             UpgradePlayerMovementSpeed();
-            MoveSpeed.Text = "UPGRADE MOVEMENT SPEED || LEVEL: " + Player.MoveSpeedLevel;
+            MoveSpeed.Text = "UPGRADE MOVEMENT SPEED // LEVEL: " + Player.MoveSpeedLevel;
         }
 
         #endregion
+
+        public static void Reset()
+        {
+            AttackSpeed.Text = "UPGRADE ATTACK SPEED // LEVEL: " + Player.Gun.GunAtkSpeedLevel;
+            Health.Text = "UPGRADE HIT POINTS // LEVEL: " + Player.HealthLevel;
+            MoveSpeed.Text = "UPGRADE MOVEMENT SPEED // LEVEL: " + Player.MoveSpeedLevel;
+            Damage.Text = "UPGRADE WEAPON DAMAGE // LEVEL: " + Player.Gun.GunAtkLevel;
+        }
+
     }
 }

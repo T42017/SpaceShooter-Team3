@@ -49,7 +49,7 @@ namespace CursorAiming
 
         protected override void Initialize()
         {
-            player = new Player(310, 5, 0.4f, new Gun("GattlingGun", "GattlingShot", 1, 1500, UnitType.Enemy, this),
+            player = new Player(310, 5, 0.5f, new Gun("GattlingGun", "GattlingShot", 5, 1500, UnitType.Enemy, this),
                 this);
 
 

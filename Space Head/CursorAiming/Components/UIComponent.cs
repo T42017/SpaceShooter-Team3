@@ -36,7 +36,7 @@ namespace CursorAiming
         {
             SpriteBatch.Begin();
 
-            SpriteBatch.DrawString(_font, "Gold: " + Player.PlayerGoldAmount, new Vector2(Globals.ScreenWidth * 0.05f, Globals.ScreenHeight * 0.9f), Color.Green  );
+            SpriteBatch.DrawString(_font, "Gold: " + Player.Coins, new Vector2(Globals.ScreenWidth * 0.05f, Globals.ScreenHeight * 0.9f), Color.Green  );
 
             SpriteBatch.DrawString(_font, "Skill Points: " + Player.PlayerSkillPoints, new Vector2(Globals.ScreenWidth * 0.05f, Globals.ScreenHeight * 0.85f), Color.Green);
 
