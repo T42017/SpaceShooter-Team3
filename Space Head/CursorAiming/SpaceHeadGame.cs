@@ -23,6 +23,10 @@ namespace CursorAiming
 
         public SpaceHeadGame Instance { get { return this; } }
 
+
+        public GraphicsDeviceManager Graphics => _graphics;
+
+
         public SpaceHeadGame()
         {
             _graphics = new GraphicsDeviceManager(this);

@@ -19,18 +19,21 @@ namespace CursorAiming
 
         private SpriteBatch _spriteBatch;
         private string _totalScore;
-<<<<<<< HEAD
 
-=======
-        private Waves _wave;
 
         public SpaceHeadGame Instance { get { return this; } }
->>>>>>> origin/Feature-LevelUp
+
+
+        public GraphicsDeviceManager Graphics => _graphics;
+
 
         public SpaceHeadGame()
         {
             _graphics = new GraphicsDeviceManager(this);
+<<<<<<< HEAD
             Wave Wave = new Wave(this);
+=======
+>>>>>>> 6d0e7780aab129579c37da0012affc28910df4ba
             Content.RootDirectory = "Content";
         }
 
@@ -133,14 +136,11 @@ namespace CursorAiming
                 if (GameState == GameState.Playing)
                 {
                     ChangeCurrentGameState(GameState.ShopUpgradeMenu);
-<<<<<<< HEAD
                 }
                 else if (GameState == GameState.ShopUpgradeMenu)
                 {
                     ChangeCurrentGameState(GameState.Playing);
                 }
-=======
->>>>>>> origin/Feature-LevelUp
 
             _previousKeyboardState = kbState;
 

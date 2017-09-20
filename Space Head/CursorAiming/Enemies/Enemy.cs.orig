@@ -19,7 +19,11 @@ namespace CursorAiming
         protected int PointValue, XpValue, CoinValue;
         public Vector2 Position;
         public float Rotation;
+<<<<<<< HEAD:Space Head/CursorAiming/Enemies/Enemy.cs
 
+=======
+        private Texture2D _coneView;
+>>>>>>> 6d0e7780aab129579c37da0012affc28910df4ba:Space Head/CursorAiming/Enemy.cs
 
         protected string TexturePath;
         public UnitType Type = UnitType.Enemy;
@@ -53,7 +57,11 @@ namespace CursorAiming
         public override void Update(GameTime gameTime)
         {
             Hitbox.UpdatePosition(Position);
+<<<<<<< HEAD:Space Head/CursorAiming/Enemies/Enemy.cs
+=======
             //CanEnemySeePlayer(Player.PlayerPosition, Position, Player.PlayerPosition);
+
+>>>>>>> 6d0e7780aab129579c37da0012affc28910df4ba:Space Head/CursorAiming/Enemy.cs
             CalculateRotation(Player.PlayerPosition);
             
 
