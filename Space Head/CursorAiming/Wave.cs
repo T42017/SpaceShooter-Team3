@@ -33,12 +33,12 @@ namespace CursorAiming
         {
             var rand = new Random();
             if (_waveIndex < 5)
-                EnemiesOnField.Add(new MeleeEnemy(200, 2, "spaceAstronauts_red", 20, 20, 20, Game)
+                EnemiesOnField.Add(new MeleeEnemy(200, 2, "MeleeEnemy1", 20, 20, 20, Game)
                 {
                     Position = new Vector2(rand.Next(300, 1200), rand.Next(300, 800))
                 });
             else if (_waveIndex < 10)
-                EnemiesOnField.Add(new MeleeEnemy(200, 6, "spaceAstronauts_red", 20, 20, 20, Game)
+                EnemiesOnField.Add(new MeleeEnemy(200, 6, "MeleeEnemy1", 20, 20, 20, Game)
                 {
                     Position = new Vector2(rand.Next(300, 1200), rand.Next(300, 800))
                 });
@@ -49,7 +49,7 @@ namespace CursorAiming
         {
             var rand = new Random();
             EnemiesOnField.Add(new EnemyWithGun(new Gun("playerGun1", "laserBlue01", 1, 400, UnitType.Player, Game),
-                200, 8, 2, "SpaceAstronauts_blue", 40, 40, 40, Game)
+                200, 8, 2, "Enemy1", 40, 40, 40, Game)
             {
                 Position = new Vector2(rand.Next(300, 1200), rand.Next(300, 800))
             });

@@ -42,14 +42,12 @@ namespace CursorAiming
         {
             for (var i = 0; i < unitsToCollideWith.Count; i++)
                 if (_typeToHit == unitsToCollideWith[i].Type)
-                {
                     if (unitsToCollideWith[i].Hitbox.CollidesWith(Position))
                     {
                         unitsToCollideWith[i].Health -= Damage;
 
                         return true;
                     }
-                }
             return false;
         }
 
@@ -65,7 +63,9 @@ namespace CursorAiming
 
         public bool CheckForObstacleCollision()
         {
-            foreach (var rectangle in SpaceHeadGame.ObstaclesOnField)
+            foreach (var rectangle in EnviornmentComponent.Borders)
+                if (rectangle.Contains(Position)) return true;
+            foreach (var rectangle in EnviornmentComponent.ObstaclesOnField)
                 if (rectangle.Contains(Position)) return true;
 
             return false;

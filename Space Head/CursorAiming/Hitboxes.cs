@@ -38,7 +38,7 @@ namespace CursorAiming
         }
 
 
-        public Vector2 CheckMoveDistance (int movespeed, Vector2 direction, float deltaTime)
+        public Vector2 CheckMoveDistance(int movespeed, Vector2 direction, float deltaTime)
         {
             float distanceToCollision;
             float x = 0, y = 0;
@@ -48,11 +48,9 @@ namespace CursorAiming
                 distanceToCollision = Math.Abs(CheckForRayCollision(Vector2.UnitX));
                 if (distanceToCollision < Math.Abs(direction.X *
                                                    movespeed * deltaTime))
-                {
                     x = distanceToCollision;
-                }
                 else
-                    x = direction.X *movespeed * deltaTime;
+                    x = direction.X * movespeed * deltaTime;
             }
             else if (direction.X < 0)
             {
@@ -80,10 +78,10 @@ namespace CursorAiming
                                                    movespeed * deltaTime))
                     y = -distanceToCollision;
                 else
-                    y= direction.Y * movespeed * deltaTime;
+                    y = direction.Y * movespeed * deltaTime;
             }
 
-            return new Vector2(x,y);
+            return new Vector2(x, y);
         }
 
         public float CheckForRayCollision(Vector2 direction)
@@ -130,14 +128,21 @@ namespace CursorAiming
 
                 var edgePosition = new Vector2(Ray.StartPos.X, Ray.StartPos.Y);
 
-                foreach (var rectangle in SpaceHeadGame.ObstaclesOnField)
+                foreach (var rectangle in EnviornmentComponent.ObstaclesOnField)
                 {
                     var hit = Ray.Intersects(rectangle);
                     var collision = hit != Vector2.Zero;
 
                     if (collision) return Vector2.Distance(edgePosition, hit);
                 }
-                
+
+                foreach (var rectangle in EnviornmentComponent.Borders)
+                {
+                    var hit = Ray.Intersects(rectangle);
+                    var collision = hit != Vector2.Zero;
+
+                    if (collision) return Vector2.Distance(edgePosition, hit);
+                }
             }
             return float.PositiveInfinity;
         }

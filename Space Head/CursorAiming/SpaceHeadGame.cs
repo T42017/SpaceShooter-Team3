@@ -11,7 +11,8 @@ namespace CursorAiming
     {
         public static Player player;
 
-        public static List<Rectangle> ObstaclesOnField = new List<Rectangle>();
+      
+
         private readonly GraphicsDeviceManager _graphics;
 
         private Song _backgroundMusic;
@@ -20,15 +21,15 @@ namespace CursorAiming
         private SpriteBatch _spriteBatch;
         private string _totalScore;
 
-
-        public SpaceHeadGame Instance { get { return this; } }
-
         public SpaceHeadGame()
         {
             _graphics = new GraphicsDeviceManager(this);
-            Wave Wave = new Wave(this);
+            var Wave = new Wave(this);
             Content.RootDirectory = "Content";
         }
+
+
+        public SpaceHeadGame Instance => this;
 
         public GameState GameState { get; private set; }
 
@@ -45,7 +46,7 @@ namespace CursorAiming
 
         protected override void Initialize()
         {
-            player = new Player(310, 5, 0.4f, new Gun("PlayerGun1", "laserBlue01", 1, 1500, UnitType.Enemy, this),
+            player = new Player(310, 5, 0.2f, new Gun("GattlingGun", "laserBlue01", 1, 1500, UnitType.Enemy, this),
                 this);
 
 
@@ -60,15 +61,12 @@ namespace CursorAiming
 
             #endregion
 
-            ObstaclesOnField.Add(new Rectangle(0, Globals.ScreenHeight - 50, Globals.ScreenWidth,
-                100));
-            ObstaclesOnField.Add(new Rectangle(Globals.ScreenWidth - 50, 0, 100,
-                Globals.ScreenHeight));
-            ObstaclesOnField.Add(new Rectangle(0, 0, Globals.ScreenWidth,
-                100));
 
-            ObstaclesOnField.Add(new Rectangle(0, 0, 100,
-                Globals.ScreenHeight));
+            
+
+           
+
+
 
             #region windowSettings
 
@@ -111,29 +109,19 @@ namespace CursorAiming
 
             if (kbState.IsKeyDown(Keys.P) && _previousKeyboardState.IsKeyUp(Keys.P))
                 if (GameState == GameState.Playing)
-                {
                     ChangeCurrentGameState(GameState.Paused);
-                }
                 else if (GameState == GameState.Paused)
-                {
                     ChangeCurrentGameState(GameState.Playing);
-                }
 
             if (kbState.IsKeyDown(Keys.Space) && _previousKeyboardState.IsKeyUp(Keys.Space))
                 if (GameState == GameState.GameOver)
-                {
                     ChangeCurrentGameState(GameState.MainMenu);
-                }
 
             if (kbState.IsKeyDown(Keys.B) && _previousKeyboardState.IsKeyUp(Keys.B))
                 if (GameState == GameState.Playing)
-                {
                     ChangeCurrentGameState(GameState.ShopUpgradeMenu);
-                }
                 else if (GameState == GameState.ShopUpgradeMenu)
-                {
                     ChangeCurrentGameState(GameState.Playing);
-                }
 
             _previousKeyboardState = kbState;
 

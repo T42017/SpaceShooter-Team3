@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -7,8 +6,6 @@ namespace CursorAiming
 {
     internal class EnemyWithGun : Enemy
     {
-        
-
         private readonly Gun Gun;
 
         private SoundEffect _damage;
@@ -69,8 +66,6 @@ namespace CursorAiming
         {
             if (Health <= 0)
                 Remove();
-            
-                
 
 
             UpdateMovement(gameTime);
@@ -84,7 +79,7 @@ namespace CursorAiming
             {
                 CountDownTilNextAttack -= (float) gameTime.ElapsedGameTime.TotalSeconds;
             }
-            else if (DeltaDistance.Length() < 780)
+            else
             {
                 Gun.Shoot();
                 CountDownTilNextAttack = AttackSpeed;
@@ -93,11 +88,8 @@ namespace CursorAiming
             for (var i = 0; i < Gun.bulletsInAir.Count; i++)
             {
                 Gun.bulletsInAir[i].UpdatePosition(gameTime);
-                if (Gun.bulletsInAir[i].CheckForPlayerCollision())
-                {
+                if (Gun.bulletsInAir[i].CheckForPlayerCollision() || Gun.bulletsInAir[i].CheckForObstacleCollision())
                     Gun.bulletsInAir.Remove(Gun.bulletsInAir[i]);
-
-                }
             }
 
 
@@ -120,18 +112,8 @@ namespace CursorAiming
         {
             base.UpdateMovement(gameTime);
 
-            if (DeltaDistance.Length() > 700)
-            {
-                MoveDirection = Player.PlayerPosition - Position;
-                MoveDirection.Normalize();
 
-                Velocity = Hitbox.CheckMoveDistance(MoveSpeed, MoveDirection,
-                    (float) gameTime.ElapsedGameTime.TotalSeconds);
-
-                Position += Velocity;
-            }
-
-            else if (DeltaDistance.Length() < 500)
+            if (DeltaDistance.Length() < 400)
             {
                 MoveDirection = Player.PlayerPosition - Position;
                 MoveDirection.Normalize();

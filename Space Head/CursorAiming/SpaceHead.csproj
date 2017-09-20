@@ -55,7 +55,6 @@
     <Compile Include="Components\MenuComponent.cs" />
     <Compile Include="Components\MouseComponent.cs" />
     <Compile Include="Player.cs" />
-    <Compile Include="PlayerGun.cs" />
     <Compile Include="Points.cs" />
     <Compile Include="Components\SpaceHeadBaseComponent.cs" />
     <Compile Include="Components\ShopAndUpgradeComponent.cs" />

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,25 +8,9 @@ namespace CursorAiming
 {
     public class Player : SpaceHeadBaseComponent
     {
-        #region Player Variable
-        public static int PlayerLevel { get; private set; }
-        public static int PlayerExp { get; set; }
-        public static int Health;
-        public static int HealthLevel;
-        public static int PlayerSkillPoints;
-        public static int MoveSpeed { get; set; }
-        public static int MoveSpeedLevel = 0;
-        public static double _attackSpeed;
-        public static int AttackSpeedLevel = 0;
-        public static Vector2 PlayerPosition;
-        public static Vector2 PlayerStartPosition = new Vector2(Globals.ScreenWidth / 2, Globals.ScreenHeight / 2);
-        #endregion
-
-
         public static RectangleHitBox Hitbox;
         public static int PlayerGoldAmount = 0;
-        public static int ExpRequiredToLevel { get; private set; }
-        
+
 
         public static Gun Gun;
 
@@ -65,7 +48,7 @@ namespace CursorAiming
             DrawOrder = 1;
             DrawableStates = GameState.Playing | GameState.Paused;
 
-            PlayerPosition = new Vector2(Globals.ScreenWidth / 2, Globals.ScreenHeight / 2);
+            PlayerPosition = new Vector2(Globals.ScreenWidth -300, Globals.ScreenHeight / 2);
             UpdatableStates = GameState.Playing;
 
             Hitbox = new RectangleHitBox(2);
@@ -73,6 +56,8 @@ namespace CursorAiming
             game.Components.Add(this);
             game.Components.Add(Gun);
         }
+
+        public static int ExpRequiredToLevel { get; private set; }
 
         public static int Xp { get; set; }
         public static int Points { get; set; }
@@ -109,7 +94,7 @@ namespace CursorAiming
             }
             Hitbox.UpdatePosition(PlayerPosition);
 
-            ExpRequiredToLevel = CalculateRequiredExpToLevel(PlayerLevel);           
+            ExpRequiredToLevel = CalculateRequiredExpToLevel(PlayerLevel);
 
             _isShooting = false;
             UpdateMovement(gameTime);
@@ -117,8 +102,8 @@ namespace CursorAiming
 
             Gun.AimDirection = _aimDirection;
             Gun.Rotation = _rotation;
-            Gun.Position = PlayerPosition + new Vector2(_aimDirection.X * (_playerTexture.Width + 5),
-                               _aimDirection.Y * (_playerTexture.Width + 5));
+            Gun.Position = PlayerPosition + new Vector2(_aimDirection.X * (_playerTexture.Width - 7),
+                               _aimDirection.Y * (_playerTexture.Width - 7));
 
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                 _isShooting = true;
@@ -139,9 +124,9 @@ namespace CursorAiming
             for (var i = 0; i < Gun.bulletsInAir.Count; i++)
             {
                 Gun.bulletsInAir[i].UpdatePosition(gameTime);
-                if (Gun.bulletsInAir[i].CheckForEnemyCollision(Wave.EnemiesOnField) || Gun.bulletsInAir[i].CheckForObstacleCollision())
+                if (Gun.bulletsInAir[i].CheckForEnemyCollision(Wave.EnemiesOnField) ||
+                    Gun.bulletsInAir[i].CheckForObstacleCollision())
                     Gun.bulletsInAir.Remove(Gun.bulletsInAir[i]);
-               
             }
 
             base.Update(gameTime);
@@ -158,15 +143,15 @@ namespace CursorAiming
 
         private int CalculateRequiredExpToLevel(int playerLevel)
         {
-            float requiredExp = 0;
+            float requiredExp;
             int wholeNumber;
 
-            
+
             requiredExp = (float) (10 * Math.Pow(playerLevel, 2) + 360 * playerLevel);
-            
-            
-            wholeNumber =  (int)requiredExp;
-            
+
+
+            wholeNumber = (int) requiredExp;
+
 
             return wholeNumber;
         }
@@ -182,11 +167,22 @@ namespace CursorAiming
             base.Draw(gameTime);
         }
 
-        
 
-        private void CheckForEnvironmentCollision(List<RectangleHitBox> Obstacles)
-        {
-        }
+        #region Player Variable
+
+        public static int PlayerLevel { get; private set; }
+        public static int PlayerExp { get; set; }
+        public static int Health;
+        public static int HealthLevel;
+        public static int PlayerSkillPoints;
+        public static int MoveSpeed { get; set; }
+        public static int MoveSpeedLevel = 0;
+        public static double _attackSpeed;
+        public static int AttackSpeedLevel = 0;
+        public static Vector2 PlayerPosition;
+        public static Vector2 PlayerStartPosition = new Vector2(Globals.ScreenWidth / 2, Globals.ScreenHeight / 2);
+
+        #endregion
 
         #region OverrideMethods
 
@@ -201,7 +197,6 @@ namespace CursorAiming
             for (var i = 0; i < Health; i++)
                 spriteBatch.Draw(_lifeTexture,
                     new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + Globals.ScreenHeight * 0.01f), Color.White);
-
         }
 
         public void UpdateMovement(GameTime gameTime)

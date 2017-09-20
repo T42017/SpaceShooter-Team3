@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -7,24 +8,24 @@ namespace CursorAiming
     public enum SelectedWeapon
     {
         AssaultRifle,
-        RocketLauncher,
+        RocketLauncher
     }
 
 
     public class Gun : SpaceHeadBaseComponent
     {
-        public int GunAtkLevel;
-        public int GunAtkSpeedLevel;
         private readonly string _bulletTexturePath;
-        public int Damage;
-        public int ShotSpeed;
         private readonly string _texturePath;
         private readonly UnitType _typeToHit;
         private Texture2D _texture, _bulletTexture;
         public List<Bullet> bulletsInAir = new List<Bullet>();
+        public int Damage;
+        public int GunAtkLevel;
+        public int GunAtkSpeedLevel;
         public Vector2 Position, AimDirection;
 
         public float Rotation;
+        public int ShotSpeed;
         private SpriteBatch spriteBatch;
 
         public Gun(string gunTexturePath, string bulletTexturePath, int damage, int shotSpeed, UnitType typeToHit,
@@ -43,9 +44,11 @@ namespace CursorAiming
             UpdatableStates = GameState.Playing;
         }
 
+
         public void Shoot()
-        {
-            bulletsInAir.Add(new Bullet(ShotSpeed, Damage, AimDirection, Position, Rotation, _bulletTexture, _typeToHit));
+        {     
+            bulletsInAir.Add(
+                new Bullet(ShotSpeed, Damage, AimDirection, Position, Rotation, _bulletTexture, _typeToHit));
         }
 
         public void UpdateGraphics(SpriteBatch spriteBatch)
