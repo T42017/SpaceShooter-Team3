@@ -49,12 +49,6 @@
 /processorParam:TextureFormat=Color
 /build:laserBlue01.png
 
-#begin POL-flight-master-short.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:POL-flight-master-short.mp3
-
 #begin Player.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -331,4 +325,10 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:spaceAstronauts_yellow.png
+
+#begin POL.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:POL.mp3
 

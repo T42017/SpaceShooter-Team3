@@ -30,7 +30,6 @@ namespace CursorAiming
         {
             DrawOrder = 2;
             Hitbox = new RectangleHitBox(3);
-            CanEnemySeePlayer(Player.PlayerPosition, Position, Player.PlayerPosition);
             DrawableStates = GameState.Playing | GameState.Paused;
 
             UpdatableStates = GameState.Playing;
@@ -80,32 +79,6 @@ namespace CursorAiming
             AimDirection = tempDeltaDistance;
         }
 
-        public bool CanEnemySeePlayer(Vector2 enemyLookAtDirection, Vector2 EnemyPosition, Vector2 PlayerPosition)
-        {
-            float ConeNithyDegreesDotProduct = (float) Math.Cos(MathHelper.ToRadians(90f / 2f));
-            Vector2 directionEnemyToPlayer = PlayerPosition - EnemyPosition;
-            directionEnemyToPlayer.Normalize();
-
-            Color[] coneColors = new Color[SpaceHeadGame.Graphics.PreferredBackBufferWidth * SpaceHeadGame.Graphics.PreferredBackBufferHeight];
-            for (int x = 0; x < SpaceHeadGame.Graphics.PreferredBackBufferWidth; x++)
-            {
-                for (int y = 0; y < SpaceHeadGame.Graphics.PreferredBackBufferHeight; y++)
-                {
-                    Vector2 pixel = new Vector2(x, y);
-                    Vector2 directionEnemyToPixel = pixel - EnemyPosition;
-                    directionEnemyToPixel.Normalize();
-                    if (Vector2.Dot(directionEnemyToPixel, enemyLookAtDirection) > ConeNithyDegreesDotProduct)
-                        coneColors[x + y * SpaceHeadGame.Graphics.PreferredBackBufferWidth] = new Color(120, 80, 80, 200);
-                    else
-                        coneColors[x + y * SpaceHeadGame.Graphics.PreferredBackBufferWidth] = Color.Transparent;
-                }
-            }
-
-            _coneView = new Texture2D(GraphicsDevice, SpaceHeadGame.Graphics.PreferredBackBufferWidth, SpaceHeadGame.Graphics.PreferredBackBufferHeight, false, SurfaceFormat.Color);
-            _coneView.SetData(coneColors);
-            return Vector2.Dot(directionEnemyToPlayer, enemyLookAtDirection) > ConeNithyDegreesDotProduct;
-        }
-
         public virtual void UpdateGraphics(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(UnitTexture,
@@ -113,7 +86,6 @@ namespace CursorAiming
                     UnitTexture.Height),
                 null, Color.White, Rotation, new Vector2(UnitTexture.Width / 2, UnitTexture.Height / 2),
                 SpriteEffects.None, 0);
-            spriteBatch.Draw(_coneView, Position, Color.Red);
         }
 
         public virtual void UpdateMovement(GameTime gameTime)
@@ -124,8 +96,6 @@ namespace CursorAiming
 
         public void Die()
         {
-            
-
             Player.Xp += XpValue;
             Player.Coins += CoinValue;
             Player.Points += PointValue;

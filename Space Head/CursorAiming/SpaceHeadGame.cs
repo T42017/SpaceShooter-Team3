@@ -20,12 +20,9 @@ namespace CursorAiming
         private SpriteBatch _spriteBatch;
         private string _totalScore;
 
-
         public SpaceHeadGame Instance { get { return this; } }
 
-
         public GraphicsDeviceManager Graphics => _graphics;
-
 
         public SpaceHeadGame()
         {
@@ -91,9 +88,9 @@ namespace CursorAiming
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _backgroundMusic = Content.Load<Song>("yeahBoy");
+            _backgroundMusic = Content.Load<Song>("POL");
             MediaPlayer.Play(_backgroundMusic);
-            MediaPlayer.Volume = 0.3f;
+            MediaPlayer.Volume = 0.2f;
             MediaPlayer.IsRepeating = true;
 
             base.LoadContent();
