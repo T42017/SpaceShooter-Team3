@@ -15,7 +15,7 @@ namespace CursorAiming
         SpriteFont _font;
         List<MenuChoice> _upgradePlayer, _upgradeWeapon;
         MouseState _previousMouseState;
-        private MenuChoice AS, Health, Damage, MoveSpeed;
+        private MenuChoice AttackSpeed, Health, Damage, MoveSpeed, UpgradePlayerTitle, UpgradeWeaponTitle;
 
         public ShopAndUpgradeComponent(Game game) : base(game)
         {
@@ -28,16 +28,23 @@ namespace CursorAiming
         {
             _upgradeWeapon = new List<MenuChoice>();
             _upgradePlayer = new List<MenuChoice>();
-            AS = new MenuChoice() { Text = "UPGRADE ATTACK SPEED || LEVEL: " + Player.Gun.GunAtkSpeedLevel, Selected = true, ClickAction = UpgradeAtkSpeedClicked };
-            _upgradeWeapon.Add(AS);
 
-            Health = new MenuChoice() { Text = "UPGRADE HIT POINTS || LEVEL: " + Player.HealthLevel, Selected = true, ClickAction = UpgradeHitPointsClicked };
+            UpgradePlayerTitle = new MenuChoice() {Text = "UPGRADE YOUR CHARACTER"};
+            _upgradePlayer.Add(UpgradePlayerTitle);
+
+            UpgradeWeaponTitle = new MenuChoice() { Text = "UPGRADE YOUR WEAPON" };
+            _upgradeWeapon.Add(UpgradeWeaponTitle);
+
+            AttackSpeed = new MenuChoice() {Text = "UPGRADE ATTACK SPEED // LEVEL: " + Player.Gun.GunAtkSpeedLevel, ClickAction = UpgradeAtkSpeedClicked};
+            _upgradeWeapon.Add(AttackSpeed);
+
+            Health = new MenuChoice() {Text = "UPGRADE HIT POINTS // LEVEL: " + Player.HealthLevel, ClickAction = UpgradeHitPointsClicked};
             _upgradePlayer.Add(Health);
 
-            Damage = new MenuChoice() {Text = "UPGRADE WEAPON DAMAGE || LEVEL: " + Player.Gun.GunAtkLevel, ClickAction = UpgradeWeaponDamageClicked};
+            Damage = new MenuChoice() {Text = "UPGRADE WEAPON DAMAGE // LEVEL: " + Player.Gun.GunAtkLevel, ClickAction = UpgradeWeaponDamageClicked};
             _upgradeWeapon.Add(Damage);
 
-            MoveSpeed = new MenuChoice() {Text = "UPGRADE MOVEMENT SPEED || LEVEL: " + Player.MoveSpeedLevel, ClickAction = UpgradeMovementSpdClicked};
+            MoveSpeed = new MenuChoice() {Text = "UPGRADE MOVEMENT SPEED // LEVEL: " + Player.MoveSpeedLevel, ClickAction = UpgradeMovementSpdClicked};
             _upgradePlayer.Add(MoveSpeed);
 
             base.Initialize();
@@ -47,7 +54,7 @@ namespace CursorAiming
         private void UpgradeAtkSpeedClicked()
         {
             UpgradeGunAtkSpeed(Player.Gun);
-            AS.Text = "UPGRADE ATTACK SPEED || LEVEL: " + Player.Gun.GunAtkSpeedLevel;
+            AttackSpeed.Text = "UPGRADE ATTACK SPEED || LEVEL: " + Player.Gun.GunAtkSpeedLevel;
         }
 
         private void UpgradeWeaponDamageClicked()
@@ -74,14 +81,14 @@ namespace CursorAiming
             _font = Game.Content.Load<SpriteFont>("Font");
             _shopBackground = Game.Content.Load<Texture2D>("gameOverBackground");
 
-            float startY1 = 0.2f * Globals.ScreenHeight;
-            float startY2 = 0.2f * Globals.ScreenHeight;
+            float startY1 = (Globals.ScreenHeight * 0.20f);
+            float startY2 = (Globals.ScreenHeight * 0.50f);
 
             foreach (var choice in _upgradeWeapon)
             {
                 Vector2 size = _font.MeasureString(choice.Text);
                 choice.Y = startY1;
-                choice.X = Globals.ScreenWidth * 0.25f - size.X / 2;
+                choice.X = Globals.ScreenWidth * 0.7f - size.X / 2;
                 choice.HitBox = new Rectangle((int)choice.X, (int)choice.Y, (int)size.X, (int)size.Y);
                 startY1 += 70;
             }
@@ -90,7 +97,7 @@ namespace CursorAiming
             {
                 Vector2 size = _font.MeasureString(choice.Text);
                 choice.Y = startY2;
-                choice.X = Globals.ScreenWidth * 0.75f - size.X / 2;
+                choice.X = Globals.ScreenWidth * 0.7f - size.X / 2;
                 choice.HitBox = new Rectangle((int)choice.X, (int)choice.Y, (int)size.X, (int)size.Y);
                 startY2 += 70;
             }
@@ -177,7 +184,7 @@ namespace CursorAiming
             {
                 if (cost <= Player.PlayerGoldAmount)
                 {
-                    gunType.ShotSpeed += 100;
+                    Player._attackSpeed -= Player._attackSpeed * 0.05f;
                     gunType.GunAtkSpeedLevel++;
                     Player.PlayerGoldAmount -= cost;
                 }
@@ -197,20 +204,6 @@ namespace CursorAiming
             }
         }
 
-        
-
-        public void UpgradePlayerHealth()
-        {
-            if (SpaceHeadGame.GameState == GameState.ShopUpgradeMenu)
-            {
-                if (Player.PlayerSkillPoints > 0)
-                {
-                    Player.Health++;
-                    Player.PlayerSkillPoints -= 1;
-                }
-            }
-        }
-
         public void UpgradePlayerMovementSpeed()
         {
             if (SpaceHeadGame.GameState == GameState.ShopUpgradeMenu)
@@ -218,6 +211,7 @@ namespace CursorAiming
                 if (Player.PlayerSkillPoints > 0)
                 {
                     Player.MoveSpeed += 10;
+                    Player.MoveSpeedLevel++;
                     Player.PlayerSkillPoints -= 1;
                 }
             }
