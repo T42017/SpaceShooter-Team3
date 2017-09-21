@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,37 +9,17 @@ namespace CursorAiming
 {
     public class Player : SpaceHeadBaseComponent
     {
-        #region Player Variable
-        public static int PlayerLevel { get; private set; }
-        public static int PlayerExp { get; set; }
-        public static int Health;
-        public static int HealthLevel;
-        public static int PlayerSkillPoints;
-        public static int MoveSpeed { get; set; }
-        public static int MoveSpeedLevel = 0;
-        private readonly double _attackSpeed;
-        public static int AttackSpeedLevel = 0;
-        public static Vector2 PlayerPosition;
-        public static Vector2 PlayerStartPosition = new Vector2(Globals.ScreenWidth / 2, Globals.ScreenHeight / 2);
-        #endregion
-
-
         public static RectangleHitBox Hitbox;
-        public static int PlayerGoldAmount = 999999;
-<<<<<<< HEAD
-        public static Gun Gun;
-        public static int MoveSpeed;
+        private static string _youLvldUp;
+        private SpriteFont _font;
 
-        private readonly double _attackSpeed;
-=======
-        public static int ExpRequiredToLevel { get; private set; }
-        
-
-
-
+        private double timer;
 
         public static Gun Gun;
->>>>>>> origin/Feature-LevelUp
+
+        private int xpNeeded;
+        private bool _lvldUp;
+
         private Vector2 _aimDirection;
         private double _countDownTilNextAttack;
         private Vector2 _deltaDistance;
@@ -52,10 +32,8 @@ namespace CursorAiming
 
         private float _rotation;
 
-        private SpriteBatch _spriteBatch;
         private SoundEffect _takeDamage;
         private Vector2 _velocity;
-        private Texture2D Obstacletexture;
 
         public UnitType Type = UnitType.Player;
 
@@ -68,11 +46,22 @@ namespace CursorAiming
             _countDownTilNextAttack = _attackSpeed;
             Gun = gun;
             PlayerLevel = 1;
+<<<<<<< HEAD
+            PlayerSkillPoints = 0;
+=======
+            PlayerSkillPoints = 99;
+            Coins = 100000;
+            HealthLevel = 5;
+
+            timer = 2;
+
+            _youLvldUp = "LEVEL++";
+>>>>>>> origin/UI-Changes
 
             DrawOrder = 1;
             DrawableStates = GameState.Playing | GameState.Paused;
 
-            PlayerPosition = new Vector2(Globals.ScreenWidth / 2, Globals.ScreenHeight / 2);
+            PlayerPosition = new Vector2(Globals.ScreenWidth - 300, Globals.ScreenHeight / 2);
             UpdatableStates = GameState.Playing;
 
             Hitbox = new RectangleHitBox(2);
@@ -81,10 +70,11 @@ namespace CursorAiming
             game.Components.Add(Gun);
         }
 
+        public static int ExpRequiredToLevel { get; private set; }
+
         public static int Xp { get; set; }
         public static int Points { get; set; }
         public static int Coins { get; set; }
-        public static int PlayerSkillPoints { get; set; }
 
         public override void Remove()
         {
@@ -92,13 +82,22 @@ namespace CursorAiming
             base.Remove();
         }
 
+        public static void Reset()
+        {
+            Coins = 0;
+            PlayerExp = 0;
+            Points = 0;
+            PlayerLevel = 1;
+            MoveSpeedLevel = 0;
+            HealthLevel = 0;
+        }
+
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(Game.GraphicsDevice);
             _playerTexture = Game.Content.Load<Texture2D>("Player");
             _lifeTexture = Game.Content.Load<Texture2D>("spaceRocketParts_012");
-            _takeDamage = Game.Content.Load<SoundEffect>("Jump");
-            Obstacletexture = Game.Content.Load<Texture2D>("gameOverBackground");
+            _font = Game.Content.Load<SpriteFont>("Font");
+            //_takeDamage = Game.Content.Load<SoundEffect>("Ljudfiler/Jump");
 
             Hitbox.Box.Size = new Point(_playerTexture.Width / 2, _playerTexture.Width / 2);
             base.LoadContent();
@@ -107,27 +106,18 @@ namespace CursorAiming
         public override void Update(GameTime gameTime)
         {
             var mouse = Mouse.GetState();
+
+            xpNeeded = CalculateRequiredExpToLevel(PlayerLevel);
+            if (Xp >= xpNeeded)
+            {
+                _lvldUp = true;
+                PlayerLevel++;
+                PlayerSkillPoints++;
+                Xp -= xpNeeded;
+            }
             Hitbox.UpdatePosition(PlayerPosition);
 
             ExpRequiredToLevel = CalculateRequiredExpToLevel(PlayerLevel);
-
-            if (PlayerExp >= ExpRequiredToLevel)
-            {
-                int tmpExp = PlayerExp - ExpRequiredToLevel;
-                PlayerExp = 0;
-
-                if (tmpExp < 0)
-                {
-                    PlayerSkillPoints++;
-                    PlayerLevel++;
-                }
-                else
-                {
-                    PlayerSkillPoints++;
-                    PlayerExp += tmpExp;
-                    PlayerLevel++;
-                }
-            }
 
             _isShooting = false;
             UpdateMovement(gameTime);
@@ -135,8 +125,8 @@ namespace CursorAiming
 
             Gun.AimDirection = _aimDirection;
             Gun.Rotation = _rotation;
-            Gun.Position = PlayerPosition + new Vector2(_aimDirection.X * (_playerTexture.Width + 5),
-                               _aimDirection.Y * (_playerTexture.Width + 5));
+            Gun.Position = PlayerPosition + new Vector2(_aimDirection.X * (_playerTexture.Width - 7),
+                               _aimDirection.Y * (_playerTexture.Width - 7));
 
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                 _isShooting = true;
@@ -157,9 +147,9 @@ namespace CursorAiming
             for (var i = 0; i < Gun.bulletsInAir.Count; i++)
             {
                 Gun.bulletsInAir[i].UpdatePosition(gameTime);
-                if (Gun.bulletsInAir[i].CheckForEnemyCollision(Wave.EnemiesOnField) || Gun.bulletsInAir[i].CheckForObstacleCollision())
+                if (Gun.bulletsInAir[i].CheckForEnemyCollision(Wave.EnemiesOnField) ||
+                    Gun.bulletsInAir[i].CheckForObstacleCollision())
                     Gun.bulletsInAir.Remove(Gun.bulletsInAir[i]);
-               
             }
 
             base.Update(gameTime);
@@ -174,50 +164,65 @@ namespace CursorAiming
             _aimDirection = tempDeltaDistance;
         }
 
-<<<<<<< HEAD
-=======
         private int CalculateRequiredExpToLevel(int playerLevel)
         {
-            float requiredExp = 0;
+            float requiredExp;
             int wholeNumber;
 
-            if (playerLevel == 1 && playerLevel <= 10)
-            {
-                requiredExp = 40 * playerLevel ^ 2 + 360 * playerLevel;
-            }
-            if (playerLevel == 11 && playerLevel <= 31)
-            {
-                requiredExp = (float) (-.4 * (playerLevel^3) + 40.4 * (playerLevel^2) + 396 * playerLevel);
-            }
-            if (playerLevel == 33 && playerLevel <= 54)
-            {
-                requiredExp = (65 * playerLevel ^ 2 - 165 * playerLevel - 6750) * playerLevel * .82f;
-            }
 
-            wholeNumber =  (int)Math.Ceiling(requiredExp);
-            
+            requiredExp = (float) (10 * Math.Pow(playerLevel, 2) + 360 * playerLevel);
+
+
+            wholeNumber = (int) requiredExp;
+
 
             return wholeNumber;
         }
 
-
->>>>>>> origin/Feature-LevelUp
         public override void Draw(GameTime gameTime)
         {
-            _spriteBatch.Begin();
+            SpriteBatch.Begin();
 
-            UpdateGraphics(_spriteBatch);
 
-            _spriteBatch.End();
+            if (_lvldUp)
+            {
+                if (timer > 0)
+                {
+                    timer -= gameTime.ElapsedGameTime.TotalSeconds;
+
+                    SpriteBatch.DrawString(_font, _youLvldUp, new Vector2(PlayerPosition.X - _font.MeasureString(_youLvldUp).X/2, PlayerPosition.Y - 100), Color.Green);
+                }
+                else
+                {
+                    _lvldUp = false;
+                    timer = 2;
+                }
+            }
+
+
+                UpdateGraphics(SpriteBatch);
+
+            SpriteBatch.End();
 
             base.Draw(gameTime);
         }
 
-        
 
-        private void CheckForEnvironmentCollision(List<RectangleHitBox> Obstacles)
-        {
-        }
+        #region Player Variable
+
+        public static int PlayerLevel { get; set; }
+        public static int PlayerExp { get; set; }
+        public static int Health;
+        public static int HealthLevel;
+        public static int PlayerSkillPoints;
+        public static int MoveSpeed { get; set; }
+        public static int MoveSpeedLevel;
+        public static double _attackSpeed;
+        public static int AttackSpeedLevel = 0;
+        public static Vector2 PlayerPosition;
+        public static Vector2 PlayerStartPosition = new Vector2(Globals.ScreenWidth / 2, Globals.ScreenHeight / 2);
+
+        #endregion
 
         #region OverrideMethods
 
@@ -231,8 +236,7 @@ namespace CursorAiming
 
             for (var i = 0; i < Health; i++)
                 spriteBatch.Draw(_lifeTexture,
-                    new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + Globals.ScreenHeight * 0.01f), Color.White);
-
+                    new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + Globals.ScreenHeight * 0.01f), Color.Green);
         }
 
         public void UpdateMovement(GameTime gameTime)
@@ -252,48 +256,8 @@ namespace CursorAiming
             if ((int) _moveDirection.X != 0 && (int) _moveDirection.Y != 0) _moveDirection.Normalize();
 
 
-<<<<<<< HEAD
-            _velocity = Hitbox.CheckMoveDistance(MoveSpeed, _moveDirection,
+            _velocity = Hitbox.CheckWalkingMoveDistance(MoveSpeed, _moveDirection,
                 (float) gameTime.ElapsedGameTime.TotalSeconds);
-=======
-            if (_moveDirection.X > 0)
-            {
-                distanceToCollision = Math.Abs(Hitbox.CheckForRayCollision(Vector2.UnitX));
-                if (distanceToCollision < Math.Abs(_moveDirection.X *
-                                                   MoveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds))
-                    _velocity.X = distanceToCollision;
-                else
-                    _velocity.X = _moveDirection.X * MoveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds;
-            }
-            else if (_moveDirection.X < 0)
-            {
-                distanceToCollision = Math.Abs(Hitbox.CheckForRayCollision(-Vector2.UnitX));
-                if (distanceToCollision < Math.Abs(_moveDirection.X *
-                                                   MoveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds))
-                    _velocity.X = -distanceToCollision;
-                else
-                    _velocity.X = _moveDirection.X * MoveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds;
-            }
-
-            if (_moveDirection.Y > 0)
-            {
-                distanceToCollision = Math.Abs(Hitbox.CheckForRayCollision(Vector2.UnitY));
-                if (distanceToCollision < Math.Abs(_moveDirection.Y *
-                                                   MoveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds))
-                    _velocity.Y = distanceToCollision;
-                else
-                    _velocity.Y = _moveDirection.Y * MoveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds;
-            }
-            else if (_moveDirection.Y < 0)
-            {
-                distanceToCollision = Math.Abs(Hitbox.CheckForRayCollision(-Vector2.UnitY));
-                if (distanceToCollision < Math.Abs(_moveDirection.Y *
-                                                   MoveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds))
-                    _velocity.Y = -distanceToCollision;
-                else
-                    _velocity.Y = _moveDirection.Y * MoveSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds;
-            }
->>>>>>> origin/Feature-LevelUp
 
 
             PlayerPosition += _velocity;

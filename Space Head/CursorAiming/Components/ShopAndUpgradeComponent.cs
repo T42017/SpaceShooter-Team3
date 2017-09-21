@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -9,14 +10,14 @@ namespace CursorAiming
     {
         private SpriteFont _font;
         private MouseState _previousMouseState;
-        private Texture2D _shopBackground;
+        private Texture2D _shopBackground, _lifeTexture;
         private List<MenuChoice> _upgradePlayer, _upgradeWeapon;
         private static MenuChoice AttackSpeed, Health, Damage, MoveSpeed, UpgradePlayerTitle, UpgradeWeaponTitle;
         private static int _gunAtkSpeedUpgradeCost, _gunDamageUpgradeCost;
 
         public ShopAndUpgradeComponent(Game game) : base(game)
         {
-            DrawOrder = 3;
+            DrawOrder = 2;
             DrawableStates = GameState.ShopUpgradeMenu;
             UpdatableStates = GameState.ShopUpgradeMenu;
         }
@@ -49,12 +50,14 @@ namespace CursorAiming
                 ClickAction = UpgradeAtkSpeedClicked
             };
             _upgradeWeapon.Add(AttackSpeed);
-
+            
+            
             Health = new MenuChoice
             {
                 Text = "UPGRADE HIT POINTS // LEVEL: " + Player.HealthLevel,
                 ClickAction = UpgradeHitPointsClicked
             };
+
             _upgradePlayer.Add(Health);
 
             Damage = new MenuChoice
@@ -78,6 +81,7 @@ namespace CursorAiming
         {
             _font = Game.Content.Load<SpriteFont>("Font");
             _shopBackground = Game.Content.Load<Texture2D>("gameOverBackground");
+            _lifeTexture = Game.Content.Load<Texture2D>("spaceRocketParts_012");
 
             var startY1 = Globals.ScreenHeight * 0.20f;
             var startY2 = Globals.ScreenHeight * 0.50f;
@@ -140,7 +144,25 @@ namespace CursorAiming
         public override void Draw(GameTime gameTime)
         {
             SpriteBatch.Begin();
-            
+
+            SpriteBatch.Draw(_shopBackground, GraphicsDevice.Viewport.Bounds, Color.White);
+
+            SpriteBatch.DrawString(_font, "MS: " + Player.MoveSpeed, new Vector2(Globals.ScreenWidth * 0.01f, Globals.ScreenHeight * 0.65f), Color.Green);
+
+            SpriteBatch.DrawString(_font, "DMG: " + Player.Gun.Damage, new Vector2(Globals.ScreenWidth * 0.01f, Globals.ScreenHeight * 0.7f), Color.Green);
+
+            SpriteBatch.DrawString(_font, "AS: " + Math.Round(1 / Player._attackSpeed, 2), new Vector2(Globals.ScreenWidth * 0.01f, Globals.ScreenHeight * 0.75f), Color.Green);
+
+            SpriteBatch.DrawString(_font, "Gold: " + Player.Coins, new Vector2(Globals.ScreenWidth * 0.01f, Globals.ScreenHeight * 0.85f), Color.Green);
+
+            SpriteBatch.DrawString(_font, "Skill Points: " + Player.PlayerSkillPoints, new Vector2(Globals.ScreenWidth * 0.01f, Globals.ScreenHeight * 0.9f), Color.Green);
+
+            SpriteBatch.DrawString(_font, "Score: " + Player.Points, new Vector2(Globals.ScreenWidth * 0.01f, Globals.ScreenHeight * 0.95f), Color.Green);
+
+            for (var i = 0; i < Player.Health; i++)
+                SpriteBatch.Draw(_lifeTexture,
+                    new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + Globals.ScreenHeight * 0.01f), Color.Green);
+
             foreach (var choice in _upgradeWeapon)
                 SpriteBatch.DrawString(_font, choice.Text, new Vector2(choice.X, choice.Y), Color.Green);
 
@@ -154,38 +176,35 @@ namespace CursorAiming
 
         public void UpgradeGunDamage(Gun gunType)
         {
-            if (SpaceHeadGame.GameState == GameState.ShopUpgradeMenu)
-                if (_gunDamageUpgradeCost <= Player.Coins)
-                {
-                    gunType.Damage += (int)(gunType.Damage * 0.2);
-                    Gun.GunAtkLevel++;
-                    Player.Coins -= _gunDamageUpgradeCost;
-                    _gunDamageUpgradeCost = Gun.GunAtkLevel * 100;
-                }
+            if (_gunDamageUpgradeCost <= Player.Coins)
+            {
+                gunType.Damage += (int) (gunType.Damage * 0.2);
+                Gun.GunAtkLevel++;
+                Player.Coins -= _gunDamageUpgradeCost;
+                _gunDamageUpgradeCost = Gun.GunAtkLevel * 100;
+            }
         }
 
         public void UpgradeGunAtkSpeed(Gun gunType)
         {
-            if (SpaceHeadGame.GameState == GameState.ShopUpgradeMenu)
-                if (_gunAtkSpeedUpgradeCost <= Player.Coins)
-                {
-                    Player._attackSpeed -= Player._attackSpeed * 0.2f;
-                    Gun.GunAtkSpeedLevel++;
-                    Player.Coins -= _gunAtkSpeedUpgradeCost;
-                    _gunAtkSpeedUpgradeCost = Gun.GunAtkSpeedLevel * 100;
-                    
-                }
+            if (_gunAtkSpeedUpgradeCost <= Player.Coins)
+            {
+                Player._attackSpeed -= Player._attackSpeed * 0.1f;
+                Gun.GunAtkSpeedLevel++;
+                Player.Coins -= _gunAtkSpeedUpgradeCost;
+                _gunAtkSpeedUpgradeCost = Gun.GunAtkSpeedLevel * 250;
+
+            }
         }
 
         public void UpgradePlayerHitPoints()
         {
-            if (SpaceHeadGame.GameState == GameState.ShopUpgradeMenu)
-                if (Player.PlayerSkillPoints > 0)
-                {
-                    Player.Health++;
-                    Player.HealthLevel++;
-                    Player.PlayerSkillPoints--;
-                }
+            if (Player.PlayerSkillPoints > 0 && Player.HealthLevel < 20)
+            {
+                Player.Health++;
+                Player.HealthLevel++;
+                Player.PlayerSkillPoints--;
+            }
         }
 
         public void UpgradePlayerMovementSpeed()
@@ -220,8 +239,21 @@ namespace CursorAiming
 
         private void UpgradeHitPointsClicked()
         {
-            UpgradePlayerHitPoints();
-            Health.Text = "UPGRADE HIT POINTS // LEVEL: " + Player.HealthLevel;
+            if (Player.HealthLevel > 19)
+            {
+                DoNothing();
+            }
+            else if (Player.HealthLevel == 19)
+            {
+                Health.Text = "Unable to further increase HP ";
+                UpgradePlayerHitPoints();
+            }
+            else
+            {
+                UpgradePlayerHitPoints();
+                Health.Text = "UPGRADE HIT POINTS // LEVEL: " + Player.HealthLevel;
+            }
+
         }
 
         private void UpgradeMovementSpdClicked()

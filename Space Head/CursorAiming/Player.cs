@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,10 +10,15 @@ namespace CursorAiming
     public class Player : SpaceHeadBaseComponent
     {
         public static RectangleHitBox Hitbox;
+        private static string _youLvldUp;
+        private SpriteFont _font;
 
+        private double timer;
 
         public static Gun Gun;
 
+        private int xpNeeded;
+        private bool _lvldUp;
 
         private Vector2 _aimDirection;
         private double _countDownTilNextAttack;
@@ -26,7 +32,6 @@ namespace CursorAiming
 
         private float _rotation;
 
-        private SpriteBatch _spriteBatch;
         private SoundEffect _takeDamage;
         private Vector2 _velocity;
 
@@ -41,7 +46,12 @@ namespace CursorAiming
             _countDownTilNextAttack = _attackSpeed;
             Gun = gun;
             PlayerLevel = 1;
-            PlayerSkillPoints = 0;
+            PlayerSkillPoints = 99;
+            HealthLevel = 5;
+
+            timer = 2;
+
+            _youLvldUp = "LEVEL++";
 
             DrawOrder = 1;
             DrawableStates = GameState.Playing | GameState.Paused;
@@ -79,9 +89,9 @@ namespace CursorAiming
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(Game.GraphicsDevice);
             _playerTexture = Game.Content.Load<Texture2D>("Player");
             _lifeTexture = Game.Content.Load<Texture2D>("spaceRocketParts_012");
+            _font = Game.Content.Load<SpriteFont>("Font");
             //_takeDamage = Game.Content.Load<SoundEffect>("Ljudfiler/Jump");
 
             Hitbox.Box.Size = new Point(_playerTexture.Width / 2, _playerTexture.Width / 2);
@@ -92,9 +102,10 @@ namespace CursorAiming
         {
             var mouse = Mouse.GetState();
 
-            var xpNeeded = CalculateRequiredExpToLevel(PlayerLevel);
+            xpNeeded = CalculateRequiredExpToLevel(PlayerLevel);
             if (Xp >= xpNeeded)
             {
+                _lvldUp = true;
                 PlayerLevel++;
                 PlayerSkillPoints++;
                 Xp -= xpNeeded;
@@ -165,11 +176,28 @@ namespace CursorAiming
 
         public override void Draw(GameTime gameTime)
         {
-            _spriteBatch.Begin();
+            SpriteBatch.Begin();
 
-            UpdateGraphics(_spriteBatch);
 
-            _spriteBatch.End();
+            if (_lvldUp)
+            {
+                if (timer > 0)
+                {
+                    timer -= gameTime.ElapsedGameTime.TotalSeconds;
+
+                    SpriteBatch.DrawString(_font, _youLvldUp, new Vector2(PlayerPosition.X - _font.MeasureString(_youLvldUp).X/2, PlayerPosition.Y - 100), Color.Green);
+                }
+                else
+                {
+                    _lvldUp = false;
+                    timer = 2;
+                }
+            }
+
+
+                UpdateGraphics(SpriteBatch);
+
+            SpriteBatch.End();
 
             base.Draw(gameTime);
         }
@@ -203,7 +231,7 @@ namespace CursorAiming
 
             for (var i = 0; i < Health; i++)
                 spriteBatch.Draw(_lifeTexture,
-                    new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + Globals.ScreenHeight * 0.01f), Color.White);
+                    new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + Globals.ScreenHeight * 0.01f), Color.Green);
         }
 
         public void UpdateMovement(GameTime gameTime)
