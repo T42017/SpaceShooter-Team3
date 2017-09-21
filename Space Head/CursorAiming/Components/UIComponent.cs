@@ -15,8 +15,8 @@ namespace CursorAiming
 
         public UIComponent(Game game) : base(game)
         {
-            DrawOrder = 2;
-            DrawableStates = GameState.Playing | GameState.Paused | GameState.ShopUpgradeMenu;
+            DrawOrder = 3;
+            DrawableStates = GameState.Playing | GameState.Paused;
             UpdatableStates = GameState.Playing | GameState.ShopUpgradeMenu;
         }
 
@@ -36,11 +36,17 @@ namespace CursorAiming
         {
             SpriteBatch.Begin();
 
-            SpriteBatch.DrawString(_font, "Gold: " + Player.Coins, new Vector2(Globals.ScreenWidth * 0.01f, Globals.ScreenHeight * 0.95f), Color.Green  );
+            SpriteBatch.DrawString(_font, "MS: " + Player.MoveSpeed, new Vector2(Globals.ScreenWidth * 0.01f, Globals.ScreenHeight * 0.65f), Color.Green);
 
-            SpriteBatch.DrawString(_font, "Skill Points: " + Player.PlayerSkillPoints, new Vector2(Globals.ScreenWidth * 0.01f, Globals.ScreenHeight * 0.9f), Color.Green);
+            SpriteBatch.DrawString(_font, "DMG: " + Player.Gun.Damage, new Vector2(Globals.ScreenWidth * 0.01f, Globals.ScreenHeight * 0.7f), Color.Green);
+            
+            SpriteBatch.DrawString(_font, "AS: " + Math.Round(1/Player._attackSpeed, 2), new Vector2(Globals.ScreenWidth * 0.01f, Globals.ScreenHeight * 0.75f), Color.Green);
 
-            SpriteBatch.DrawString(_font, "Score: " + Player.Points, new Vector2(Globals.ScreenWidth * 0.01f, Globals.ScreenHeight * 0.85f), Color.Green);
+            SpriteBatch.DrawString(_font, "GOLD: " + Player.Coins, new Vector2(Globals.ScreenWidth * 0.01f, Globals.ScreenHeight * 0.85f), Color.Green  );
+
+            SpriteBatch.DrawString(_font, "SKILL POINTS: " + Player.PlayerSkillPoints, new Vector2(Globals.ScreenWidth * 0.01f, Globals.ScreenHeight * 0.9f), Color.Green);
+
+            SpriteBatch.DrawString(_font, "SCORE: " + Player.Points, new Vector2(Globals.ScreenWidth * 0.01f, Globals.ScreenHeight * 0.95f), Color.Green);
 
 
             SpriteBatch.End();

@@ -12,6 +12,7 @@ namespace CursorAiming
 
         private int _currentPlayerLevel, _currentGoldAmount;
         private SpriteFont _font;
+        private string _pausedMessage;
 
         private string _totalScore;
 
@@ -21,6 +22,8 @@ namespace CursorAiming
             DrawOrder = 0;
             UpdatableStates = GameState.Playing;
             DrawableStates = GameState.Playing | GameState.Paused;
+
+            _pausedMessage = "PAUSED!";
 
             Borders.Add(new Rectangle(0, Globals.ScreenHeight - 145, Globals.ScreenWidth,
                 100));
@@ -67,6 +70,12 @@ namespace CursorAiming
             SpriteBatch.Draw(_mediumRock, ObstaclesOnField[1], Color.White);
             SpriteBatch.Draw(_mediumSmallRock, ObstaclesOnField[2], Color.White);
             SpriteBatch.Draw(_smallRock, ObstaclesOnField[3], Color.White);
+
+            if (SpaceHeadGame.GameState == GameState.Paused)
+            {
+                SpriteBatch.DrawString(_font, _pausedMessage, new Vector2(Globals.ScreenWidth/2 - _font.MeasureString(_pausedMessage).X/2, Globals.ScreenHeight * 0.35f), Color.Green);
+            }
+
             SpriteBatch.End();
 
             base.Draw(gameTime);

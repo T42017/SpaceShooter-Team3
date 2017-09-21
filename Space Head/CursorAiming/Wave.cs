@@ -49,7 +49,7 @@ namespace CursorAiming
         {
             var rand = new Random();
             EnemiesOnField.Add(new EnemyWithGun(new Gun("EnemyGun1", "EnemyShot", 1, 400, UnitType.Player, Game),
-                200, 20, 2, "Enemy1", 40, 40, 40, Game)
+                150, 20, 2, "Enemy1", 40, 40, 40, Game)
             {
                 Position = GetSpawnLocation()
             });
