@@ -12,6 +12,7 @@ namespace CursorAiming
         private Texture2D _shopBackground;
         private List<MenuChoice> _upgradePlayer, _upgradeWeapon;
         private static MenuChoice AttackSpeed, Health, Damage, MoveSpeed, UpgradePlayerTitle, UpgradeWeaponTitle;
+        private static int _gunAtkSpeedUpgradeCost, _gunDamageUpgradeCost;
 
         public ShopAndUpgradeComponent(Game game) : base(game)
         {
@@ -25,15 +26,26 @@ namespace CursorAiming
             _upgradeWeapon = new List<MenuChoice>();
             _upgradePlayer = new List<MenuChoice>();
 
-            UpgradePlayerTitle = new MenuChoice {Text = "UPGRADE YOUR CHARACTER"};
-            //_upgradePlayer.Add(UpgradePlayerTitle);
+            _gunAtkSpeedUpgradeCost = Gun.GunAtkSpeedLevel * 100;
+            _gunDamageUpgradeCost = Gun.GunAtkLevel * 100;
 
-            UpgradeWeaponTitle = new MenuChoice {Text = "UPGRADE YOUR WEAPON"};
-            //_upgradeWeapon.Add(UpgradeWeaponTitle);
+            UpgradePlayerTitle = new MenuChoice
+            {
+                Text = "UPGRADE YOUR CHARACTER",
+                ClickAction = DoNothing
+            };
+            _upgradePlayer.Add(UpgradePlayerTitle);
+
+            UpgradeWeaponTitle = new MenuChoice
+            {
+                Text = "UPGRADE YOUR WEAPON",
+                ClickAction = DoNothing
+            };
+            _upgradeWeapon.Add(UpgradeWeaponTitle);
 
             AttackSpeed = new MenuChoice
             {
-                Text = "UPGRADE ATTACK SPEED // LEVEL: " + Player.Gun.GunAtkSpeedLevel,
+                Text = "UPGRADE WEAPON ATTACK SPEED // COST: " + _gunAtkSpeedUpgradeCost + " // LEVEL:" + Gun.GunAtkSpeedLevel,
                 ClickAction = UpgradeAtkSpeedClicked
             };
             _upgradeWeapon.Add(AttackSpeed);
@@ -47,7 +59,7 @@ namespace CursorAiming
 
             Damage = new MenuChoice
             {
-                Text = "UPGRADE WEAPON DAMAGE // LEVEL: " + Player.Gun.GunAtkLevel,
+                Text = "UPGRADE WEAPON DAMAGE // COST: " + _gunDamageUpgradeCost + " // LEVEL:" + Gun.GunAtkLevel,
                 ClickAction = UpgradeWeaponDamageClicked
             };
             _upgradeWeapon.Add(Damage);
@@ -74,7 +86,7 @@ namespace CursorAiming
             {
                 var size = _font.MeasureString(choice.Text);
                 choice.Y = startY1;
-                choice.X = Globals.ScreenWidth * 0.7f - size.X / 2;
+                choice.X = Globals.ScreenWidth * 0.5f - size.X / 2;
                 choice.HitBox = new Rectangle((int) choice.X, (int) choice.Y, (int) size.X, (int) size.Y);
                 startY1 += 70;
             }
@@ -83,7 +95,7 @@ namespace CursorAiming
             {
                 var size = _font.MeasureString(choice.Text);
                 choice.Y = startY2;
-                choice.X = Globals.ScreenWidth * 0.7f - size.X / 2;
+                choice.X = Globals.ScreenWidth * 0.5f - size.X / 2;
                 choice.HitBox = new Rectangle((int) choice.X, (int) choice.Y, (int) size.X, (int) size.Y);
                 startY2 += 70;
             }
@@ -96,6 +108,7 @@ namespace CursorAiming
         public override void Update(GameTime gameTime)
         {
             var mouseState = Mouse.GetState();
+            
 
             foreach (var choice in _upgradeWeapon)
                 if (choice.HitBox.Contains(mouseState.X, mouseState.Y))
@@ -127,14 +140,12 @@ namespace CursorAiming
         public override void Draw(GameTime gameTime)
         {
             SpriteBatch.Begin();
-
+            
             foreach (var choice in _upgradeWeapon)
                 SpriteBatch.DrawString(_font, choice.Text, new Vector2(choice.X, choice.Y), Color.Green);
-            SpriteBatch.DrawString(_font, UpgradePlayerTitle.Text, new Vector2(UpgradePlayerTitle.X, UpgradePlayerTitle.Y), Color.Green);
+
             foreach (var choice in _upgradePlayer)
                 SpriteBatch.DrawString(_font, choice.Text, new Vector2(choice.X, choice.Y), Color.Green);
-            SpriteBatch.DrawString(_font, UpgradeWeaponTitle.Text, new Vector2(UpgradeWeaponTitle.X, UpgradeWeaponTitle.Y), Color.Green);
-
 
             SpriteBatch.End();
 
@@ -143,27 +154,26 @@ namespace CursorAiming
 
         public void UpgradeGunDamage(Gun gunType)
         {
-            var cost = gunType.GunAtkLevel * 100;
-
             if (SpaceHeadGame.GameState == GameState.ShopUpgradeMenu)
-                if (cost <= Player.Coins)
+                if (_gunDamageUpgradeCost <= Player.Coins)
                 {
                     gunType.Damage += (int)(gunType.Damage * 0.2);
-                    gunType.GunAtkLevel++;
-                    Player.Coins -= cost;
+                    Gun.GunAtkLevel++;
+                    Player.Coins -= _gunDamageUpgradeCost;
+                    _gunDamageUpgradeCost = Gun.GunAtkLevel * 100;
                 }
         }
 
         public void UpgradeGunAtkSpeed(Gun gunType)
         {
-            var cost = gunType.GunAtkSpeedLevel * 100;
-
             if (SpaceHeadGame.GameState == GameState.ShopUpgradeMenu)
-                if (cost <= Player.Coins)
+                if (_gunAtkSpeedUpgradeCost <= Player.Coins)
                 {
                     Player._attackSpeed -= Player._attackSpeed * 0.2f;
-                    gunType.GunAtkSpeedLevel++;
-                    Player.Coins -= cost;
+                    Gun.GunAtkSpeedLevel++;
+                    Player.Coins -= _gunAtkSpeedUpgradeCost;
+                    _gunAtkSpeedUpgradeCost = Gun.GunAtkSpeedLevel * 100;
+                    
                 }
         }
 
@@ -189,18 +199,23 @@ namespace CursorAiming
                 }
         }
 
+        public void DoNothing()
+        {
+
+        } //Den gör mer än vad man kanske tror..
+
         #region Menu Clicks
 
         private void UpgradeAtkSpeedClicked()
         {
             UpgradeGunAtkSpeed(Player.Gun);
-            AttackSpeed.Text = "UPGRADE ATTACK SPEED // LEVEL: " + Player.Gun.GunAtkSpeedLevel;
+            AttackSpeed.Text = "UPGRADE WEAPON ATTACK SPEED // COST: " + _gunAtkSpeedUpgradeCost + " // LEVEL:" + Gun.GunAtkSpeedLevel;
         }
 
         private void UpgradeWeaponDamageClicked()
         {
             UpgradeGunDamage(Player.Gun);
-            Damage.Text = "UPGRADE WEAPON DAMAGE // LEVEL: " + Player.Gun.GunAtkLevel;
+            Damage.Text = "UPGRADE WEAPON DAMAGE // COST: " + _gunDamageUpgradeCost + " // LEVEL:" + Gun.GunAtkLevel;
         }
 
         private void UpgradeHitPointsClicked()
@@ -219,10 +234,10 @@ namespace CursorAiming
 
         public static void Reset()
         {
-            AttackSpeed.Text = "UPGRADE ATTACK SPEED // LEVEL: " + Player.Gun.GunAtkSpeedLevel;
+            AttackSpeed.Text = "UPGRADE ATTACK SPEED // LEVEL: " + Gun.GunAtkSpeedLevel;
             Health.Text = "UPGRADE HIT POINTS // LEVEL: " + Player.HealthLevel;
             MoveSpeed.Text = "UPGRADE MOVEMENT SPEED // LEVEL: " + Player.MoveSpeedLevel;
-            Damage.Text = "UPGRADE WEAPON DAMAGE // LEVEL: " + Player.Gun.GunAtkLevel;
+            Damage.Text = "UPGRADE WEAPON DAMAGE // LEVEL: " + Gun.GunAtkLevel;
         }
 
     }

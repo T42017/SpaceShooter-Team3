@@ -19,8 +19,9 @@ namespace CursorAiming
         private Texture2D _texture, _bulletTexture;
         public List<Bullet> bulletsInAir = new List<Bullet>();
         public int Damage;
-        public int GunAtkLevel = 1;
-        public int GunAtkSpeedLevel = 1;
+        public static int GunAtkLevel = 1;
+        public static int GunAtkSpeedLevel = 1;
+        public static int GunLevel = 1;
         public Vector2 Position, AimDirection;
 
         public float Rotation;

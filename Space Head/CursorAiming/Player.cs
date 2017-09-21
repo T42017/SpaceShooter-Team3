@@ -42,7 +42,7 @@ namespace CursorAiming
             Gun = gun;
             PlayerLevel = 1;
             PlayerSkillPoints = 0;
-            Coins = 100000;
+            Coins = 10000;
 
             DrawOrder = 1;
             DrawableStates = GameState.Playing | GameState.Paused;
