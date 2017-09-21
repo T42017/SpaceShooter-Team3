@@ -25,7 +25,6 @@ namespace CursorAiming
 
         public Wave(Game game) : base(game)
         {
-            Game.Components.Add(this);
             UpdatableStates = GameState.Playing;
             _timeBetweenWaves = 4;
             _timeBetweenSpawns = 1;

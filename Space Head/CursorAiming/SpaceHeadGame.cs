@@ -27,7 +27,6 @@ namespace CursorAiming
         public SpaceHeadGame()
         {
             _graphics = new GraphicsDeviceManager(this);
-            var Wave = new Wave(this);
             Content.RootDirectory = "Content";
         }
 
@@ -52,6 +51,7 @@ namespace CursorAiming
             player = new Player(310, 5, 0.5f, new Gun("GattlingGun", "GattlingShot", 5, 1500, UnitType.Enemy, this),
                 this);
 
+            Components.Add(new Wave(this));
 
             #region Components
 

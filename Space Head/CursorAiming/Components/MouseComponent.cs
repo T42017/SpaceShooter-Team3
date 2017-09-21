@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace CursorAiming
 {
-    class MouseComponent : SpaceHeadBaseComponent
+    internal class MouseComponent : SpaceHeadBaseComponent
     {
         private Texture2D _gameCursor;
         private Vector2 _gameCursorPos;
@@ -24,7 +19,7 @@ namespace CursorAiming
 
         protected override void LoadContent()
         {
-            _gameCursor = Game.Content.Load<Texture2D>("crossair");
+            _gameCursor = Game.Content.Load<Texture2D>("Cursor");
 
             base.LoadContent();
         }
@@ -42,7 +37,8 @@ namespace CursorAiming
         {
             SpriteBatch.Begin();
 
-            SpriteBatch.Draw(_gameCursor, _gameCursorPos - new Vector2(_gameCursor.Width/2, _gameCursor.Height/2), Color.White);
+            SpriteBatch.Draw(_gameCursor, _gameCursorPos - new Vector2(_gameCursor.Width / 2, _gameCursor.Height / 2),
+                Color.Green);
 
             SpriteBatch.End();
 
