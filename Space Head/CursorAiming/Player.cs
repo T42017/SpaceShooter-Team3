@@ -42,12 +42,11 @@ namespace CursorAiming
             Gun = gun;
             PlayerLevel = 1;
             PlayerSkillPoints = 0;
-            Coins = 10000;
 
             DrawOrder = 1;
             DrawableStates = GameState.Playing | GameState.Paused;
 
-            PlayerPosition = new Vector2(Globals.ScreenWidth -300, Globals.ScreenHeight / 2);
+            PlayerPosition = new Vector2(Globals.ScreenWidth - 300, Globals.ScreenHeight / 2);
             UpdatableStates = GameState.Playing;
 
             Hitbox = new RectangleHitBox(2);
@@ -70,12 +69,12 @@ namespace CursorAiming
 
         public static void Reset()
         {
-            Player.Coins = 0;
-            Player.PlayerExp = 0;
-            Player.Points = 0;
-            Player.PlayerLevel = 1;
-            Player.MoveSpeedLevel = 0;
-            Player.HealthLevel = 0;
+            Coins = 0;
+            PlayerExp = 0;
+            Points = 0;
+            PlayerLevel = 1;
+            MoveSpeedLevel = 0;
+            HealthLevel = 0;
         }
 
         protected override void LoadContent()
@@ -184,7 +183,7 @@ namespace CursorAiming
         public static int HealthLevel;
         public static int PlayerSkillPoints;
         public static int MoveSpeed { get; set; }
-        public static int MoveSpeedLevel = 0;
+        public static int MoveSpeedLevel;
         public static double _attackSpeed;
         public static int AttackSpeedLevel = 0;
         public static Vector2 PlayerPosition;
@@ -224,7 +223,7 @@ namespace CursorAiming
             if ((int) _moveDirection.X != 0 && (int) _moveDirection.Y != 0) _moveDirection.Normalize();
 
 
-            _velocity = Hitbox.CheckMoveDistance(MoveSpeed, _moveDirection,
+            _velocity = Hitbox.CheckWalkingMoveDistance(MoveSpeed, _moveDirection,
                 (float) gameTime.ElapsedGameTime.TotalSeconds);
 
 

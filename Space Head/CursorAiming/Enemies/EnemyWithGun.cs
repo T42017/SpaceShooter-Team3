@@ -5,7 +5,7 @@ namespace CursorAiming
 {
     internal class EnemyWithGun : Enemy
     {
-        private readonly Gun Gun;
+        protected readonly Gun Gun;
 
 
         public EnemyWithGun(Gun gun, int moveSpeed, int health, double attackSpeed, string texturePath, int pointValue,
@@ -47,9 +47,6 @@ namespace CursorAiming
             if (Health <= 0)
                 Remove();
 
-
-            UpdateMovement(gameTime);
-
             Gun.AimDirection = AimDirection;
             Gun.Rotation = Rotation;
             Gun.Position = Position + new Vector2(AimDirection.X * (UnitTexture.Width - 4),
@@ -71,7 +68,6 @@ namespace CursorAiming
                 if (Gun.bulletsInAir[i].CheckForPlayerCollision() || Gun.bulletsInAir[i].CheckForObstacleCollision())
                     Gun.bulletsInAir.Remove(Gun.bulletsInAir[i]);
             }
-
 
             base.Update(gameTime);
         }
@@ -97,7 +93,7 @@ namespace CursorAiming
             {
                 MoveDirection = Player.PlayerPosition - Position;
                 MoveDirection.Normalize();
-                Velocity = Hitbox.CheckMoveDistance(MoveSpeed, -MoveDirection,
+                Velocity = Hitbox.CheckWalkingMoveDistance(MoveSpeed, -MoveDirection,
                     (float) gameTime.ElapsedGameTime.TotalSeconds);
                 Position += Velocity;
             }

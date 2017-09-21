@@ -15,7 +15,7 @@ namespace CursorAiming
 
         public UIComponent(Game game) : base(game)
         {
-            DrawOrder = 2;
+            DrawOrder = 3;
             DrawableStates = GameState.Playing | GameState.Paused | GameState.ShopUpgradeMenu;
             UpdatableStates = GameState.Playing | GameState.ShopUpgradeMenu;
         }

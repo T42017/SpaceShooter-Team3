@@ -24,22 +24,7 @@ namespace CursorAiming.Enemies
             UnitTexture = Game.Content.Load<Texture2D>(TexturePath);
 
             base.LoadContent();
-        }
-
-        public override void Draw(GameTime gameTime)
-        {
-            SpriteBatch.Begin();
-            UpdateGraphics(SpriteBatch);
-            SpriteBatch.End();
-            base.Draw(gameTime);
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            UpdateMovement(gameTime);
-
-            base.Update(gameTime);
-        }
+        }     
 
         public override void UpdateMovement(GameTime gameTime)
         {
@@ -48,7 +33,7 @@ namespace CursorAiming.Enemies
             MoveDirection = Player.PlayerPosition - Position;
             MoveDirection.Normalize();
 
-            Velocity = Hitbox.CheckMoveDistance(MoveSpeed, MoveDirection,
+            Velocity = Hitbox.CheckWalkingMoveDistance(MoveSpeed, MoveDirection,
                 (float) gameTime.ElapsedGameTime.TotalSeconds);
 
             Position += Velocity;
@@ -59,20 +44,10 @@ namespace CursorAiming.Enemies
             base.UpdateMovement(gameTime);
         }
 
-        public override void UpdateGraphics(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(UnitTexture,
-                new Rectangle((int) Position.X, (int) Position.Y, UnitTexture.Width,
-                    UnitTexture.Height),
-                null, Color.White, Rotation, new Vector2(UnitTexture.Width / 2, UnitTexture.Height / 2),
-                SpriteEffects.None, 0);
-            base.UpdateGraphics(spriteBatch);
-        }
-
         private void Attack()
         {
             Player.Health--;
-            Health = 0;
+            Remove();
         }
 
         public override void Remove()

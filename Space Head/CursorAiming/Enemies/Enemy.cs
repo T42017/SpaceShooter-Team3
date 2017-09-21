@@ -52,22 +52,16 @@ namespace CursorAiming
         public override void Update(GameTime gameTime)
         {
             Hitbox.UpdatePosition(Position);
-            //CanEnemySeePlayer(Player.PlayerPosition, Position, Player.PlayerPosition);
             CalculateRotation(Player.PlayerPosition);
             
 
             if (Health <= 0)
             {
                 Remove();
-                //Waves.EnemyUnitsOnField.Remove(this);
                 Die();
-                //if (Waves.EnemyUnitsOnField.Count == 0)
-                //{
-                //    Waves._waveRound++;
-                //    Waves._enemyCount = 0;
-                //}
             }
             base.Update(gameTime);
+            UpdateMovement(gameTime);
         }
 
         public void CalculateRotation(Vector2 objectToPointAt)
@@ -90,7 +84,7 @@ namespace CursorAiming
 
         public virtual void UpdateMovement(GameTime gameTime)
         {
-            Velocity = Hitbox.CheckMoveDistance(MoveSpeed, MoveDirection,
+            Velocity = Hitbox.CheckWalkingMoveDistance(MoveSpeed, MoveDirection,
                 (float) gameTime.ElapsedGameTime.TotalSeconds);
         }
 

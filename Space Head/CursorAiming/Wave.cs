@@ -19,8 +19,8 @@ namespace CursorAiming
         private static double _timeBetweenWaves, _timeLeftBetweenWaves;
         private static double _timeBetweenSpawns;
         private static double _timeLeftBetweenSpawns;
-        private int meleesSpawned, gunnersSpawned;
-        private int numberOfmelee, numberOfGunner;
+        private static int _numberOfmelee, _numberOfGunner, _numberOfShips;
+        private static int _meleesSpawned, _gunnersSpawned, _shipsSpawned;
 
 
         public Wave(Game game) : base(game)
@@ -29,37 +29,46 @@ namespace CursorAiming
             UpdatableStates = GameState.Playing;
             _timeBetweenWaves = 4;
             _timeBetweenSpawns = 1;
-            meleesSpawned = 0;
-            gunnersSpawned = 0;
+            _meleesSpawned = 0;
+            _gunnersSpawned = 0;
+            _shipsSpawned = 0;
             _enemiesSpawned = 0;
             _timeLeftBetweenWaves = _timeBetweenWaves;
         }
 
-        private void SpawnMeleeEnemy()
+        public static void SpawnMeleeEnemy(Game game, Vector2 position)
         {
             if (_waveIndex < 5)
-                EnemiesOnField.Add(new MeleeEnemy(100, 6, "MeleeEnemy1", 40, 20, 20, Game)
+                EnemiesOnField.Add(new MeleeEnemy(100, 6, "MeleeEnemy1", 40, 20, 20, game)
                 {
-                    Position = GetMeleeLocation()
+                    Position = position
                 });
             else /*if (_waveIndex < 10)*/
-                EnemiesOnField.Add(new MeleeEnemy(150, 13, "MeleeEnemy1", 80, 50, 50, Game)
+                EnemiesOnField.Add(new MeleeEnemy(150, 13, "MeleeEnemy1", 80, 50, 50, game)
                 {
-                    Position = GetMeleeLocation()
+                    Position = position
                 });
             _enemiesSpawned++;
-            meleesSpawned++;
+            _meleesSpawned++;
         }
 
         private void SpawnGunner()
         {
-            EnemiesOnField.Add(new EnemyWithGun(new Gun("EnemyGun1", "EnemyShot", 1, 400, UnitType.Player, Game),
-                200, 20, 2, "Enemy1", 40, 40, 40, Game)
+            EnemiesOnField.Add(new EnemyWithGun(new Gun("EnemyGun1","EnemyShot", 1, 300, UnitType.Player, Game), 150, 20, 2,"Enemy1", 100, 120, 60, Game)
             {
                 Position = GetGunnerLocation()
             });
             _enemiesSpawned++;
-            gunnersSpawned++;
+            _gunnersSpawned++;
+        }
+        private void SpawnShip()
+        {
+            EnemiesOnField.Add(new SpaceShip1(100, 6, "Ship", 40, 20, 20, Game)
+            {
+                Position = GetGunnerLocation()
+            });
+            _enemiesSpawned++;
+            _shipsSpawned++;
         }
 
         public override void Update(GameTime gameTime)
@@ -67,10 +76,12 @@ namespace CursorAiming
             if (_enemiesSpawned < _numberOfEnemiesToSpawn && _isSpawning)
                 if (_timeLeftBetweenSpawns <= 0)
                 {
-                    if (meleesSpawned < numberOfmelee)
-                        SpawnMeleeEnemy();
-                    if (gunnersSpawned < numberOfGunner)
+                    if (_meleesSpawned < _numberOfmelee)
+                        SpawnMeleeEnemy(Game, GetMeleeLocation());
+                    if (_gunnersSpawned < _numberOfGunner)
                         SpawnGunner();
+                    if(_shipsSpawned < _numberOfShips)
+                        SpawnShip();
 
                     _timeLeftBetweenSpawns = _timeBetweenSpawns;
                 }
@@ -88,25 +99,38 @@ namespace CursorAiming
                     _isSpawning = true;
                     _waveIndex++;
                     _enemiesSpawned = 0;
-                    meleesSpawned = 0;
-                    gunnersSpawned = 0;
+                    _meleesSpawned = 0;
+                    _gunnersSpawned = 0;
                     _timeLeftBetweenWaves = _timeBetweenWaves;
 
-                    if (_waveIndex < 3)
+                    if (_waveIndex < 5)
                     {
-                        numberOfmelee = _waveIndex * 2 + 1;
+                        _numberOfmelee = _waveIndex * 2 + 1;
+                        _numberOfGunner = 0;
+                        _numberOfShips = 0;
                     }
                     else if (_waveIndex < 7)
                     {
-                        numberOfmelee = _waveIndex - 1;
-                        numberOfGunner = _waveIndex - 2;
+                        _numberOfmelee = _waveIndex - 1;
+                        _numberOfGunner = _waveIndex - 2;
+                        _numberOfShips = 0;
+
+                    }
+                    else if (_waveIndex < 10)
+                    {
+                        _numberOfmelee = _waveIndex - 1;
+                        _numberOfGunner = _waveIndex + 2;
+                        _numberOfShips = 0;
+
                     }
                     else
                     {
-                        numberOfmelee = _waveIndex - 1;
-                        numberOfGunner = _waveIndex + 2;
+                        _numberOfmelee = 0;
+                        _numberOfGunner = _waveIndex - 2;
+                        _numberOfShips = _waveIndex;
+
                     }
-                    _numberOfEnemiesToSpawn = numberOfGunner + numberOfmelee;
+                    _numberOfEnemiesToSpawn = _numberOfGunner + _numberOfmelee + _numberOfShips;
                 }
                 else
                 {
@@ -122,7 +146,10 @@ namespace CursorAiming
             _timeLeftBetweenSpawns = _timeBetweenSpawns;
             _timeLeftBetweenWaves = _timeBetweenWaves;
             _isSpawning = false;
-            _numberOfEnemiesToSpawn = _waveIndex * 2 + 1;
+            _numberOfGunner = 0;
+            _numberOfmelee = 0;
+            _numberOfShips = 0;
+            _numberOfEnemiesToSpawn = 0;
             for (var i = 0; i < EnemiesOnField.Count; i++)
             {
                 EnemiesOnField[i].Remove();
@@ -138,6 +165,7 @@ namespace CursorAiming
 
             var spawn = new Vector2(rand.Next(300, Globals.ScreenWidth - 285),
                 rand.Next(150, Globals.ScreenHeight - 145));
+
             for (var i = 0; i < EnviornmentComponent.ObstaclesOnField.Count; i++)
                 if (EnviornmentComponent.ObstaclesOnField[i].Contains(spawn) || playerZone.Contains(spawn))
                 {
@@ -149,13 +177,14 @@ namespace CursorAiming
             return spawn;
         }
 
-        public Vector2 GetMeleeLocation()
+        public static Vector2 GetMeleeLocation()
         {
             var rand = new Random();
             var playerZone = new Rectangle(Player.PlayerPosition.ToPoint() - new Point(150, 150), new Point(300, 300));
 
             var spawn = new Vector2(rand.Next(300, Globals.ScreenWidth - 285),
                 rand.Next(150, Globals.ScreenHeight - 145));
+
             for (var i = 0; i < EnviornmentComponent.ObstaclesOnField.Count; i++)
                 if (EnviornmentComponent.ObstaclesOnField[i].Contains(spawn) || playerZone.Contains(spawn))
                 {
