@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,21 +10,17 @@ namespace CursorAiming
     {
         public static RectangleHitBox Hitbox;
         private static string _youLvldUp;
-        private SpriteFont _font;
-
-        private double timer;
 
         public static Gun Gun;
-
-        private int xpNeeded;
-        private bool _lvldUp;
 
         private Vector2 _aimDirection;
         private double _countDownTilNextAttack;
         private Vector2 _deltaDistance;
+        private SpriteFont _font;
 
         private bool _isShooting;
         private Texture2D _lifeTexture;
+        private bool _lvldUp;
         private Vector2 _moveDirection;
 
         private Texture2D _playerTexture;
@@ -35,7 +30,11 @@ namespace CursorAiming
         private SoundEffect _takeDamage;
         private Vector2 _velocity;
 
+        private double timer;
+
         public UnitType Type = UnitType.Player;
+
+        private int xpNeeded;
 
 
         public Player(int moveSpeed, int health, float attackSpeed, Gun gun, Game game) : base(game)
@@ -46,7 +45,6 @@ namespace CursorAiming
             _countDownTilNextAttack = _attackSpeed;
             Gun = gun;
             PlayerLevel = 1;
-            PlayerSkillPoints = 99;
             HealthLevel = 5;
 
             timer = 2;
@@ -180,22 +178,22 @@ namespace CursorAiming
 
 
             if (_lvldUp)
-            {
                 if (timer > 0)
                 {
                     timer -= gameTime.ElapsedGameTime.TotalSeconds;
 
-                    SpriteBatch.DrawString(_font, _youLvldUp, new Vector2(PlayerPosition.X - _font.MeasureString(_youLvldUp).X/2, PlayerPosition.Y - 100), Color.Green);
+                    SpriteBatch.DrawString(_font, _youLvldUp,
+                        new Vector2(PlayerPosition.X - _font.MeasureString(_youLvldUp).X / 2, PlayerPosition.Y - 100),
+                        Color.Green);
                 }
                 else
                 {
                     _lvldUp = false;
                     timer = 2;
                 }
-            }
 
 
-                UpdateGraphics(SpriteBatch);
+            UpdateGraphics(SpriteBatch);
 
             SpriteBatch.End();
 

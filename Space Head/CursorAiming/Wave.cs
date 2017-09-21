@@ -37,13 +37,13 @@ namespace CursorAiming
 
         public static void SpawnMeleeEnemy(Game game, Vector2 position)
         {
-            if (_waveIndex < 5)
+            if (_waveIndex < 3)
                 EnemiesOnField.Add(new MeleeEnemy(100, 6, "MeleeEnemy1", 40, 20, 20, game)
                 {
                     Position = position
                 });
             else /*if (_waveIndex < 10)*/
-                EnemiesOnField.Add(new MeleeEnemy(150, 13, "MeleeEnemy1", 80, 50, 50, game)
+                EnemiesOnField.Add(new MeleeEnemy(150, 12, "MeleeEnemy1", 80, 50, 50, game)
                 {
                     Position = position
                 });
@@ -102,13 +102,13 @@ namespace CursorAiming
                     _gunnersSpawned = 0;
                     _timeLeftBetweenWaves = _timeBetweenWaves;
 
-                    if (_waveIndex < 5)
+                    if (_waveIndex < 6)
                     {
                         _numberOfmelee = _waveIndex * 2 + 1;
                         _numberOfGunner = 0;
                         _numberOfShips = 0;
                     }
-                    else if (_waveIndex < 7)
+                    else if (_waveIndex < 8)
                     {
                         _numberOfmelee = _waveIndex - 1;
                         _numberOfGunner = _waveIndex - 2;

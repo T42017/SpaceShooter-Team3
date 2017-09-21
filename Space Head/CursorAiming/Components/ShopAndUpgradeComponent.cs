@@ -27,7 +27,7 @@ namespace CursorAiming
             _upgradeWeapon = new List<MenuChoice>();
             _upgradePlayer = new List<MenuChoice>();
 
-            _gunAtkSpeedUpgradeCost = Gun.GunAtkSpeedLevel * 100;
+            _gunAtkSpeedUpgradeCost = 250;
             _gunDamageUpgradeCost = Gun.GunAtkLevel * 100;
 
             UpgradePlayerTitle = new MenuChoice
