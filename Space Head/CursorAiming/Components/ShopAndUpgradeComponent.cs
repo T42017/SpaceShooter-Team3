@@ -269,10 +269,11 @@ namespace CursorAiming
 
         public static void Reset()
         {
-            AttackSpeed.Text = "UPGRADE ATTACK SPEED // LEVEL: " + Gun.GunAtkSpeedLevel;
+            AttackSpeed.Text = "UPGRADE WEAPON ATTACK SPEED // COST: " + _gunAtkSpeedUpgradeCost + " // LEVEL:" + Gun.GunAtkSpeedLevel;
+            Damage.Text = "UPGRADE WEAPON DAMAGE // COST: " + _gunDamageUpgradeCost + " // LEVEL:" + Gun.GunAtkLevel;
+
             Health.Text = "UPGRADE HIT POINTS // LEVEL: " + Player.HealthLevel;
             MoveSpeed.Text = "UPGRADE MOVEMENT SPEED // LEVEL: " + Player.MoveSpeedLevel;
-            Damage.Text = "UPGRADE WEAPON DAMAGE // LEVEL: " + Gun.GunAtkLevel;
         }
 
     }

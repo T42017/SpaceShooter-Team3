@@ -36,6 +36,8 @@ namespace CursorAiming.Enemies
                 Velocity = Hitbox.CheckFlyingMoveDistance(MoveSpeed, MoveDirection,
                     (float)gameTime.ElapsedGameTime.TotalSeconds);
 
+            if (DeltaDistance.Length() < 30)
+                Attack();
             Position += Velocity;
         }
     }

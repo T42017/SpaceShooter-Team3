@@ -42,7 +42,7 @@ namespace CursorAiming
             _backgroundTexture2D = Game.Content.Load<Texture2D>("AsteroidPlayingField");
             _spaceBackground = Game.Content.Load<Texture2D>("SpaceBackground");
             _bigRock = Game.Content.Load<Texture2D>("BigRock");
-            ObstaclesOnField.Add(new Rectangle(900, 450, _bigRock.Width - 10, _bigRock.Height - 20));
+            ObstaclesOnField.Add(new Rectangle(1000, 450, _bigRock.Width - 10, _bigRock.Height - 20));
             _mediumRock = Game.Content.Load<Texture2D>("MediumRock");
             ObstaclesOnField.Add(new Rectangle(500, 750, _mediumRock.Width, _mediumRock.Height));
             _mediumSmallRock = Game.Content.Load<Texture2D>("MediumSmallRock");

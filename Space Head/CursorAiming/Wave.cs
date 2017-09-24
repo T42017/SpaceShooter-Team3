@@ -113,6 +113,14 @@ namespace CursorAiming
                     Position = position
                 });
         }
+        public static void SpawnBossSpawn(Game game, Vector2 position)
+        {
+                       
+                EnemiesOnField.Add(new SpaceShipSpawn(200, WaveIndex * 2, "ShipSpawn", 0, 0, 0, game)
+                {
+                    Position = position
+                });
+        }
 
         public override void Update(GameTime gameTime)
         {
@@ -141,7 +149,20 @@ namespace CursorAiming
                 {
                     _isSpawning = true;
                     WaveIndex++;
-                    if (WaveIndex % 5 == 0) Player.Health++;
+
+
+                    if (WaveIndex % 5 == 0)
+                    {
+                        Player.Health += 2;
+                        if(WaveIndex > 15)
+                        {
+                            EnemiesOnField.Add(new Boss(0, 1000, "Boss", 1000, 500, 300, Game)
+                            {
+                                Position = new Vector2(Globals.ScreenWidth / 2, Globals.ScreenHeight / 2)
+                            });
+                            _enemiesSpawned++;
+                        }
+                    }
                     _enemiesSpawned = 0;
                     _meleesSpawned = 0;
                     _gunnersSpawned = 0;
@@ -206,7 +227,6 @@ namespace CursorAiming
                 EnemiesOnField[i].Remove();
                 i--;
             }
-            EnemiesOnField.Clear();
         }
 
         public Vector2 GetGunnerLocation()

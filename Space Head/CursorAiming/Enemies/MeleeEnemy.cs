@@ -43,7 +43,7 @@ namespace CursorAiming.Enemies
             base.UpdateMovement(gameTime);
         }
 
-        private void Attack()
+        protected void Attack()
         {
             Player.Health--;
             Remove();

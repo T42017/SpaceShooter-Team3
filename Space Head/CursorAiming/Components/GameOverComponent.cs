@@ -60,9 +60,9 @@ namespace CursorAiming
             SpaceHeadGame.player.Remove();
             Player.Reset();
             SpaceHeadGame.player = new Player(310, 5, 0.5f,
-                new Gun("GattlingGun", "GattlingShot", 5, 1500, UnitType.Enemy, Game),
+                new Gun("GattlingGun", "GattlingShot", 5, 700, UnitType.Enemy, Game),
                 Game);
-            
+            EnviornmentComponent.BulletsInAir.Clear();
             Wave.Reset();
             ShopAndUpgradeComponent.Reset();
         }
