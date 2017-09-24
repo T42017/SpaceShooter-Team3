@@ -159,9 +159,12 @@ namespace CursorAiming
 
             SpriteBatch.DrawString(_font, "Score: " + Player.Points, new Vector2(Globals.ScreenWidth * 0.01f, Globals.ScreenHeight * 0.95f), Color.Green);
 
-            for (var i = 0; i < Player.Health; i++)
-                SpriteBatch.Draw(_lifeTexture,
-                    new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + Globals.ScreenHeight * 0.01f), Color.Green);
+            for (var i = 0; i < Player.HealthLevel; i++)
+                if (i < Player.Health)
+                    SpriteBatch.Draw(_lifeTexture,
+                        new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + Globals.ScreenHeight * 0.01f), Color.Green);
+                else SpriteBatch.Draw(_lifeTexture,
+                        new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + Globals.ScreenHeight * 0.01f), Color.White);
 
             foreach (var choice in _upgradeWeapon)
                 SpriteBatch.DrawString(_font, choice.Text, new Vector2(choice.X, choice.Y), Color.Green);
@@ -239,11 +242,11 @@ namespace CursorAiming
 
         private void UpgradeHitPointsClicked()
         {
-            if (Player.HealthLevel > 19)
+            if (Player.HealthLevel > 9)
             {
                 DoNothing();
             }
-            else if (Player.HealthLevel == 19)
+            else if (Player.HealthLevel == 9)
             {
                 Health.Text = "Unable to further increase HP ";
                 UpgradePlayerHitPoints();

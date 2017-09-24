@@ -5,6 +5,8 @@ namespace CursorAiming.Enemies
 {
     internal class MeleeEnemy : Enemy
     {
+        private Game game;
+
         public MeleeEnemy(int moveSpeed, int health, string texturePath, int pointValue,
             int xpValue, int coinValue, Game game) : base(game)
         {
@@ -18,6 +20,7 @@ namespace CursorAiming.Enemies
             Game.Components.Add(this);
         }
 
+        
 
         protected override void LoadContent()
         {

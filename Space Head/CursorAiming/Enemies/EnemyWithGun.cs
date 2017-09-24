@@ -62,12 +62,7 @@ namespace CursorAiming
                 CountDownTilNextAttack = AttackSpeed;
             }
 
-            for (var i = 0; i < Gun.bulletsInAir.Count; i++)
-            {
-                Gun.bulletsInAir[i].UpdatePosition(gameTime);
-                if (Gun.bulletsInAir[i].CheckForPlayerCollision() || Gun.bulletsInAir[i].CheckForObstacleCollision())
-                    Gun.bulletsInAir.Remove(Gun.bulletsInAir[i]);
-            }
+           
 
             base.Update(gameTime);
         }
@@ -93,6 +88,7 @@ namespace CursorAiming
             {
                 MoveDirection = Player.PlayerPosition - Position;
                 MoveDirection.Normalize();
+
                 Velocity = Hitbox.CheckWalkingMoveDistance(MoveSpeed, -MoveDirection,
                     (float) gameTime.ElapsedGameTime.TotalSeconds);
                 Position += Velocity;

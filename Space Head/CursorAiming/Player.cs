@@ -90,7 +90,6 @@ namespace CursorAiming
             _playerTexture = Game.Content.Load<Texture2D>("Player");
             _lifeTexture = Game.Content.Load<Texture2D>("spaceRocketParts_012");
             _font = Game.Content.Load<SpriteFont>("Font");
-            //_takeDamage = Game.Content.Load<SoundEffect>("Ljudfiler/Jump");
 
             Hitbox.Box.Size = new Point(_playerTexture.Width / 2, _playerTexture.Width / 2);
             base.LoadContent();
@@ -137,13 +136,7 @@ namespace CursorAiming
                 }
             }
 
-            for (var i = 0; i < Gun.bulletsInAir.Count; i++)
-            {
-                Gun.bulletsInAir[i].UpdatePosition(gameTime);
-                if (Gun.bulletsInAir[i].CheckForEnemyCollision(Wave.EnemiesOnField) ||
-                    Gun.bulletsInAir[i].CheckForObstacleCollision())
-                    Gun.bulletsInAir.Remove(Gun.bulletsInAir[i]);
-            }
+            
 
             base.Update(gameTime);
         }
@@ -227,9 +220,12 @@ namespace CursorAiming
                 null, Color.White, _rotation, new Vector2(_playerTexture.Width / 2, _playerTexture.Height / 2),
                 SpriteEffects.None, 0);
 
-            for (var i = 0; i < Health; i++)
-                spriteBatch.Draw(_lifeTexture,
-                    new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + Globals.ScreenHeight * 0.01f), Color.Green);
+            for (var i = 0; i < HealthLevel; i++)
+                if (i < Health)
+                    spriteBatch.Draw(_lifeTexture,
+                        new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + Globals.ScreenHeight * 0.01f), Color.Green);
+                else spriteBatch.Draw(_lifeTexture,
+                        new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + Globals.ScreenHeight * 0.01f), Color.White);
         }
 
         public void UpdateMovement(GameTime gameTime)

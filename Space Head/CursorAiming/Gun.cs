@@ -17,7 +17,6 @@ namespace CursorAiming
         private readonly string _texturePath;
         private readonly UnitType _typeToHit;
         private Texture2D _texture, _bulletTexture;
-        public List<Bullet> bulletsInAir = new List<Bullet>();
         public int Damage;
         public static int GunAtkLevel = 1;
         public static int GunAtkSpeedLevel = 1;
@@ -47,7 +46,7 @@ namespace CursorAiming
 
         public void Shoot()
         {
-            bulletsInAir.Add(
+            EnviornmentComponent.BulletsInAir.Add(
                 new Bullet(ShotSpeed, Damage, AimDirection, Position, Rotation, _bulletTexture, _typeToHit));
         }
 
@@ -77,8 +76,7 @@ namespace CursorAiming
             spriteBatch.Begin();
 
             UpdateGraphics(spriteBatch);
-            foreach (var bullet in bulletsInAir)
-                bullet.UpdateGraphics(spriteBatch);
+            
 
             spriteBatch.End();
             base.Draw(gameTime);

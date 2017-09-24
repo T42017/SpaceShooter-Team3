@@ -6,7 +6,7 @@ namespace CursorAiming
 {
     public class Bullet
     {
-        private readonly UnitType _typeToHit;
+        public readonly UnitType _typeToHit;
         public int Damage, Speed;
         public Vector2 Direction, Position;
         public float Rotation;

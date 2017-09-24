@@ -51,11 +51,13 @@ namespace CursorAiming.Enemies
             }
             else
             {
-                Wave.SpawnMeleeEnemy(Game, Position);
+               Wave.SpawnShipSpawn(Game, Position);
                 _timeTilSpawn = _timeBetweenSpawns;
             }
             base.Update(gameTime);
         }
+
+       
 
         public override void Remove()
         {

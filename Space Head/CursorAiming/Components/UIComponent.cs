@@ -48,7 +48,7 @@ namespace CursorAiming
 
             SpriteBatch.DrawString(_font, "SCORE: " + Player.Points, new Vector2(Globals.ScreenWidth * 0.01f, Globals.ScreenHeight * 0.95f), Color.Green);
 
-
+            SpriteBatch.DrawString(_font, "Wave: " + Wave.WaveIndex, new Vector2(Globals.ScreenWidth * 0.45f, Globals.ScreenHeight * 0.01f), Color.Green);
             SpriteBatch.End();
 
             base.Draw(gameTime);
