@@ -8,11 +8,9 @@ namespace CursorAiming
         private readonly string _diedMessage = "You have died..";
 
         private readonly string _returnMessage = "Press space to return to the main menu!";
-        private Vector2 _diedMessageLength;
 
         private SpriteFont _font;
         private Texture2D _gameOverScreenBackground;
-        private Vector2 _returnMessageLength;
 
 
         public GameOverComponent(Game game) : base(game)

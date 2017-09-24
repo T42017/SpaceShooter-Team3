@@ -10,16 +10,12 @@ namespace CursorAiming
 {
     public class ShotGun : Gun
     {
-        public int GunAtkLevel;
-        public int GunAtkSpeedLevel;
         private readonly string _bulletTexturePath;
-        public int Damage;
-        public int ShotSpeed;
         private readonly string _texturePath;
         private readonly UnitType _typeToHit;
         private Texture2D _texture, _bulletTexture;
         public List<Bullet> bulletsInAir = new List<Bullet>();
-        public Vector2 Position, AimDirection;
+       
 
         public ShotGun(string gunTexturePath, string bulletTexturePath, int damage, int shotSpeed, UnitType typeToHit, Game game) : base(gunTexturePath, bulletTexturePath, damage, shotSpeed, typeToHit, game)
         {
@@ -30,11 +26,6 @@ namespace CursorAiming
             _typeToHit = typeToHit;
         }
 
-        public void Shoot()
-        {
-            
-
-        }
 
         protected override void LoadContent()
         {

@@ -27,7 +27,6 @@ namespace CursorAiming
 
         private float _rotation;
 
-        private SoundEffect _takeDamage;
         private Vector2 _velocity;
 
         private double timer;

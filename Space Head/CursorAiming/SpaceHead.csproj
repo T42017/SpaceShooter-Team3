@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Bullet.cs" />
+    <Compile Include="Enemies\Boss.cs" />
     <Compile Include="Enemies\MeleeEnemy.cs" />
     <Compile Include="Enemies\SpaceShip1.cs" />
     <Compile Include="Enemies\SpaceShipSpawn.cs" />

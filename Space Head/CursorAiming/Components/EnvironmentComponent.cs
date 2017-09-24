@@ -11,7 +11,6 @@ namespace CursorAiming
         public static List<Rectangle> ObstaclesOnField = new List<Rectangle>();
         private Texture2D _backgroundTexture2D, _spaceBackground, _bigRock, _mediumRock, _mediumSmallRock, _smallRock;
 
-        private int _currentPlayerLevel, _currentGoldAmount;
         private SpriteFont _font;
         private string _pausedMessage;
 

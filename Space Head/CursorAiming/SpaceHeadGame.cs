@@ -20,7 +20,6 @@ namespace CursorAiming
         private Song _backgroundMusic;
         private KeyboardState _previousKeyboardState;
         private SpriteBatch _spriteBatch;
-        private string _totalScore;
 
         public GraphicsDeviceManager Graphics => _graphics;
 
@@ -48,10 +47,10 @@ namespace CursorAiming
 
         protected override void Initialize()
         {
-            player = new Player(310, 5, 0.5f, new Gun("GattlingGun", "GattlingShot", 5, 1000, UnitType.Enemy, this),
+            player = new Player(310, 5, 0.5f, new Gun("GattlingGun", "GattlingShot", 5, 700, UnitType.Enemy, this),
                 this);
 
-            Components.Add(new Wave(this));
+            
 
             #region Components
 
@@ -61,15 +60,9 @@ namespace CursorAiming
             Components.Add(new ShopAndUpgradeComponent(this));
             Components.Add(new GameOverComponent(this));
             Components.Add(new MouseComponent(this));
+            Components.Add(new Wave(this));
 
             #endregion
-
-
-            
-
-           
-
-
 
             #region windowSettings
 
