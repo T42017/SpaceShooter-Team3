@@ -14,7 +14,7 @@ namespace CursorAiming
         private static int _numberOfEnemiesToSpawn;
         private static int _enemiesSpawned;
 
-        private static bool _isSpawning;
+        public static bool IsSpawning;
 
         private static double _timeBetweenWaves, _timeLeftBetweenWaves;
         private static double _timeBetweenSpawns;
@@ -124,7 +124,7 @@ namespace CursorAiming
 
         public override void Update(GameTime gameTime)
         {
-            if (_enemiesSpawned < _numberOfEnemiesToSpawn && _isSpawning)
+            if (_enemiesSpawned < _numberOfEnemiesToSpawn && IsSpawning)
                 if (_timeLeftBetweenSpawns <= 0)
                 {
                     if (_meleesSpawned < _numberOfmelee)
@@ -142,26 +142,27 @@ namespace CursorAiming
                     _timeLeftBetweenSpawns -= gameTime.ElapsedGameTime.TotalSeconds;
                 }
 
-            else if (_enemiesSpawned == _numberOfEnemiesToSpawn) _isSpawning = false;
+            else if (_enemiesSpawned == _numberOfEnemiesToSpawn) IsSpawning = false;
 
-            if (EnemiesOnField.Count == 0 && !_isSpawning)
+            if (EnemiesOnField.Count == 0 && !IsSpawning)
                 if (_timeLeftBetweenWaves <= 0)
                 {
-                    _isSpawning = true;
+                    IsSpawning = true;
                     WaveIndex++;
 
 
                     if (WaveIndex % 5 == 0)
                     {
                         Player.Health += 2;
-                        if(WaveIndex > 15)
+                        if(WaveIndex > 1)
                         {
-                            EnemiesOnField.Add(new Boss(0, 1000, "Boss", 1000, 500, 300, Game)
+                            EnemiesOnField.Add(new Boss(0, 1000 * WaveIndex/20, "Boss", 1000 * WaveIndex / 20, 500, 300, Game)
                             {
                                 Position = new Vector2(Globals.ScreenWidth / 2, Globals.ScreenHeight / 2)
                             });
                             _enemiesSpawned++;
                         }
+                        IsSpawning = false;
                     }
                     _enemiesSpawned = 0;
                     _meleesSpawned = 0;
@@ -217,7 +218,7 @@ namespace CursorAiming
             WaveIndex = 0;
             _timeLeftBetweenSpawns = _timeBetweenSpawns;
             _timeLeftBetweenWaves = _timeBetweenWaves;
-            _isSpawning = false;
+            IsSpawning = false;
             _numberOfGunner = 0;
             _numberOfmelee = 0;
             _numberOfShips = 0;

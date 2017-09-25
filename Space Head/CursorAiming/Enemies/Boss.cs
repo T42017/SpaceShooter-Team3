@@ -161,6 +161,7 @@ namespace CursorAiming.Enemies
         public override void Remove()
         {
             Wave.EnemiesOnField.Remove(this);
+            Wave.IsSpawning = true;
             base.Remove();
         }
     }

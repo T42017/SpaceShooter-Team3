@@ -164,7 +164,7 @@ namespace CursorAiming
                     SpriteBatch.Draw(_lifeTexture,
                         new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + Globals.ScreenHeight * 0.01f), Color.Green);
                 else SpriteBatch.Draw(_lifeTexture,
-                        new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + Globals.ScreenHeight * 0.01f), Color.White);
+                        new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + Globals.ScreenHeight * 0.01f), Color.IndianRed);
 
             foreach (var choice in _upgradeWeapon)
                 SpriteBatch.DrawString(_font, choice.Text, new Vector2(choice.X, choice.Y), Color.Green);

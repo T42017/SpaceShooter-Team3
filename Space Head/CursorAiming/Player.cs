@@ -77,8 +77,9 @@ namespace CursorAiming
         public static void Reset()
         {
             Coins = 0;
-            PlayerExp = 0;
+            Xp = 0;
             Points = 0;
+            PlayerSkillPoints = 0;
             PlayerLevel = 1;
             MoveSpeedLevel = 0;
             HealthLevel = 0;
@@ -196,7 +197,6 @@ namespace CursorAiming
         #region Player Variable
 
         public static int PlayerLevel { get; set; }
-        public static int PlayerExp { get; set; }
         public static int Health;
         public static int HealthLevel;
         public static int PlayerSkillPoints;
@@ -224,7 +224,7 @@ namespace CursorAiming
                     spriteBatch.Draw(_lifeTexture,
                         new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + Globals.ScreenHeight * 0.01f), Color.Green);
                 else spriteBatch.Draw(_lifeTexture,
-                        new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + Globals.ScreenHeight * 0.01f), Color.White);
+                        new Vector2(Globals.ScreenHeight * 0.01f + i * 50, 0 + Globals.ScreenHeight * 0.01f), Color.IndianRed);
         }
 
         public void UpdateMovement(GameTime gameTime)
