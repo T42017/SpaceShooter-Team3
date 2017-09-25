@@ -83,6 +83,9 @@ namespace CursorAiming
             PlayerLevel = 1;
             MoveSpeedLevel = 0;
             HealthLevel = 0;
+            AttackSpeedLevel = 0;
+            Gun.GunAtkLevel = 0;
+            
         }
 
         protected override void LoadContent()

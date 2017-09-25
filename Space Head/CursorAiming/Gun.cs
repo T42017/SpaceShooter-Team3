@@ -20,7 +20,6 @@ namespace CursorAiming
         public int Damage;
         public static int GunAtkLevel = 1;
         public static int GunAtkSpeedLevel = 1;
-        public static int GunLevel = 1;
         public Vector2 Position, AimDirection;
 
         public float Rotation;

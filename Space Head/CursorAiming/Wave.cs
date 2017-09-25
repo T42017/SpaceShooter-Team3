@@ -154,7 +154,7 @@ namespace CursorAiming
                     if (WaveIndex % 5 == 0)
                     {
                         Player.Health += 2;
-                        if(WaveIndex > 1)
+                        if(WaveIndex > 10)
                         {
                             EnemiesOnField.Add(new Boss(0, 1000 * WaveIndex/20, "Boss", 1000 * WaveIndex / 20, 500, 300, Game)
                             {
